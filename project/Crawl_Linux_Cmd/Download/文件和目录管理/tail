@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="renderer" content="webkit">
+<title>
+tail命令_Linux tail 命令用法详解：在屏幕上显示指定文件的末尾若干行</title>
+<link rel="shortcut icon" href="http://man.linuxde.net/favicon.ico" type="image/x-icon" />
+<link rel="pingback" href="http://man.linuxde.net/xmlrpc.php" />
+<link href="http://112.124.15.130/res/linuxde_man/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/jquery-1.8.3.min.js"></script>
+<!--[if IE 6]>
+<script src="http://112.124.15.130/res/linuxde_man/js/belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('*');</script>
+<script src="http://letskillie6.googlecode.com/svn/trunk/letskillie6.zh_CN.pack.js"></script>
+<![endif]-->
+<link rel='canonical' href='http://man.linuxde.net/tail' />
+</head>
+<body>
+<noscript>
+<p class="nojs">您的浏览器已经禁用了脚本，这会严重影响您正常使用本站的功能，请开启！</p>
+</noscript>
+<div class="man_linuxde_net_page">
+<div class="layout_hd">
+    <div class="logo l">
+        <h2><a title="Linux命令大全" href="http://man.linuxde.net/">
+            Linux命令大全            </a></h2>
+    </div>
+    <div class="nav r"><ul id="menu-%e8%8f%9c%e5%8d%951" class="menu"><li id="menu-item-4" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-4"><a href="http://man.linuxde.net/">首页搜索</a></li>
+<li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-6"><a href="http://man.linuxde.net/par/2">系统管理</a></li>
+<li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7"><a href="http://man.linuxde.net/par/5">网络管理</a></li>
+<li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8"><a href="http://man.linuxde.net/par/4">软件·打印·开发·工具</a></li>
+<li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-9"><a href="http://man.linuxde.net/par/1">文件和目录管理</a></li>
+<li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://man.linuxde.net/par/3">硬件·内核·Shell·监测</a></li>
+<li id="menu-item-2096" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2096"><a target="_blank" href="http://www.linuxde.net">Linux Today</a></li>
+</ul></div>    <div class="c"></div>
+</div>
+<div class="layout layout_bd">
+<script type='text/javascript'>
+function addLink() {
+    var body_element = document.getElementsByTagName('body')[0];
+    var selection;
+    selection = window.getSelection();
+    var pagelink = "<br /><br /> 来自: <a href='"+document.location.href+"'>"+document.location.href+"</a>"; 
+    var copy_text = selection + pagelink;
+    var new_div = document.createElement('div');
+    new_div.style.left='-99999px';
+    new_div.style.position='absolute';
+    body_element.appendChild(new_div );
+    new_div.innerHTML = copy_text ;
+    selection.selectAllChildren(new_div );
+    window.setTimeout(function() {
+        body_element.removeChild(new_div );
+    },0);
+}
+document.oncopy = addLink;
+</script>
+<div class="single_default">
+        <div class="main">
+        <div class="breadcrumb">当前位置：<a href="http://man.linuxde.net">首页</a> &raquo; <a href="http://man.linuxde.net/par/1" rel="category tag">文件和目录管理</a> &raquo; tail</div>
+        <div class="post_hd clearfix">
+            <h1 class="l">tail命令</h1>
+            <div class="tag f_yh r">
+                <a href="http://man.linuxde.net/sub/%e6%96%87%e4%bb%b6%e5%86%85%e5%ae%b9%e6%9f%a5%e7%9c%8b" rel="tag">文件内容查看</a>            </div>
+        </div>
+        <div class="post_bd post">
+            <p>
+	<strong>tail命令</strong>用于输入文件中的尾部内容。tail命令默认在屏幕上显示指定文件的末尾10行。如果给定的文件不止一个，则在显示的每个文件前面加一个文件名标题。如果没有指定文件或者文件名为&ldquo;-&rdquo;，则读取标准输入。
+</p>
+<p>
+	注意：如果表示字节或行数的N值之前有一个&rdquo;+&rdquo;号，则从文件开头的第N项开始显示，而不是显示文件的最后N项。N值后面可以有后缀：b表示512，k表示1024，m表示1 048576(1M)。
+</p>
+<h3>
+	语法<br />
+</h3>
+<pre>
+tail(选项)(参数)</pre>
+<h3>
+	选项<br />
+</h3>
+<pre>
+--retry：即是在tail命令启动时，文件不可访问或者文件稍后变得不可访问，都始终尝试打开文件。使用此选项时需要与选项&ldquo;&mdash;&mdash;follow=name&rdquo;连用；
+-c&lt;N&gt;或&mdash;&mdash;bytes=&lt;N&gt;：输出文件尾部的N（N为整数）个字节内容；
+-f&lt;name/descriptor&gt;或；--follow&lt;nameldescript&gt;：显示文件最新追加的内容。&ldquo;name&rdquo;表示以文件名的方式监视文件的变化。&ldquo;-f&rdquo;与&ldquo;-fdescriptor&rdquo;等效；
+-F：与选项&ldquo;-follow=name&rdquo;和&ldquo;--retry&quot;连用时功能相同；
+-n&lt;N&gt;或&mdash;&mdash;line=&lt;N&gt;：输出文件的尾部N（N位数字）行内容。
+--pid=&lt;进程号&gt;：与&ldquo;-f&rdquo;选项连用，当指定的进程号的进程终止后，自动退出tail命令；
+-q或&mdash;&mdash;quiet或&mdash;&mdash;silent：当有多个文件参数时，不输出各个文件名；
+-s&lt;秒数&gt;或&mdash;&mdash;<span class='wp_keywordlink'><a href="http://man.linuxde.net/sleep" title="sleep命令" target="_blank">sleep</a></span>-interal=&lt;秒数&gt;：与&ldquo;-f&rdquo;选项连用，指定监视文件变化时间隔的秒数；
+-v或&mdash;&mdash;verbose：当有多个文件参数时，总是输出各个文件名；
+--<span class='wp_keywordlink'><a href="http://man.linuxde.net/help" title="help命令" target="_blank">help</a></span>：显示指令的帮助信息；
+--version：显示指令的版本信息。</pre>
+<h3>
+	参数<br />
+</h3>
+<p>
+	文件列表：指定要显示尾部内容的文件列表。
+</p>
+<h3>
+	实例<br />
+</h3>
+<pre>
+tail <span class='wp_keywordlink'><a href="http://man.linuxde.net/file" title="file命令" target="_blank">file</a></span> （显示文件file的最后10行）
+tail +20 file （显示文件file的内容，从第20行至文件末尾）
+tail -c 10 file （显示文件file的最后10个字符）</pre>
+        </div>
+        <div class="post_ft">
+            <div class="title">最近更新的命令</div>
+            <ul>
+                <li><a href="http://man.linuxde.net/cut" title="cut">cut</a></li><li><a href="http://man.linuxde.net/sh" title="sh">sh</a></li><li><a href="http://man.linuxde.net/seq" title="seq">seq</a></li><li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li><li><a href="http://man.linuxde.net/syslog" title="syslog">syslog</a></li><li><a href="http://man.linuxde.net/inotifywait" title="inotifywait">inotifywait</a></li><li><a href="http://man.linuxde.net/dd" title="dd">dd</a></li><li><a href="http://man.linuxde.net/read" title="read">read</a></li><li><a href="http://man.linuxde.net/uname" title="uname">uname</a></li><li><a href="http://man.linuxde.net/pssh" title="pssh">pssh</a></li><li><a href="http://man.linuxde.net/tar" title="tar">tar</a></li><li><a href="http://man.linuxde.net/axel" title="axel">axel</a></li><li><a href="http://man.linuxde.net/losetup" title="losetup">losetup</a></li><li><a href="http://man.linuxde.net/lsb_release" title="lsb_release">lsb_release</a></li><li><a href="http://man.linuxde.net/tcpreplay" title="tcpreplay">tcpreplay</a></li><li><a href="http://man.linuxde.net/strings" title="strings">strings</a></li><li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li><li><a href="http://man.linuxde.net/speedtest-cli" title="speedtest-cli">speedtest-cli</a></li><li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li><li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li><li><a href="http://man.linuxde.net/dnf" title="dnf">dnf</a></li><li><a href="http://man.linuxde.net/nethogs" title="nethogs">nethogs</a></li><li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li><li><a href="http://man.linuxde.net/trap" title="trap">trap</a></li><li><a href="http://man.linuxde.net/let" title="let">let</a></li><li><a href="http://man.linuxde.net/ifstat" title="ifstat">ifstat</a></li><li><a href="http://man.linuxde.net/blkid" title="blkid">blkid</a></li><li><a href="http://man.linuxde.net/ipcrm" title="ipcrm">ipcrm</a></li><li><a href="http://man.linuxde.net/openssl" title="openssl">openssl</a></li><li><a href="http://man.linuxde.net/chage" title="chage">chage</a></li>            </ul>
+        </div>
+        <div id="comments">
+            <!-- You can start editing here. -->
+        </div>
+    </div>
+    
+<div class="sidebar">
+    <div class="widget related">
+        <div class="hd">
+            <h3>相关命令</h3>
+        </div>
+        <div class="bd">
+            <ul>
+                            <li><a href="http://man.linuxde.net/od" title="od">od</a></li>
+                <li><a href="http://man.linuxde.net/hexdump" title="hexdump">hexdump</a></li>
+                <li><a href="http://man.linuxde.net/head" title="head">head</a></li>
+                <li><a href="http://man.linuxde.net/more" title="more">more</a></li>
+                <li><a href="http://man.linuxde.net/cut" title="cut">cut</a></li>
+                <li><a href="http://man.linuxde.net/less" title="less">less</a></li>
+                </ul>
+        </div>
+    </div>
+    <div id="fixedBox">
+        <div id="float" class="dbox">
+            <div class="sidebar_search_box">
+                <form action="http://man.linuxde.net/">
+                    <input type="text" name="s" id="sidebar_search" value="命令搜索" onFocus="if (value =='命令搜索'){value =''}" onBlur="if (value ==''){value='命令搜索'}" />
+                </form>
+                <form action="http://man.linuxde.net/" method="post">
+                    <input type="text" name="ss" id="sidebar_search" value="命令直达" onFocus="if (value =='命令直达'){value =''}" onBlur="if (value ==''){value='命令直达'}" />
+                </form>
+            </div>
+            <div class="widget ad"> 
+				<!--
+				<script type="text/javascript">
+					document.write('<a style="display:none!important" id="tanx-a-mm_22964816_6616438_33736229"></a>');
+					tanx_s = document.createElement("script");
+					tanx_s.type = "text/javascript";
+					tanx_s.charset = "gbk";
+					tanx_s.id = "tanx-s-mm_22964816_6616438_33736229";
+					tanx_s.async = true;
+					tanx_s.src = "http://p.tanx.com/ex?i=mm_22964816_6616438_33736229";
+					tanx_h = document.getElementsByTagName("head")[0];
+					if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+				</script>
+				-->
+				<a title="linux马克杯" href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DbWlkMAz37zAcQipKwQzePDAVflQIoZepLKpWJ%2Bin0XJRAdhuF14FMdl7wKby%2Bc%2FExq3IhSJN6GSAAkUL03DNGUpamuccnq1qrmvEga4qAXJgE5NxN1hjMoxodiO%2Bbyu%2BIYULNg46oBA%3D" target="_blank"><img src="http://112.124.15.130/res/linuxde_man/images/s-ad.jpg" alt="linux马克杯"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="layout layout_ft">
+    <div class="footer">
+        <div class="copyright">
+            <a href="http://man.linuxde.net/" title="Linux命令大全">Linux命令大全</a>
+            <em class="sx"></em>
+            <a href="http://man.linuxde.net/about_us" title="关于">关于</a>
+            <em class="sx"></em>
+			收藏本站请使用Ctrl+D
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/shell-script" target="_blank">Shell脚本攻略</a>
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/docs/shell_regex.html" target="_blank">Shell正则表达式</a>
+			<em class="sx"></em>
+			共收录528条Linux系统指令
+        </div>
+        <div class="des">在Linux命令大全（man.linuxde.net）可以查询您所需要的Linux命令教程和相关实例。如果您觉得本站内容对您有所帮助，请推荐给更多需要帮助的人。</div>
+        <div class="info">
+		赞助商链接：<a href="http://www.1987.name/" target="_blank">组装电脑配置清单2017</a>,　运行在<a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DvTDIoAjlYzMcQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAhYdwmcpX19FpcfgoZBkhQKMhxXrDnK9L8ge8W1gUmbKFOH2PYQYfJNjOghCi4TzwOdn1BbglxZYxUhy8exlzcq9AmARIwX9K2Zg%2BdzdQFOwfMRvoxSVDSdLyrb2g0H2G5JcxXijM%2BwneEHpPTskRHknGN7svee8j7S4un6ZpbmpIYULNg46oBA%3D" target="_blank">阿里云服务器</a>！
+		</div>
+    </div>
+</div>
+</div>
+<!--js-->
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/sitejs.js"></script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div style="display:none"><script src="http://s17.cnzz.com/stat.php?id=5762282&web_id=5762282" language="JavaScript"></script></div>
+
+<!--活动推广
+<script type="text/javascript" src="http://112.124.15.130/res/ad/ad.js"></script>
+<style type="text/css">
+.ad-box{width:240px;height:277px;background:#CCC;position:fixed;right:-240px;bottom:10px;}
+.ad-img{position:relative;overflow:hidden;}
+.ad-close{width:30px;height:22px;line-height:22px;display:block;top:10px;right:10px;position:absolute;}
+</style>
+<div class="ad-box">
+    <div class="ad-img">
+        <a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DuGXlvKu7Iv4cQipKwQzePCperVdZeJviK7Vc7tFgwiFRAdhuF14FMZQUNi%2Bb4SgsMMgx22UI05aAAkUL03DNGT6XZIOJR7dCTAHi9HSRVmdzguIHwwNmQ6UuZxIcp9pfUIgVEmFmgnbDX0%2BHH2IEVaX4VWt66S4EJPwiig1bxLP9BvYCQR6XAr%2BKQ71wHNCAqP8YyUoZZlq4cXg3ii9waXPs9Sj9Qli1np4c65at3FeX3cwyLTlAhj2l4PysJx%2FP" target="_blank"><img src="http://112.124.15.130/res/ad/1111.jpg"></a>
+        <a href="javascript:" class="ad-close">关闭</a>
+    </div>
+</div>
+<!--推广结束-->
+
+</body></html>

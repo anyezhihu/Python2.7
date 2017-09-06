@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="renderer" content="webkit">
+<title>
+xargs命令_Linux xargs 命令用法详解：给其他命令传递参数的一个过滤器</title>
+<link rel="shortcut icon" href="http://man.linuxde.net/favicon.ico" type="image/x-icon" />
+<link rel="pingback" href="http://man.linuxde.net/xmlrpc.php" />
+<link href="http://112.124.15.130/res/linuxde_man/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/jquery-1.8.3.min.js"></script>
+<!--[if IE 6]>
+<script src="http://112.124.15.130/res/linuxde_man/js/belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('*');</script>
+<script src="http://letskillie6.googlecode.com/svn/trunk/letskillie6.zh_CN.pack.js"></script>
+<![endif]-->
+<link rel='canonical' href='http://man.linuxde.net/xargs' />
+</head>
+<body>
+<noscript>
+<p class="nojs">您的浏览器已经禁用了脚本，这会严重影响您正常使用本站的功能，请开启！</p>
+</noscript>
+<div class="man_linuxde_net_page">
+<div class="layout_hd">
+    <div class="logo l">
+        <h2><a title="Linux命令大全" href="http://man.linuxde.net/">
+            Linux命令大全            </a></h2>
+    </div>
+    <div class="nav r"><ul id="menu-%e8%8f%9c%e5%8d%951" class="menu"><li id="menu-item-4" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-4"><a href="http://man.linuxde.net/">首页搜索</a></li>
+<li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-6"><a href="http://man.linuxde.net/par/2">系统管理</a></li>
+<li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7"><a href="http://man.linuxde.net/par/5">网络管理</a></li>
+<li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-8"><a href="http://man.linuxde.net/par/4">软件·打印·开发·工具</a></li>
+<li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9"><a href="http://man.linuxde.net/par/1">文件和目录管理</a></li>
+<li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://man.linuxde.net/par/3">硬件·内核·Shell·监测</a></li>
+<li id="menu-item-2096" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2096"><a target="_blank" href="http://www.linuxde.net">Linux Today</a></li>
+</ul></div>    <div class="c"></div>
+</div>
+<div class="layout layout_bd">
+<script type='text/javascript'>
+function addLink() {
+    var body_element = document.getElementsByTagName('body')[0];
+    var selection;
+    selection = window.getSelection();
+    var pagelink = "<br /><br /> 来自: <a href='"+document.location.href+"'>"+document.location.href+"</a>"; 
+    var copy_text = selection + pagelink;
+    var new_div = document.createElement('div');
+    new_div.style.left='-99999px';
+    new_div.style.position='absolute';
+    body_element.appendChild(new_div );
+    new_div.innerHTML = copy_text ;
+    selection.selectAllChildren(new_div );
+    window.setTimeout(function() {
+        body_element.removeChild(new_div );
+    },0);
+}
+document.oncopy = addLink;
+</script>
+<div class="single_default">
+        <div class="main">
+        <div class="breadcrumb">当前位置：<a href="http://man.linuxde.net">首页</a> &raquo; <a href="http://man.linuxde.net/par/4" rel="category tag">软件·打印·开发·工具</a> &raquo; xargs</div>
+        <div class="post_hd clearfix">
+            <h1 class="l">xargs命令</h1>
+            <div class="tag f_yh r">
+                <a href="http://man.linuxde.net/sub/%e5%b8%b8%e7%94%a8%e5%b7%a5%e5%85%b7%e5%91%bd%e4%bb%a4" rel="tag">常用工具命令</a>            </div>
+        </div>
+        <div class="post_bd post">
+            <p>
+	<strong>xargs命令</strong>是给其他命令传递参数的一个过滤器，也是组合多个命令的一个工具。它擅长将标准输入数据转换成命令行参数，xargs能够处理管道或者stdin并将其转换成特定命令的命令参数。xargs也可以将单行或多行文本输入转换为其他格式，例如多行变单行，单行变多行。<span style="color:#f00;">xargs的默认命令是<span class='wp_keywordlink'><a href="http://man.linuxde.net/echo" title="echo命令" target="_blank">echo</a></span>，空格是默认定界符。</span>这意味着通过管道传递给xargs的输入将会包含换行和空白，不过通过xargs的处理，换行和空白将被空格取代。xargs是构建单行命令的重要组件之一。
+</p>
+<h3>
+	xargs命令用法<br />
+</h3>
+<p>
+	xargs用作替换工具，读取输入数据重新格式化后输出。
+</p>
+<p>
+	定义一个测试文件，内有多行文本数据：
+</p>
+<pre>
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/cat" title="cat命令" target="_blank">cat</a></span> <span class='wp_keywordlink'><a href="http://man.linuxde.net/test" title="test命令" target="_blank">test</a></span>.txt
+
+a b c d e f g
+h i j k l m n
+o p q
+r s t
+u v <span class='wp_keywordlink'><a href="http://man.linuxde.net/w" title="w命令" target="_blank">w</a></span> x y z
+</pre>
+<p>
+	多行输入单行输出：
+</p>
+<pre>
+cat test.txt | <span style="color:#f00;">xargs</span>
+
+a b c d e f g h i j k l m n o p q r s t u v w x y z</pre>
+<p>
+	<span style="color:#f00;"><strong>-n选项</strong></span>多行输出：
+</p>
+<pre>
+cat test.txt | xargs <span style="color:#f00;">-n3</span>
+
+a b c
+d e f
+g h i
+j k l
+m n o
+p q r
+s t u
+v w x
+y z</pre>
+<p>
+	<span style="color:#f00;"><strong>-d选项</strong></span>可以自定义一个定界符：
+</p>
+<pre>
+echo &quot;nameXnameXnameXname&quot; | xargs <span style="color:#f00;">-d</span>X
+
+name name name name</pre>
+<p>
+	结合<strong>-n选项</strong>使用：
+</p>
+<pre>
+echo &quot;nameXnameXnameXname&quot; | xargs <span style="color:#f00;">-d</span>X <span style="color:#f00;">-n</span>2
+
+name name
+name name</pre>
+<p>
+	<strong>读取stdin，将格式化后的参数传递给命令</strong>
+</p>
+<p>
+	假设一个命令为 sk.sh 和一个保存参数的文件arg.txt：
+</p>
+<pre>
+<span style="color:#008000;">#!/bin/bash
+#sk.sh命令内容，打印出所有参数。</span>
+
+echo $*
+</pre>
+<p>
+	arg.txt文件内容：
+</p>
+<pre>
+cat arg.txt
+
+aaa
+bbb
+ccc
+</pre>
+<p>
+	xargs的一个<span style="color:#f00;"><strong>选项-I</strong></span>，使用-I指定一个<span style="color:#f00;">替换字符串{}</span>，这个字符串在xargs扩展时会被替换掉，当-I与xargs结合使用，每一个参数命令都会被执行一次：
+</p>
+<pre>
+cat arg.txt | xargs <span style="color:#f00;">-I {}</span> ./sk.sh -p <span style="color:#f00;">{}</span> -l
+
+-p aaa -l
+-p bbb -l
+-p ccc -l
+</pre>
+<p>
+	复制所有图片文件到 /data/images 目录下：
+</p>
+<pre>
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/ls" title="ls命令" target="_blank">ls</a></span> *.jpg | xargs -n1 -I <span class='wp_keywordlink'><a href="http://man.linuxde.net/cp" title="cp命令" target="_blank">cp</a></span> {} /data/images</pre>
+<p>
+	<strong>xargs结合<span class='wp_keywordlink'><a href="http://man.linuxde.net/find" title="find命令" target="_blank">find</a></span>使用</strong>
+</p>
+<p>
+	用<span class='wp_keywordlink'><a href="http://man.linuxde.net/rm" title="rm命令" target="_blank">rm</a></span> 删除太多的文件时候，可能得到一个错误信息：/bin/rm Argument list too long. 用xargs去避免这个问题：
+</p>
+<pre>
+find . -<span class='wp_keywordlink'><a href="http://man.linuxde.net/type" title="type命令" target="_blank">type</a></span> f -name &quot;*.log&quot; -print0 | <span style="color:#f00;">xargs -0 rm -f</span></pre>
+<p>
+	xargs -0将\0作为定界符。
+</p>
+<p>
+	统计一个源代码目录中所有<span class='wp_keywordlink'><a href="http://man.linuxde.net/php" title="php命令" target="_blank">php</a></span>文件的行数：
+</p>
+<pre>
+find . -type f -name &quot;*.php&quot; -print0 | <span style="color:#f00;">xargs -0 <span class='wp_keywordlink'><a href="http://man.linuxde.net/wc" title="wc命令" target="_blank">wc</a></span> -l</span></pre>
+<p>
+	查找所有的jpg 文件，并且压缩它们：
+</p>
+<pre>
+find . -type f -name &quot;*.jpg&quot; -print | xargs <span class='wp_keywordlink'><a href="http://man.linuxde.net/tar" title="tar命令" target="_blank">tar</a></span> -czvf images.tar.gz
+</pre>
+<p>
+	<strong>xargs其他应用</strong>
+</p>
+<p>
+	假如你有一个文件包含了很多你希望下载的URL，你能够使用xargs下载所有链接：
+</p>
+<pre>
+cat url-list.txt | xargs <span class='wp_keywordlink'><a href="http://man.linuxde.net/wget" title="wget命令" target="_blank">wget</a></span> -c
+</pre>
+<h3>
+	子Shell（Subshells）<br />
+</h3>
+<p>
+	运行一个shell脚本时会启动另一个命令解释器.，就好像你的命令是在命令行提示下被解释的一样，类似于批处理文件里的一系列命令。每个shell脚本有效地运行在父shell(parent shell)的一个子进程里。这个父shell是指在一个控制终端或在一个xterm窗口中给你命令指示符的进程。
+</p>
+<pre>
+cmd1 | <span style="color:#f00;">( </span>cmd2; cmd3; cmd4 <span style="color:#f00;">)</span> | cmd5</pre>
+<p>
+	如果cmd2 是<span class='wp_keywordlink'><a href="http://man.linuxde.net/cd" title="cd命令" target="_blank">cd</a></span> /，那么就会改变子Shell的工作目录，这种改变只是局限于子shell内部，cmd5则完全不知道工作目录发生的变化。<span style="color:#f00;">子shell是嵌在圆括号()内部的命令序列，子Shell内部定义的变量为局部变量。</span>
+</p>
+<p>
+	子shell可用于为一组命令设定临时的环境变量：
+</p>
+<pre class="PROGRAMLISTING">
+COMMAND1
+COMMAND2
+COMMAND3
+<span style="color:#f00;">(</span>
+  IFS=:
+  PATH=/bin
+  <span class='wp_keywordlink'><a href="http://man.linuxde.net/unset" title="unset命令" target="_blank">unset</a></span> TERMINFO
+  <span class='wp_keywordlink'><a href="http://man.linuxde.net/set" title="set命令" target="_blank">set</a></span> -C
+  shift 5
+  COMMAND4
+  COMMAND5
+  <span class='wp_keywordlink'><a href="http://man.linuxde.net/exit" title="exit命令" target="_blank">exit</a></span> 3 <span style="color:#008000;"># 只是从子shell退出。</span>
+<span style="color:#f00;">)</span>
+<span style="color:#008000;"># 父shell不受影响，变量值没有更改。</span>
+COMMAND6
+COMMAND7</pre>
+        </div>
+        <div class="post_ft">
+            <div class="title">最近更新的命令</div>
+            <ul>
+                <li><a href="http://man.linuxde.net/cut" title="cut">cut</a></li><li><a href="http://man.linuxde.net/sh" title="sh">sh</a></li><li><a href="http://man.linuxde.net/seq" title="seq">seq</a></li><li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li><li><a href="http://man.linuxde.net/syslog" title="syslog">syslog</a></li><li><a href="http://man.linuxde.net/inotifywait" title="inotifywait">inotifywait</a></li><li><a href="http://man.linuxde.net/dd" title="dd">dd</a></li><li><a href="http://man.linuxde.net/read" title="read">read</a></li><li><a href="http://man.linuxde.net/uname" title="uname">uname</a></li><li><a href="http://man.linuxde.net/pssh" title="pssh">pssh</a></li><li><a href="http://man.linuxde.net/tar" title="tar">tar</a></li><li><a href="http://man.linuxde.net/axel" title="axel">axel</a></li><li><a href="http://man.linuxde.net/losetup" title="losetup">losetup</a></li><li><a href="http://man.linuxde.net/lsb_release" title="lsb_release">lsb_release</a></li><li><a href="http://man.linuxde.net/tcpreplay" title="tcpreplay">tcpreplay</a></li><li><a href="http://man.linuxde.net/strings" title="strings">strings</a></li><li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li><li><a href="http://man.linuxde.net/speedtest-cli" title="speedtest-cli">speedtest-cli</a></li><li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li><li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li><li><a href="http://man.linuxde.net/dnf" title="dnf">dnf</a></li><li><a href="http://man.linuxde.net/nethogs" title="nethogs">nethogs</a></li><li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li><li><a href="http://man.linuxde.net/trap" title="trap">trap</a></li><li><a href="http://man.linuxde.net/let" title="let">let</a></li><li><a href="http://man.linuxde.net/ifstat" title="ifstat">ifstat</a></li><li><a href="http://man.linuxde.net/blkid" title="blkid">blkid</a></li><li><a href="http://man.linuxde.net/ipcrm" title="ipcrm">ipcrm</a></li><li><a href="http://man.linuxde.net/openssl" title="openssl">openssl</a></li><li><a href="http://man.linuxde.net/chage" title="chage">chage</a></li>            </ul>
+        </div>
+        <div id="comments">
+            <!-- You can start editing here. -->
+        </div>
+    </div>
+    
+<div class="sidebar">
+    <div class="widget related">
+        <div class="hd">
+            <h3>相关命令</h3>
+        </div>
+        <div class="bd">
+            <ul>
+                            <li><a href="http://man.linuxde.net/who" title="who">who</a></li>
+                <li><a href="http://man.linuxde.net/info" title="info">info</a></li>
+                <li><a href="http://man.linuxde.net/tempfile" title="tempfile">tempfile</a></li>
+                <li><a href="http://man.linuxde.net/mesg" title="mesg">mesg</a></li>
+                <li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li>
+                <li><a href="http://man.linuxde.net/wall" title="wall">wall</a></li>
+                <li><a href="http://man.linuxde.net/man" title="man">man</a></li>
+                <li><a href="http://man.linuxde.net/talk" title="talk">talk</a></li>
+                <li><a href="http://man.linuxde.net/gpm" title="gpm">gpm</a></li>
+                <li><a href="http://man.linuxde.net/dircolors" title="dircolors">dircolors</a></li>
+                <li><a href="http://man.linuxde.net/clear" title="clear">clear</a></li>
+                <li><a href="http://man.linuxde.net/rsync" title="rsync">rsync</a></li>
+                <li><a href="http://man.linuxde.net/bc" title="bc">bc</a></li>
+                <li><a href="http://man.linuxde.net/mtools" title="mtools">mtools</a></li>
+                <li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li>
+                <li><a href="http://man.linuxde.net/sum" title="sum">sum</a></li>
+                <li><a href="http://man.linuxde.net/ngrep" title="ngrep">ngrep</a></li>
+                <li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li>
+                <li><a href="http://man.linuxde.net/whoami" title="whoami">whoami</a></li>
+                <li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li>
+                </ul>
+        </div>
+    </div>
+    <div id="fixedBox">
+        <div id="float" class="dbox">
+            <div class="sidebar_search_box">
+                <form action="http://man.linuxde.net/">
+                    <input type="text" name="s" id="sidebar_search" value="命令搜索" onFocus="if (value =='命令搜索'){value =''}" onBlur="if (value ==''){value='命令搜索'}" />
+                </form>
+                <form action="http://man.linuxde.net/" method="post">
+                    <input type="text" name="ss" id="sidebar_search" value="命令直达" onFocus="if (value =='命令直达'){value =''}" onBlur="if (value ==''){value='命令直达'}" />
+                </form>
+            </div>
+            <div class="widget ad"> 
+				<!--
+				<script type="text/javascript">
+					document.write('<a style="display:none!important" id="tanx-a-mm_22964816_6616438_33736229"></a>');
+					tanx_s = document.createElement("script");
+					tanx_s.type = "text/javascript";
+					tanx_s.charset = "gbk";
+					tanx_s.id = "tanx-s-mm_22964816_6616438_33736229";
+					tanx_s.async = true;
+					tanx_s.src = "http://p.tanx.com/ex?i=mm_22964816_6616438_33736229";
+					tanx_h = document.getElementsByTagName("head")[0];
+					if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+				</script>
+				-->
+				<a title="linux马克杯" href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DbWlkMAz37zAcQipKwQzePDAVflQIoZepLKpWJ%2Bin0XJRAdhuF14FMdl7wKby%2Bc%2FExq3IhSJN6GSAAkUL03DNGUpamuccnq1qrmvEga4qAXJgE5NxN1hjMoxodiO%2Bbyu%2BIYULNg46oBA%3D" target="_blank"><img src="http://112.124.15.130/res/linuxde_man/images/s-ad.jpg" alt="linux马克杯"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="layout layout_ft">
+    <div class="footer">
+        <div class="copyright">
+            <a href="http://man.linuxde.net/" title="Linux命令大全">Linux命令大全</a>
+            <em class="sx"></em>
+            <a href="http://man.linuxde.net/about_us" title="关于">关于</a>
+            <em class="sx"></em>
+			收藏本站请使用Ctrl+D
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/shell-script" target="_blank">Shell脚本攻略</a>
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/docs/shell_regex.html" target="_blank">Shell正则表达式</a>
+			<em class="sx"></em>
+			共收录528条Linux系统指令
+        </div>
+        <div class="des">在Linux命令大全（man.linuxde.net）可以查询您所需要的Linux命令教程和相关实例。如果您觉得本站内容对您有所帮助，请推荐给更多需要帮助的人。</div>
+        <div class="info">
+		赞助商链接：<a href="http://www.1987.name/" target="_blank">组装电脑配置清单2017</a>,　运行在<a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DvTDIoAjlYzMcQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAhYdwmcpX19FpcfgoZBkhQKMhxXrDnK9L8ge8W1gUmbKFOH2PYQYfJNjOghCi4TzwOdn1BbglxZYxUhy8exlzcq9AmARIwX9K2Zg%2BdzdQFOwfMRvoxSVDSdLyrb2g0H2G5JcxXijM%2BwneEHpPTskRHknGN7svee8j7S4un6ZpbmpIYULNg46oBA%3D" target="_blank">阿里云服务器</a>！
+		</div>
+    </div>
+</div>
+</div>
+<!--js-->
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/sitejs.js"></script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div style="display:none"><script src="http://s17.cnzz.com/stat.php?id=5762282&web_id=5762282" language="JavaScript"></script></div>
+
+<!--活动推广
+<script type="text/javascript" src="http://112.124.15.130/res/ad/ad.js"></script>
+<style type="text/css">
+.ad-box{width:240px;height:277px;background:#CCC;position:fixed;right:-240px;bottom:10px;}
+.ad-img{position:relative;overflow:hidden;}
+.ad-close{width:30px;height:22px;line-height:22px;display:block;top:10px;right:10px;position:absolute;}
+</style>
+<div class="ad-box">
+    <div class="ad-img">
+        <a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DuGXlvKu7Iv4cQipKwQzePCperVdZeJviK7Vc7tFgwiFRAdhuF14FMZQUNi%2Bb4SgsMMgx22UI05aAAkUL03DNGT6XZIOJR7dCTAHi9HSRVmdzguIHwwNmQ6UuZxIcp9pfUIgVEmFmgnbDX0%2BHH2IEVaX4VWt66S4EJPwiig1bxLP9BvYCQR6XAr%2BKQ71wHNCAqP8YyUoZZlq4cXg3ii9waXPs9Sj9Qli1np4c65at3FeX3cwyLTlAhj2l4PysJx%2FP" target="_blank"><img src="http://112.124.15.130/res/ad/1111.jpg"></a>
+        <a href="javascript:" class="ad-close">关闭</a>
+    </div>
+</div>
+<!--推广结束-->
+
+</body></html>

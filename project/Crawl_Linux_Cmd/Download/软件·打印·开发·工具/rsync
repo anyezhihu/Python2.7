@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="renderer" content="webkit">
+<title>
+rsync命令_Linux rsync 命令用法详解：远程数据同步工具</title>
+<link rel="shortcut icon" href="http://man.linuxde.net/favicon.ico" type="image/x-icon" />
+<link rel="pingback" href="http://man.linuxde.net/xmlrpc.php" />
+<link href="http://112.124.15.130/res/linuxde_man/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/jquery-1.8.3.min.js"></script>
+<!--[if IE 6]>
+<script src="http://112.124.15.130/res/linuxde_man/js/belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('*');</script>
+<script src="http://letskillie6.googlecode.com/svn/trunk/letskillie6.zh_CN.pack.js"></script>
+<![endif]-->
+<link rel='canonical' href='http://man.linuxde.net/rsync' />
+</head>
+<body>
+<noscript>
+<p class="nojs">您的浏览器已经禁用了脚本，这会严重影响您正常使用本站的功能，请开启！</p>
+</noscript>
+<div class="man_linuxde_net_page">
+<div class="layout_hd">
+    <div class="logo l">
+        <h2><a title="Linux命令大全" href="http://man.linuxde.net/">
+            Linux命令大全            </a></h2>
+    </div>
+    <div class="nav r"><ul id="menu-%e8%8f%9c%e5%8d%951" class="menu"><li id="menu-item-4" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-4"><a href="http://man.linuxde.net/">首页搜索</a></li>
+<li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-6"><a href="http://man.linuxde.net/par/2">系统管理</a></li>
+<li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7"><a href="http://man.linuxde.net/par/5">网络管理</a></li>
+<li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-8"><a href="http://man.linuxde.net/par/4">软件·打印·开发·工具</a></li>
+<li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9"><a href="http://man.linuxde.net/par/1">文件和目录管理</a></li>
+<li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://man.linuxde.net/par/3">硬件·内核·Shell·监测</a></li>
+<li id="menu-item-2096" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2096"><a target="_blank" href="http://www.linuxde.net">Linux Today</a></li>
+</ul></div>    <div class="c"></div>
+</div>
+<div class="layout layout_bd">
+<script type='text/javascript'>
+function addLink() {
+    var body_element = document.getElementsByTagName('body')[0];
+    var selection;
+    selection = window.getSelection();
+    var pagelink = "<br /><br /> 来自: <a href='"+document.location.href+"'>"+document.location.href+"</a>"; 
+    var copy_text = selection + pagelink;
+    var new_div = document.createElement('div');
+    new_div.style.left='-99999px';
+    new_div.style.position='absolute';
+    body_element.appendChild(new_div );
+    new_div.innerHTML = copy_text ;
+    selection.selectAllChildren(new_div );
+    window.setTimeout(function() {
+        body_element.removeChild(new_div );
+    },0);
+}
+document.oncopy = addLink;
+</script>
+<div class="single_default">
+        <div class="main">
+        <div class="breadcrumb">当前位置：<a href="http://man.linuxde.net">首页</a> &raquo; <a href="http://man.linuxde.net/par/4" rel="category tag">软件·打印·开发·工具</a> &raquo; rsync</div>
+        <div class="post_hd clearfix">
+            <h1 class="l">rsync命令</h1>
+            <div class="tag f_yh r">
+                <a href="http://man.linuxde.net/sub/%e5%b8%b8%e7%94%a8%e5%b7%a5%e5%85%b7%e5%91%bd%e4%bb%a4" rel="tag">常用工具命令</a>            </div>
+        </div>
+        <div class="post_bd post">
+            <p>
+	<strong>rsync命令</strong>是一个远程数据同步工具，可通过LAN/WAN快速同步多台主机间的文件。rsync使用所谓的&ldquo;rsync算法&rdquo;来使本地和远程两个主机之间的文件达到同步，这个算法只传送两个文件的不同部分，而不是每次都整份传送，因此速度相当快。 rsync是一个功能非常强大的工具，其命令也有很多功能特色选项，我们下面就对它的选项一一进行分析说明。
+</p>
+<h3>
+	语法<br />
+</h3>
+<pre>
+rsync [OPTION]... SRC DEST
+rsync [OPTION]... SRC [USER@]<span class='wp_keywordlink'><a href="http://man.linuxde.net/host" title="host命令" target="_blank">host</a></span>:DEST
+rsync [OPTION]... [USER@]HOST:SRC DEST
+rsync [OPTION]... [USER@]HOST::SRC DEST
+rsync [OPTION]... SRC [USER@]HOST::DEST
+rsync [OPTION]... rsync://[USER@]HOST[:PORT]/SRC [DEST]</pre>
+<p>
+	对应于以上六种命令格式，rsync有六种不同的工作模式：
+</p>
+<ol>
+<li>
+		拷贝本地文件。当SRC和DES路径信息都不包含有单个冒号&quot;:&quot;分隔符时就启动这种工作模式。如：<code>rsync -a /data /backup</code>
+	</li>
+<li>
+		使用一个远程shell程序(如<span class='wp_keywordlink'><a href="http://man.linuxde.net/rsh" title="rsh命令" target="_blank">rsh</a></span>、<span class='wp_keywordlink'><a href="http://man.linuxde.net/ssh" title="ssh命令" target="_blank">ssh</a></span>)来实现将本地机器的内容拷贝到远程机器。当DST路径地址包含单个冒号&quot;:&quot;分隔符时启动该模式。如：<code>rsync -avz *.c foo:src</code>
+	</li>
+<li>
+		使用一个远程shell程序(如rsh、ssh)来实现将远程机器的内容拷贝到本地机器。当SRC地址路径包含单个冒号&quot;:&quot;分隔符时启动该模式。如：<code>rsync -avz foo:src/bar /data</code>
+	</li>
+<li>
+		从远程rsync服务器中拷贝文件到本地机。当SRC路径信息包含&quot;::&quot;分隔符时启动该模式。如：<code>rsync -av root@192.168.78.192::www /databack</code>
+	</li>
+<li>
+		从本地机器拷贝文件到远程rsync服务器中。当DST路径信息包含&quot;::&quot;分隔符时启动该模式。如：<code>rsync -av /databack root@192.168.78.192::www</code>
+	</li>
+<li>
+		列远程机的文件列表。这类似于rsync传输，不过只要在命令中省略掉本地机信息即可。如：<code>rsync -v rsync://192.168.78.192/www</code>
+	</li>
+</ol>
+<h3>
+	选项<br />
+</h3>
+<pre>
+-v, --verbose 详细模式输出。
+-q, --quiet 精简输出模式。
+-c, --checksum 打开校验开关，强制对文件传输进行校验。
+-a, --archive 归档模式，表示以递归方式传输文件，并保持所有文件属性，等于-rlptgoD。
+-r, --recursive 对子目录以递归模式处理。
+-R, --relative 使用相对路径信息。
+-b, --backup 创建备份，也就是对于目的已经存在有同样的文件名时，将老的文件重新命名为~filename。可以使用--suffix选项来指定不同的备份文件前缀。
+--backup-dir 将备份文件(如~filename)存放在在目录下。
+-suffix=SUFFIX 定义备份文件前缀。
+-u, --update 仅仅进行更新，也就是跳过所有已经存在于DST，并且文件时间晚于要备份的文件，不覆盖更新的文件。
+-l, --links 保留软链结。
+-L, --copy-links 想对待常规文件一样处理软链结。
+--copy-unsafe-links 仅仅拷贝指向SRC路径目录树以外的链结。
+--safe-links 忽略指向SRC路径目录树以外的链结。
+-H, --hard-links 保留硬链结。
+-p, --perms 保持文件权限。
+-o, --owner 保持文件属主信息。
+-g, --group 保持文件属组信息。
+-D, --devices 保持设备文件信息。
+-t, --times 保持文件时间信息。
+-S, --sparse 对稀疏文件进行特殊处理以节省DST的空间。
+-n, --dry-run现实哪些文件将被传输。
+-<span class='wp_keywordlink'><a href="http://man.linuxde.net/w" title="w命令" target="_blank">w</a></span>, --whole-<span class='wp_keywordlink'><a href="http://man.linuxde.net/file" title="file命令" target="_blank">file</a></span> 拷贝文件，不进行增量检测。
+-x, --one-file-system 不要跨越文件系统边界。
+-B, --block-size=SIZE 检验算法使用的块尺寸，默认是700字节。
+-e, --rsh=<span class='wp_keywordlink'><a href="http://man.linuxde.net/command" title="command命令" target="_blank">command</a></span> 指定使用rsh、ssh方式进行数据同步。
+--rsync-path=PATH 指定远程服务器上的rsync命令所在路径信息。
+-C, --cvs-exclude 使用和CVS一样的方法自动忽略文件，用来排除那些不希望传输的文件。
+--existing 仅仅更新那些已经存在于DST的文件，而不备份那些新创建的文件。
+--delete 删除那些DST中SRC没有的文件。
+--delete-excluded 同样删除接收端那些被该选项指定排除的文件。
+--delete-after 传输结束以后再删除。
+--ignore-errors 及时出现IO错误也进行删除。
+--max-delete=NUM 最多删除NUM个文件。
+--partial 保留那些因故没有完全传输的文件，以是加快随后的再次传输。
+--force 强制删除目录，即使不为空。
+--numeric-ids 不将数字的用户和组<span class='wp_keywordlink'><a href="http://man.linuxde.net/id" title="id命令" target="_blank">id</a></span>匹配为用户名和组名。
+--timeout=<span class='wp_keywordlink'><a href="http://man.linuxde.net/time" title="time命令" target="_blank">time</a></span> <span class='wp_keywordlink'><a href="http://man.linuxde.net/ip" title="ip命令" target="_blank">ip</a></span>超时时间，单位为秒。
+-I, --ignore-times 不跳过那些有同样的时间和长度的文件。
+--size-only 当决定是否要备份文件时，仅仅察看文件大小而不考虑文件时间。
+--modify-window=NUM 决定文件是否时间相同时使用的时间戳窗口，默认为0。
+-T --temp-dir=DIR 在DIR中创建临时文件。
+--compare-dest=DIR 同样比较DIR中的文件来决定是否需要备份。
+-P 等同于 --partial。
+--progress 显示备份过程。
+-z, --<span class='wp_keywordlink'><a href="http://man.linuxde.net/compress" title="compress命令" target="_blank">compress</a></span> 对备份的文件在传输时进行压缩处理。
+--exclude=PATTERN 指定排除不需要传输的文件模式。
+--include=PATTERN 指定不排除而需要传输的文件模式。
+--exclude-from=FILE 排除FILE中指定模式的文件。
+--include-from=FILE 不排除FILE指定模式匹配的文件。
+--version 打印版本信息。
+--address 绑定到特定的地址。
+--config=FILE 指定其他的配置文件，不使用默认的rsyncd.conf文件。
+--port=PORT 指定其他的rsync服务端口。
+--blocking-io 对远程shell使用阻塞IO。
+-stats 给出某些文件的传输状态。
+--progress 在传输时现实传输过程。
+--log-format=formAT 指定日志文件格式。
+--password-file=FILE 从FILE中得到密码。
+--bwlimit=KBPS 限制I/O带宽，KBytes per second。
+-h, --<span class='wp_keywordlink'><a href="http://man.linuxde.net/help" title="help命令" target="_blank">help</a></span> 显示帮助信息。</pre>
+<h3>
+	实例<br />
+</h3>
+<p>
+	<strong>SSH方式</strong>
+</p>
+<p>
+	首先在服务端启动ssh服务：
+</p>
+<pre>
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/service" title="service命令" target="_blank">service</a></span> <span class='wp_keywordlink'><a href="http://man.linuxde.net/sshd" title="sshd命令" target="_blank">sshd</a></span> start
+启动 sshd： [确定]</pre>
+<p>
+	<strong>使用rsync进行同步</strong>
+</p>
+<p>
+	接下来就可以在客户端使用rsync命令来备份服务端上的数据了，SSH方式是通过系统用户来进行备份的，如下：
+</p>
+<pre>
+rsync -vzrtopg --progress -e ssh --delete work@172.16.78.192:/www/* /databack/experiment/rsync
+work@172.16.78.192&#39;s password:
+receiving file list ...
+5 files to consider
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/test" title="test命令" target="_blank">test</a></span>/
+a
+0 100% 0.00kB/s 527:35:41 (1, 20.0% of 5)
+b
+67 100% 65.43kB/s 0:00:00 (2, 40.0% of 5)
+c
+0 100% 0.00kB/s 527:35:41 (3, 60.0% of 5)
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/dd" title="dd命令" target="_blank">dd</a></span>
+100663296 100% 42.22MB/s 0:00:02 (4, 80.0% of 5)
+sent 96 bytes received 98190 bytes 11563.06 bytes/sec
+total size is 100663363 speedup is 1024.19</pre>
+<p>
+	上面的信息描述了整个的备份过程，以及总共备份数据的大小。
+</p>
+<p>
+	<strong>后台服务方式</strong>
+</p>
+<p>
+	启动rsync服务，编辑<code>/etc/xinetd.d/rsync</code>文件，将其中的<code>disable=<span class='wp_keywordlink'><a href="http://man.linuxde.net/yes" title="yes命令" target="_blank">yes</a></span></code>改为<code>disable=no</code>，并重启xinetd服务，如下：
+</p>
+<pre>
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/vi" title="vi命令" target="_blank">vi</a></span> /etc/xinetd.d/rsync
+
+#default: off
+# description: The rsync server is a good addition to an <span class='wp_keywordlink'><a href="http://man.linuxde.net/ftp" title="ftp命令" target="_blank">ftp</a></span> server, <span class='wp_keywordlink'><a href="http://man.linuxde.net/as" title="as命令" target="_blank">as</a></span> it \
+# allows crc checksumming etc.
+service rsync {
+disable = no
+socket_type = stream
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/wait" title="wait命令" target="_blank">wait</a></span> = no
+user = root
+server = /usr/bin/rsync
+server_args = --daemon
+log_on_failure += USERID
+}</pre>
+<pre>
+/etc/<span class='wp_keywordlink'><a href="http://man.linuxde.net/init" title="init命令" target="_blank">init</a></span>.d/xinetd restart
+停止 xinetd： [确定]
+启动 xinetd： [确定]</pre>
+<p>
+	创建配置文件，默认安装好rsync程序后，并不会自动创建rsync的主配置文件，需要手工来创建，其主配置文件为&ldquo;/etc/rsyncd.conf&rdquo;，创建该文件并插入如下内容：
+</p>
+<pre>
+vi /etc/rsyncd.conf
+
+uid=root
+gid=root
+max connections=4
+log file=/var/log/rsyncd.log
+pid file=/var/run/rsyncd.pid
+lock file=/var/run/rsyncd.lock
+secrets file=/etc/rsyncd.<span class='wp_keywordlink'><a href="http://man.linuxde.net/passwd" title="passwd命令" target="_blank">passwd</a></span>
+hosts deny=172.16.78.0/22
+
+[www]
+comment= backup web
+path=/www
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/read" title="read命令" target="_blank">read</a></span> only = no
+exclude=test
+auth <span class='wp_keywordlink'><a href="http://man.linuxde.net/users" title="users命令" target="_blank">users</a></span>=work</pre>
+<p>
+	创建密码文件，采用这种方式不能使用系统用户对客户端进行认证，所以需要创建一个密码文件，其格式为&ldquo;username:password&rdquo;，用户名可以和密码可以随便定义，最好不要和系统帐户一致，同时要把创建的密码文件权限设置为600，这在前面的模块参数做了详细介绍。
+</p>
+<pre>
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/echo" title="echo命令" target="_blank">echo</a></span> &quot;work:abc123&quot; &gt; /etc/rsyncd.passwd
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/chmod" title="chmod命令" target="_blank">chmod</a></span> 600 /etc/rsyncd.passwd</pre>
+<p>
+	备份，完成以上工作，现在就可以对数据进行备份了，如下：
+</p>
+<pre>
+rsync -avz --progress --delete work@172.16.78.192::www /databack/experiment/rsync
+
+Password:
+receiving file list ...
+6 files to consider
+./ files...
+a
+0 100% 0.00kB/s 528:20:41 (1, 50.0% of 6)
+b
+67 100% 65.43kB/s 0:00:00 (2, 66.7% of 6)
+c
+0 100% 0.00kB/s 528:20:41 (3, 83.3% of 6)
+dd
+100663296 100% 37.49MB/s 0:00:02 (4, 100.0% of 6)
+sent 172 bytes received 98276 bytes 17899.64 bytes/sec
+total size is 150995011 speedup is 1533.75</pre>
+<p>
+	恢复，当服务器的数据出现问题时，那么这时就需要通过客户端的数据对服务端进行恢复，但前提是服务端允许客户端有写入权限，否则也不能在客户端直接对服务端进行恢复，使用rsync对数据进行恢复的方法如下：
+</p>
+<pre>
+rsync -avz --progress /databack/experiment/rsync/ work@172.16.78.192::www
+
+Password:
+building file list ...
+6 files to consider
+./
+a
+b
+67 100% 0.00kB/s 0:00:00 (2, 66.7% of 6)
+c
+sent 258 bytes received 76 bytes 95.43 bytes/sec
+total size is 150995011 speedup is 452080.87</pre>
+        </div>
+        <div class="post_ft">
+            <div class="title">最近更新的命令</div>
+            <ul>
+                <li><a href="http://man.linuxde.net/cut" title="cut">cut</a></li><li><a href="http://man.linuxde.net/sh" title="sh">sh</a></li><li><a href="http://man.linuxde.net/seq" title="seq">seq</a></li><li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li><li><a href="http://man.linuxde.net/syslog" title="syslog">syslog</a></li><li><a href="http://man.linuxde.net/inotifywait" title="inotifywait">inotifywait</a></li><li><a href="http://man.linuxde.net/dd" title="dd">dd</a></li><li><a href="http://man.linuxde.net/read" title="read">read</a></li><li><a href="http://man.linuxde.net/uname" title="uname">uname</a></li><li><a href="http://man.linuxde.net/pssh" title="pssh">pssh</a></li><li><a href="http://man.linuxde.net/tar" title="tar">tar</a></li><li><a href="http://man.linuxde.net/axel" title="axel">axel</a></li><li><a href="http://man.linuxde.net/losetup" title="losetup">losetup</a></li><li><a href="http://man.linuxde.net/lsb_release" title="lsb_release">lsb_release</a></li><li><a href="http://man.linuxde.net/tcpreplay" title="tcpreplay">tcpreplay</a></li><li><a href="http://man.linuxde.net/strings" title="strings">strings</a></li><li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li><li><a href="http://man.linuxde.net/speedtest-cli" title="speedtest-cli">speedtest-cli</a></li><li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li><li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li><li><a href="http://man.linuxde.net/dnf" title="dnf">dnf</a></li><li><a href="http://man.linuxde.net/nethogs" title="nethogs">nethogs</a></li><li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li><li><a href="http://man.linuxde.net/trap" title="trap">trap</a></li><li><a href="http://man.linuxde.net/let" title="let">let</a></li><li><a href="http://man.linuxde.net/ifstat" title="ifstat">ifstat</a></li><li><a href="http://man.linuxde.net/blkid" title="blkid">blkid</a></li><li><a href="http://man.linuxde.net/ipcrm" title="ipcrm">ipcrm</a></li><li><a href="http://man.linuxde.net/openssl" title="openssl">openssl</a></li><li><a href="http://man.linuxde.net/chage" title="chage">chage</a></li>            </ul>
+        </div>
+        <div id="comments">
+            <!-- You can start editing here. -->
+        </div>
+    </div>
+    
+<div class="sidebar">
+    <div class="widget related">
+        <div class="hd">
+            <h3>相关命令</h3>
+        </div>
+        <div class="bd">
+            <ul>
+                            <li><a href="http://man.linuxde.net/consoletype" title="consoletype">consoletype</a></li>
+                <li><a href="http://man.linuxde.net/mtools" title="mtools">mtools</a></li>
+                <li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li>
+                <li><a href="http://man.linuxde.net/users" title="users">users</a></li>
+                <li><a href="http://man.linuxde.net/sum" title="sum">sum</a></li>
+                <li><a href="http://man.linuxde.net/yes" title="yes">yes</a></li>
+                <li><a href="http://man.linuxde.net/sleep" title="sleep">sleep</a></li>
+                <li><a href="http://man.linuxde.net/stty" title="stty">stty</a></li>
+                <li><a href="http://man.linuxde.net/date" title="date">date</a></li>
+                <li><a href="http://man.linuxde.net/ngrep" title="ngrep">ngrep</a></li>
+                <li><a href="http://man.linuxde.net/whoami" title="whoami">whoami</a></li>
+                <li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li>
+                <li><a href="http://man.linuxde.net/xargs" title="xargs">xargs</a></li>
+                <li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li>
+                <li><a href="http://man.linuxde.net/man" title="man">man</a></li>
+                <li><a href="http://man.linuxde.net/cal" title="cal">cal</a></li>
+                <li><a href="http://man.linuxde.net/vdfuse" title="vdfuse">vdfuse</a></li>
+                <li><a href="http://man.linuxde.net/md5sum" title="md5sum">md5sum</a></li>
+                <li><a href="http://man.linuxde.net/clear" title="clear">clear</a></li>
+                <li><a href="http://man.linuxde.net/whatis" title="whatis">whatis</a></li>
+                </ul>
+        </div>
+    </div>
+    <div id="fixedBox">
+        <div id="float" class="dbox">
+            <div class="sidebar_search_box">
+                <form action="http://man.linuxde.net/">
+                    <input type="text" name="s" id="sidebar_search" value="命令搜索" onFocus="if (value =='命令搜索'){value =''}" onBlur="if (value ==''){value='命令搜索'}" />
+                </form>
+                <form action="http://man.linuxde.net/" method="post">
+                    <input type="text" name="ss" id="sidebar_search" value="命令直达" onFocus="if (value =='命令直达'){value =''}" onBlur="if (value ==''){value='命令直达'}" />
+                </form>
+            </div>
+            <div class="widget ad"> 
+				<!--
+				<script type="text/javascript">
+					document.write('<a style="display:none!important" id="tanx-a-mm_22964816_6616438_33736229"></a>');
+					tanx_s = document.createElement("script");
+					tanx_s.type = "text/javascript";
+					tanx_s.charset = "gbk";
+					tanx_s.id = "tanx-s-mm_22964816_6616438_33736229";
+					tanx_s.async = true;
+					tanx_s.src = "http://p.tanx.com/ex?i=mm_22964816_6616438_33736229";
+					tanx_h = document.getElementsByTagName("head")[0];
+					if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+				</script>
+				-->
+				<a title="linux马克杯" href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DbWlkMAz37zAcQipKwQzePDAVflQIoZepLKpWJ%2Bin0XJRAdhuF14FMdl7wKby%2Bc%2FExq3IhSJN6GSAAkUL03DNGUpamuccnq1qrmvEga4qAXJgE5NxN1hjMoxodiO%2Bbyu%2BIYULNg46oBA%3D" target="_blank"><img src="http://112.124.15.130/res/linuxde_man/images/s-ad.jpg" alt="linux马克杯"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="layout layout_ft">
+    <div class="footer">
+        <div class="copyright">
+            <a href="http://man.linuxde.net/" title="Linux命令大全">Linux命令大全</a>
+            <em class="sx"></em>
+            <a href="http://man.linuxde.net/about_us" title="关于">关于</a>
+            <em class="sx"></em>
+			收藏本站请使用Ctrl+D
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/shell-script" target="_blank">Shell脚本攻略</a>
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/docs/shell_regex.html" target="_blank">Shell正则表达式</a>
+			<em class="sx"></em>
+			共收录528条Linux系统指令
+        </div>
+        <div class="des">在Linux命令大全（man.linuxde.net）可以查询您所需要的Linux命令教程和相关实例。如果您觉得本站内容对您有所帮助，请推荐给更多需要帮助的人。</div>
+        <div class="info">
+		赞助商链接：<a href="http://www.1987.name/" target="_blank">组装电脑配置清单2017</a>,　运行在<a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DvTDIoAjlYzMcQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAhYdwmcpX19FpcfgoZBkhQKMhxXrDnK9L8ge8W1gUmbKFOH2PYQYfJNjOghCi4TzwOdn1BbglxZYxUhy8exlzcq9AmARIwX9K2Zg%2BdzdQFOwfMRvoxSVDSdLyrb2g0H2G5JcxXijM%2BwneEHpPTskRHknGN7svee8j7S4un6ZpbmpIYULNg46oBA%3D" target="_blank">阿里云服务器</a>！
+		</div>
+    </div>
+</div>
+</div>
+<!--js-->
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/sitejs.js"></script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div style="display:none"><script src="http://s17.cnzz.com/stat.php?id=5762282&web_id=5762282" language="JavaScript"></script></div>
+
+<!--活动推广
+<script type="text/javascript" src="http://112.124.15.130/res/ad/ad.js"></script>
+<style type="text/css">
+.ad-box{width:240px;height:277px;background:#CCC;position:fixed;right:-240px;bottom:10px;}
+.ad-img{position:relative;overflow:hidden;}
+.ad-close{width:30px;height:22px;line-height:22px;display:block;top:10px;right:10px;position:absolute;}
+</style>
+<div class="ad-box">
+    <div class="ad-img">
+        <a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DuGXlvKu7Iv4cQipKwQzePCperVdZeJviK7Vc7tFgwiFRAdhuF14FMZQUNi%2Bb4SgsMMgx22UI05aAAkUL03DNGT6XZIOJR7dCTAHi9HSRVmdzguIHwwNmQ6UuZxIcp9pfUIgVEmFmgnbDX0%2BHH2IEVaX4VWt66S4EJPwiig1bxLP9BvYCQR6XAr%2BKQ71wHNCAqP8YyUoZZlq4cXg3ii9waXPs9Sj9Qli1np4c65at3FeX3cwyLTlAhj2l4PysJx%2FP" target="_blank"><img src="http://112.124.15.130/res/ad/1111.jpg"></a>
+        <a href="javascript:" class="ad-close">关闭</a>
+    </div>
+</div>
+<!--推广结束-->
+
+</body></html>

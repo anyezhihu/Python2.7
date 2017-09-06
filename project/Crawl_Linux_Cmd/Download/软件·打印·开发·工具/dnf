@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="renderer" content="webkit">
+<title>
+dnf命令_Linux dnf 命令用法详解：新一代的RPM软件包管理器</title>
+<link rel="shortcut icon" href="http://man.linuxde.net/favicon.ico" type="image/x-icon" />
+<link rel="pingback" href="http://man.linuxde.net/xmlrpc.php" />
+<link href="http://112.124.15.130/res/linuxde_man/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/jquery-1.8.3.min.js"></script>
+<!--[if IE 6]>
+<script src="http://112.124.15.130/res/linuxde_man/js/belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('*');</script>
+<script src="http://letskillie6.googlecode.com/svn/trunk/letskillie6.zh_CN.pack.js"></script>
+<![endif]-->
+<link rel='canonical' href='http://man.linuxde.net/dnf' />
+</head>
+<body>
+<noscript>
+<p class="nojs">您的浏览器已经禁用了脚本，这会严重影响您正常使用本站的功能，请开启！</p>
+</noscript>
+<div class="man_linuxde_net_page">
+<div class="layout_hd">
+    <div class="logo l">
+        <h2><a title="Linux命令大全" href="http://man.linuxde.net/">
+            Linux命令大全            </a></h2>
+    </div>
+    <div class="nav r"><ul id="menu-%e8%8f%9c%e5%8d%951" class="menu"><li id="menu-item-4" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-4"><a href="http://man.linuxde.net/">首页搜索</a></li>
+<li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-6"><a href="http://man.linuxde.net/par/2">系统管理</a></li>
+<li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7"><a href="http://man.linuxde.net/par/5">网络管理</a></li>
+<li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-8"><a href="http://man.linuxde.net/par/4">软件·打印·开发·工具</a></li>
+<li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9"><a href="http://man.linuxde.net/par/1">文件和目录管理</a></li>
+<li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://man.linuxde.net/par/3">硬件·内核·Shell·监测</a></li>
+<li id="menu-item-2096" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2096"><a target="_blank" href="http://www.linuxde.net">Linux Today</a></li>
+</ul></div>    <div class="c"></div>
+</div>
+<div class="layout layout_bd">
+<script type='text/javascript'>
+function addLink() {
+    var body_element = document.getElementsByTagName('body')[0];
+    var selection;
+    selection = window.getSelection();
+    var pagelink = "<br /><br /> 来自: <a href='"+document.location.href+"'>"+document.location.href+"</a>"; 
+    var copy_text = selection + pagelink;
+    var new_div = document.createElement('div');
+    new_div.style.left='-99999px';
+    new_div.style.position='absolute';
+    body_element.appendChild(new_div );
+    new_div.innerHTML = copy_text ;
+    selection.selectAllChildren(new_div );
+    window.setTimeout(function() {
+        body_element.removeChild(new_div );
+    },0);
+}
+document.oncopy = addLink;
+</script>
+<div class="single_default">
+        <div class="main">
+        <div class="breadcrumb">当前位置：<a href="http://man.linuxde.net">首页</a> &raquo; <a href="http://man.linuxde.net/par/4" rel="category tag">软件·打印·开发·工具</a> &raquo; dnf</div>
+        <div class="post_hd clearfix">
+            <h1 class="l">dnf命令</h1>
+            <div class="tag f_yh r">
+                <a href="http://man.linuxde.net/sub/%e8%bd%af%e4%bb%b6%e5%8c%85%e7%ae%a1%e7%90%86" rel="tag">软件包管理</a>            </div>
+        </div>
+        <div class="post_bd post">
+            <p>
+	<strong>DNF</strong>是新一代的<span class='wp_keywordlink'><a href="http://man.linuxde.net/rpm" title="rpm命令" target="_blank">rpm</a></span>软件包管理器。他首先出现在 Fedora 18 这个发行版中。而最近，它取代了<span class='wp_keywordlink'><a href="http://man.linuxde.net/yum" title="yum命令" target="_blank">yum</a></span>，正式成为 Fedora 22 的包管理器。
+</p>
+<p>
+	DNF包管理器克服了YUM包管理器的一些瓶颈，提升了包括用户体验，内存占用，依赖分析，运行速度等多方面的内容。DNF使用 RPM, libsolv 和 hawkey 库进行包管理操作。尽管它没有预装在 CentOS 和 RHEL 7 中，但你可以在使用 YUM 的同时使用 DNF 。你可以在这里获得关于 DNF 的更多知识：<a href="http://www.tecmint.com/dnf-next-generation-package-management-utility-for-linux/" target="_blank">《 DNF 代替 YUM ，你所不知道的缘由》</a>
+</p>
+<p>
+	DNF 的最新稳定发行版版本号是 1.0，发行日期是2015年5月11日。 这一版本的额 DNF 包管理器（包括在他之前的所有版本） 都大部分采用 Python 编写，发行许可为GPL v2.
+</p>
+<h3>
+	安装 DNF 包管理器<br />
+</h3>
+<p>
+	DNF 并未默认安装在 RHEL 或 CentOS 7系统中，但是 Fedora 22 已经默认使用 DNF .
+</p>
+<p>
+	1、为了安装 DNF ，您必须先安装并启用 epel-release 依赖。
+</p>
+<p>
+	在系统中执行以下命令：
+</p>
+<pre>
+# yum <span class='wp_keywordlink'><a href="http://man.linuxde.net/install" title="install命令" target="_blank">install</a></span> epel-release</pre>
+<p>
+	或者
+</p>
+<pre>
+# yum install epel-release -y</pre>
+<p>
+	其实这里并没有强制使用&rdquo;-y&rdquo;的理由，相反的，在不使用&rdquo;-y&rdquo;的情况下，用户可以在安装过程中查看到底有哪些东西被安装进了系统。但对于没有这个需求的用户，您可以在 YUM 中使用&rdquo;-y&rdquo;参数来自动安装所有东西。
+</p>
+<p>
+	2、使用 epel-release 依赖中的 YUM 命令来安装 DNF 包。在系统中执行以下命令：
+</p>
+<pre>
+# yum install dnf</pre>
+<p>
+	然后， DNF 包管理器就被成功的安装到你的系统中了。接下来，是时候开始我们的教程了！在这个教程中，您将会学到27个用于 DNF 包管理器的命令。使用这些命令，你可以方便有效的管理您系统中的 RPM 软件包。现在，让我们开始学习 DNF 包管理器的27条常用命令吧！
+</p>
+<p>
+	<strong>查看 DNF 包管理器版本</strong>
+</p>
+<p>
+	用处：该命令用于查看安装在您系统中的 DNF 包管理器的版本
+</p>
+<pre>
+# dnf &ndash;version</pre>
+<p>
+	<img alt="Check-DNF-Version" src="http://man.linuxde.net/wp-content/uploads/2015/11/113738jKb.gif" />
+</p>
+<p>
+	<strong>查看系统中可用的 DNF 软件库</strong>
+</p>
+<p>
+	用处：该命令用于显示系统中可用的 DNF 软件库
+</p>
+<pre>
+# dnf repolist</pre>
+<p>
+	<img alt="Check-All-Enabled-Repositories" src="http://man.linuxde.net/wp-content/uploads/2015/11/113738mRq.gif" />
+</p>
+<p>
+	<strong>查看系统中可用和不可用的所有的 DNF 软件库</strong>
+</p>
+<p>
+	用处：该命令用于显示系统中可用和不可用的所有的 DNF 软件库
+</p>
+<pre>
+# dnf repolist all</pre>
+<p>
+	<img alt="3" src="http://man.linuxde.net/wp-content/uploads/2015/11/113739UDY.gif" />
+</p>
+<p>
+	<strong>列出所有 RPM 包</strong>
+</p>
+<p>
+	用处：该命令用于列出用户系统上的所有来自软件库的可用软件包和所有已经安装在系统上的软件包
+</p>
+<pre>
+# dnf list</pre>
+<p>
+	<img alt="4" src="http://man.linuxde.net/wp-content/uploads/2015/11/113739I5J.png" />
+</p>
+<p>
+	<strong>列出所有安装了的 RPM 包</strong>
+</p>
+<p>
+	用处：该命令用于列出所有安装了的 RPM 包
+</p>
+<pre>
+# dnf list installed</pre>
+<p>
+	<img alt="5" src="http://man.linuxde.net/wp-content/uploads/2015/11/113739jRM.png" />
+</p>
+<p>
+	<strong>列出所有可供安装的 RPM 包</strong>
+</p>
+<p>
+	用处：该命令用于列出来自所有可用软件库的可供安装的软件包
+</p>
+<pre>
+# dnf list available</pre>
+<p>
+	<img alt="6" src="http://man.linuxde.net/wp-content/uploads/2015/11/113739RGQ.png" />
+</p>
+<p>
+	<strong>搜索软件库中的 RPM 包</strong>
+</p>
+<p>
+	用处：当你不知道你想要安装的软件的准确名称时，你可以用该命令来搜索软件包。你需要在&rdquo;search&rdquo;参数后面键入软件的部分名称来搜索。（在本例中我们使用&rdquo;<span class='wp_keywordlink'><a href="http://man.linuxde.net/nano" title="nano命令" target="_blank">nano</a></span>&rdquo;）
+</p>
+<pre>
+# dnf search nano</pre>
+<p>
+	<img alt="7" src="http://man.linuxde.net/wp-content/uploads/2015/11/113739je7.gif" />
+</p>
+<p>
+	<strong>查找某一文件的提供者</strong>
+</p>
+<p>
+	用处：当你想要查看是哪个软件包提供了系统中的某一文件时，你可以使用这条命令。（在本例中，我们将查找&rdquo;/bin/bash&rdquo;这个文件的提供者）
+</p>
+<pre>
+# dnf provides /bin/bash</pre>
+<p>
+	<img alt="8" src="http://man.linuxde.net/wp-content/uploads/2015/11/113740GkO.gif" />
+</p>
+<p>
+	<strong>查看软件包详情</strong>
+</p>
+<p>
+	用处：当你想在安装某一个软件包之前查看它的详细信息时，这条命令可以帮到你。（在本例中，我们将查看&rdquo;nano&rdquo;这一软件包的详细信息）
+</p>
+<pre>
+# dnf <span class='wp_keywordlink'><a href="http://man.linuxde.net/info" title="info命令" target="_blank">info</a></span> nano</pre>
+<p>
+	<img alt="9" src="http://man.linuxde.net/wp-content/uploads/2015/11/113740aVm.gif" />
+</p>
+<p>
+	<strong>安装软件包</strong>
+</p>
+<p>
+	用处：使用该命令，系统将会自动安装对应的软件及其所需的所有依赖（在本例中，我们将用该命令安装nano软件）
+</p>
+<pre>
+# dnf install nano</pre>
+<p>
+	<img alt="10" src="http://man.linuxde.net/wp-content/uploads/2015/11/113740FQt.gif" />
+</p>
+<p>
+	<strong>升级软件包</strong>
+</p>
+<p>
+	用处：该命令用于升级制定软件包（在本例中，我们将用命令升级&rdquo;systemd&rdquo;这一软件包）
+</p>
+<pre>
+# dnf update systemd</pre>
+<p>
+	<img alt="11" src="http://man.linuxde.net/wp-content/uploads/2015/11/1137401RN.gif" />
+</p>
+<p>
+	<strong>检查系统软件包的更新</strong>
+</p>
+<p>
+	用处：该命令用于检查系统中所有软件包的更新
+</p>
+<pre>
+# dnf check-update</pre>
+<p>
+	<img alt="12" src="http://man.linuxde.net/wp-content/uploads/2015/11/113741eE8.gif" />
+</p>
+<p>
+	<strong>升级所有系统软件包</strong>
+</p>
+<p>
+	用处：该命令用于升级系统中所有有可用升级的软件包
+</p>
+<pre>
+# dnf update 或 # dnf upgrade</pre>
+<p>
+	<img alt="13" src="http://man.linuxde.net/wp-content/uploads/2015/11/113741Nk6.gif" />
+</p>
+<p>
+	<strong>删除软件包</strong>
+</p>
+<p>
+	用处：删除系统中指定的软件包（在本例中我们将使用命令删除&rdquo;nano&rdquo;这一软件包）
+</p>
+<pre>
+# dnf remove nano 或 # dnf erase nano</pre>
+<p>
+	<img alt="14" src="http://man.linuxde.net/wp-content/uploads/2015/11/113741KhO.gif" />
+</p>
+<p>
+	<strong>删除无用孤立的软件包</strong>
+</p>
+<p>
+	用处：当没有软件再依赖它们时，某一些用于解决特定软件依赖的软件包将会变得没有存在的意义，该命令就是用来自动移除这些没用的孤立软件包。
+</p>
+<pre>
+# dnf autoremove</pre>
+<p>
+	<img alt="15" src="http://man.linuxde.net/wp-content/uploads/2015/11/1137419EO.gif" />
+</p>
+<p>
+	<strong>删除缓存的无用软件包</strong>
+</p>
+<p>
+	用处：在使用 DNF 的过程中，会因为各种原因在系统中残留各种过时的文件和未完成的编译工程。我们可以使用该命令来删除这些没用的垃圾文件。
+</p>
+<pre>
+# dnf clean all</pre>
+<p>
+	<img alt="16" src="http://man.linuxde.net/wp-content/uploads/2015/11/113741cWA.gif" />
+</p>
+<p>
+	<strong>获取有关某条命令的使用帮助</strong>
+</p>
+<p>
+	用处：该命令用于获取有关某条命令的使用帮助（包括可用于该命令的参数和该命令的用途说明）（本例中我们将使用命令获取有关命令&rdquo;clean&rdquo;的使用帮助）
+</p>
+<pre>
+# dnf <span class='wp_keywordlink'><a href="http://man.linuxde.net/help" title="help命令" target="_blank">help</a></span> clean</pre>
+<p>
+	<img alt="17" src="http://man.linuxde.net/wp-content/uploads/2015/11/113741wBy.gif" />
+</p>
+<p>
+	<strong>查看所有的 DNF 命令及其用途</strong>
+</p>
+<p>
+	用处：该命令用于列出所有的 DNF 命令及其用途
+</p>
+<pre>
+# dnf help</pre>
+<p>
+	<img alt="18" src="http://man.linuxde.net/wp-content/uploads/2015/11/113742sZM.gif" />
+</p>
+<p>
+	<strong>查看 DNF 命令的执行历史</strong>
+</p>
+<p>
+	用处：您可以使用该命令来查看您系统上 DNF 命令的执行历史。通过这个手段您可以知道在自您使用 DNF 开始有什么软件被安装和卸载。
+</p>
+<pre>
+# dnf <span class='wp_keywordlink'><a href="http://man.linuxde.net/history" title="history命令" target="_blank">history</a></span></pre>
+<p>
+	<img alt="19" src="http://man.linuxde.net/wp-content/uploads/2015/11/113742jSO.gif" />
+</p>
+<p>
+	<strong>查看所有的软件包组</strong>
+</p>
+<p>
+	用处：该命令用于列出所有的软件包组
+</p>
+<pre>
+# dnf grouplist</pre>
+<p>
+	<img alt="20" src="http://man.linuxde.net/wp-content/uploads/2015/11/113742YQN.gif" />
+</p>
+<p>
+	<strong>安装一个软件包组</strong>
+</p>
+<p>
+	用处：该命令用于安装一个软件包组（本例中，我们将用命令安装&rdquo;Educational Software&rdquo;这个软件包组）
+</p>
+<pre>
+# dnf groupinstall &lsquo;Educational Software&rsquo;</pre>
+<p>
+	<img alt="21" src="http://man.linuxde.net/wp-content/uploads/2015/11/11374395s.gif" />
+</p>
+<p>
+	<strong>升级一个软件包组中的软件包</strong>
+</p>
+<p>
+	用处：该命令用于升级一个软件包组中的软件包（本例中，我们将用命令升级&rdquo;Educational Software&rdquo;这个软件包组中的软件）
+</p>
+<pre>
+# dnf groupupdate &lsquo;Educational Software&rsquo;</pre>
+<p>
+	<img alt="22" src="http://man.linuxde.net/wp-content/uploads/2015/11/113743ZXj.gif" />
+</p>
+<p>
+	<strong>删除一个软件包组</strong>
+</p>
+<p>
+	用处：该命令用于删除一个软件包组（本例中，我们将用命令删除&rdquo;Educational Software&rdquo;这个软件包组）
+</p>
+<pre>
+# dnf groupremove &lsquo;Educational Software&rsquo;</pre>
+<p>
+	<img alt="23" src="http://man.linuxde.net/wp-content/uploads/2015/11/113743i2d.gif" />
+</p>
+<p>
+	<strong>从特定的软件包库安装特定的软件</strong>
+</p>
+<p>
+	用处：该命令用于从特定的软件包库安装特定的软件（本例中我们将使用命令从软件包库 epel 中安装 phpmyadmin 软件包）
+</p>
+<pre>
+# dnf &ndash;enablerepo=epel install phpmyadmin</pre>
+<p>
+	<strong>更新软件包到最新的稳定发行版</strong>
+</p>
+<p>
+	用处：该命令可以通过所有可用的软件源将已经安装的所有软件包更新到最新的稳定发行版
+</p>
+<pre>
+# dnf distro-<span class='wp_keywordlink'><a href="http://man.linuxde.net/sync" title="sync命令" target="_blank">sync</a></span></pre>
+<p>
+	<strong>重新安装特定软件包</strong>
+</p>
+<p>
+	用处：该命令用于重新安装特定软件包（本例中，我们将使用命令重新安装&rdquo;nano&rdquo;这个软件包）
+</p>
+<pre>
+# dnf reinstall nano</pre>
+<p>
+	<img alt="26" src="http://man.linuxde.net/wp-content/uploads/2015/11/113743TtJ.gif" />
+</p>
+<p>
+	<strong>回滚某个特定软件的版本</strong>
+</p>
+<p>
+	用处：该命令用于降低特定软件包的版本（如果可能的话）（本例中，我们将使用命令降低&rdquo;acpid&rdquo;这个软件包的版本）
+</p>
+<pre>
+# dnf downgrade acpid</pre>
+<p>
+	样例输出：
+</p>
+<pre>
+Using metadata from Wed May 20 12:44:59 2015
+No match for available package: acpid-2.0.19-5.el7.x86_64
+Error: Nothing to do.</pre>
+<p>
+	原作者注：在执行这条命令的时候， DNF 并没有按照我期望的那样降级指定的软件（&ldquo;acpid&rdquo;）。该问题已经上报。
+</p>
+<h3>
+	总结<br />
+</h3>
+<p>
+	DNF 包管理器作为 YUM 包管理器的升级替代品，它能自动完成更多的操作。但在我看来，正因如此，所以 DNF 包管理器不会太受那些经验老道的 Linux 系统管理者的欢迎。举例如下：
+</p>
+<ol>
+<li>
+		在 DNF 中没有 &ndash;skip-broken 命令，并且没有替代命令供选择。
+	</li>
+<li>
+		在 DNF 中没有判断哪个包提供了指定依赖的 resolvedep 命令。
+	</li>
+<li>
+		在 DNF 中没有用来列出某个软件依赖包的 deplist 命令。
+	</li>
+<li>
+		当你在 DNF 中排除了某个软件库，那么该操作将会影响到你之后所有的操作，不像在 YUM 下那样，你的排除操作只会咋升级和安装软件时才起作用。
+	</li>
+</ol>
+        </div>
+        <div class="post_ft">
+            <div class="title">最近更新的命令</div>
+            <ul>
+                <li><a href="http://man.linuxde.net/cut" title="cut">cut</a></li><li><a href="http://man.linuxde.net/sh" title="sh">sh</a></li><li><a href="http://man.linuxde.net/seq" title="seq">seq</a></li><li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li><li><a href="http://man.linuxde.net/syslog" title="syslog">syslog</a></li><li><a href="http://man.linuxde.net/inotifywait" title="inotifywait">inotifywait</a></li><li><a href="http://man.linuxde.net/dd" title="dd">dd</a></li><li><a href="http://man.linuxde.net/read" title="read">read</a></li><li><a href="http://man.linuxde.net/uname" title="uname">uname</a></li><li><a href="http://man.linuxde.net/pssh" title="pssh">pssh</a></li><li><a href="http://man.linuxde.net/tar" title="tar">tar</a></li><li><a href="http://man.linuxde.net/axel" title="axel">axel</a></li><li><a href="http://man.linuxde.net/losetup" title="losetup">losetup</a></li><li><a href="http://man.linuxde.net/lsb_release" title="lsb_release">lsb_release</a></li><li><a href="http://man.linuxde.net/tcpreplay" title="tcpreplay">tcpreplay</a></li><li><a href="http://man.linuxde.net/strings" title="strings">strings</a></li><li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li><li><a href="http://man.linuxde.net/speedtest-cli" title="speedtest-cli">speedtest-cli</a></li><li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li><li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li><li><a href="http://man.linuxde.net/dnf" title="dnf">dnf</a></li><li><a href="http://man.linuxde.net/nethogs" title="nethogs">nethogs</a></li><li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li><li><a href="http://man.linuxde.net/trap" title="trap">trap</a></li><li><a href="http://man.linuxde.net/let" title="let">let</a></li><li><a href="http://man.linuxde.net/ifstat" title="ifstat">ifstat</a></li><li><a href="http://man.linuxde.net/blkid" title="blkid">blkid</a></li><li><a href="http://man.linuxde.net/ipcrm" title="ipcrm">ipcrm</a></li><li><a href="http://man.linuxde.net/openssl" title="openssl">openssl</a></li><li><a href="http://man.linuxde.net/chage" title="chage">chage</a></li>            </ul>
+        </div>
+        <div id="comments">
+            <!-- You can start editing here. -->
+        </div>
+    </div>
+    
+<div class="sidebar">
+    <div class="widget related">
+        <div class="hd">
+            <h3>相关命令</h3>
+        </div>
+        <div class="bd">
+            <ul>
+                            <li><a href="http://man.linuxde.net/dpkg-divert" title="dpkg-divert">dpkg-divert</a></li>
+                <li><a href="http://man.linuxde.net/apt-key" title="apt-key">apt-key</a></li>
+                <li><a href="http://man.linuxde.net/dpkg-trigger" title="dpkg-trigger">dpkg-trigger</a></li>
+                <li><a href="http://man.linuxde.net/chkconfig" title="chkconfig">chkconfig</a></li>
+                <li><a href="http://man.linuxde.net/rpmverify" title="rpmverify">rpmverify</a></li>
+                <li><a href="http://man.linuxde.net/rpmsign" title="rpmsign">rpmsign</a></li>
+                <li><a href="http://man.linuxde.net/apt-sortpkgs" title="apt-sortpkgs">apt-sortpkgs</a></li>
+                <li><a href="http://man.linuxde.net/dpkg-deb" title="dpkg-deb">dpkg-deb</a></li>
+                <li><a href="http://man.linuxde.net/dpkg-split" title="dpkg-split">dpkg-split</a></li>
+                <li><a href="http://man.linuxde.net/dpkg-statoverride" title="dpkg-statoverride">dpkg-statoverride</a></li>
+                <li><a href="http://man.linuxde.net/apt-get" title="apt-get">apt-get</a></li>
+                <li><a href="http://man.linuxde.net/dpkg-reconfigure" title="dpkg-reconfigure">dpkg-reconfigure</a></li>
+                <li><a href="http://man.linuxde.net/ntsysv" title="ntsysv">ntsysv</a></li>
+                <li><a href="http://man.linuxde.net/rcconf" title="rcconf">rcconf</a></li>
+                <li><a href="http://man.linuxde.net/yum" title="yum">yum</a></li>
+                <li><a href="http://man.linuxde.net/dpkg" title="dpkg">dpkg</a></li>
+                <li><a href="http://man.linuxde.net/rpmbuild" title="rpmbuild">rpmbuild</a></li>
+                <li><a href="http://man.linuxde.net/rpm" title="rpm">rpm</a></li>
+                <li><a href="http://man.linuxde.net/rpmquery" title="rpmquery">rpmquery</a></li>
+                <li><a href="http://man.linuxde.net/patch" title="patch">patch</a></li>
+                </ul>
+        </div>
+    </div>
+    <div id="fixedBox">
+        <div id="float" class="dbox">
+            <div class="sidebar_search_box">
+                <form action="http://man.linuxde.net/">
+                    <input type="text" name="s" id="sidebar_search" value="命令搜索" onFocus="if (value =='命令搜索'){value =''}" onBlur="if (value ==''){value='命令搜索'}" />
+                </form>
+                <form action="http://man.linuxde.net/" method="post">
+                    <input type="text" name="ss" id="sidebar_search" value="命令直达" onFocus="if (value =='命令直达'){value =''}" onBlur="if (value ==''){value='命令直达'}" />
+                </form>
+            </div>
+            <div class="widget ad"> 
+				<!--
+				<script type="text/javascript">
+					document.write('<a style="display:none!important" id="tanx-a-mm_22964816_6616438_33736229"></a>');
+					tanx_s = document.createElement("script");
+					tanx_s.type = "text/javascript";
+					tanx_s.charset = "gbk";
+					tanx_s.id = "tanx-s-mm_22964816_6616438_33736229";
+					tanx_s.async = true;
+					tanx_s.src = "http://p.tanx.com/ex?i=mm_22964816_6616438_33736229";
+					tanx_h = document.getElementsByTagName("head")[0];
+					if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+				</script>
+				-->
+				<a title="linux马克杯" href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DbWlkMAz37zAcQipKwQzePDAVflQIoZepLKpWJ%2Bin0XJRAdhuF14FMdl7wKby%2Bc%2FExq3IhSJN6GSAAkUL03DNGUpamuccnq1qrmvEga4qAXJgE5NxN1hjMoxodiO%2Bbyu%2BIYULNg46oBA%3D" target="_blank"><img src="http://112.124.15.130/res/linuxde_man/images/s-ad.jpg" alt="linux马克杯"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="layout layout_ft">
+    <div class="footer">
+        <div class="copyright">
+            <a href="http://man.linuxde.net/" title="Linux命令大全">Linux命令大全</a>
+            <em class="sx"></em>
+            <a href="http://man.linuxde.net/about_us" title="关于">关于</a>
+            <em class="sx"></em>
+			收藏本站请使用Ctrl+D
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/shell-script" target="_blank">Shell脚本攻略</a>
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/docs/shell_regex.html" target="_blank">Shell正则表达式</a>
+			<em class="sx"></em>
+			共收录528条Linux系统指令
+        </div>
+        <div class="des">在Linux命令大全（man.linuxde.net）可以查询您所需要的Linux命令教程和相关实例。如果您觉得本站内容对您有所帮助，请推荐给更多需要帮助的人。</div>
+        <div class="info">
+		赞助商链接：<a href="http://www.1987.name/" target="_blank">组装电脑配置清单2017</a>,　运行在<a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DvTDIoAjlYzMcQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAhYdwmcpX19FpcfgoZBkhQKMhxXrDnK9L8ge8W1gUmbKFOH2PYQYfJNjOghCi4TzwOdn1BbglxZYxUhy8exlzcq9AmARIwX9K2Zg%2BdzdQFOwfMRvoxSVDSdLyrb2g0H2G5JcxXijM%2BwneEHpPTskRHknGN7svee8j7S4un6ZpbmpIYULNg46oBA%3D" target="_blank">阿里云服务器</a>！
+		</div>
+    </div>
+</div>
+</div>
+<!--js-->
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/sitejs.js"></script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div style="display:none"><script src="http://s17.cnzz.com/stat.php?id=5762282&web_id=5762282" language="JavaScript"></script></div>
+
+<!--活动推广
+<script type="text/javascript" src="http://112.124.15.130/res/ad/ad.js"></script>
+<style type="text/css">
+.ad-box{width:240px;height:277px;background:#CCC;position:fixed;right:-240px;bottom:10px;}
+.ad-img{position:relative;overflow:hidden;}
+.ad-close{width:30px;height:22px;line-height:22px;display:block;top:10px;right:10px;position:absolute;}
+</style>
+<div class="ad-box">
+    <div class="ad-img">
+        <a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DuGXlvKu7Iv4cQipKwQzePCperVdZeJviK7Vc7tFgwiFRAdhuF14FMZQUNi%2Bb4SgsMMgx22UI05aAAkUL03DNGT6XZIOJR7dCTAHi9HSRVmdzguIHwwNmQ6UuZxIcp9pfUIgVEmFmgnbDX0%2BHH2IEVaX4VWt66S4EJPwiig1bxLP9BvYCQR6XAr%2BKQ71wHNCAqP8YyUoZZlq4cXg3ii9waXPs9Sj9Qli1np4c65at3FeX3cwyLTlAhj2l4PysJx%2FP" target="_blank"><img src="http://112.124.15.130/res/ad/1111.jpg"></a>
+        <a href="javascript:" class="ad-close">关闭</a>
+    </div>
+</div>
+<!--推广结束-->
+
+</body></html>

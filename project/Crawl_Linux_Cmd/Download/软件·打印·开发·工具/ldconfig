@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="renderer" content="webkit">
+<title>
+ldconfig命令_Linux ldconfig 命令用法详解：动态链接库管理命令</title>
+<link rel="shortcut icon" href="http://man.linuxde.net/favicon.ico" type="image/x-icon" />
+<link rel="pingback" href="http://man.linuxde.net/xmlrpc.php" />
+<link href="http://112.124.15.130/res/linuxde_man/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/jquery-1.8.3.min.js"></script>
+<!--[if IE 6]>
+<script src="http://112.124.15.130/res/linuxde_man/js/belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('*');</script>
+<script src="http://letskillie6.googlecode.com/svn/trunk/letskillie6.zh_CN.pack.js"></script>
+<![endif]-->
+<link rel='canonical' href='http://man.linuxde.net/ldconfig' />
+</head>
+<body>
+<noscript>
+<p class="nojs">您的浏览器已经禁用了脚本，这会严重影响您正常使用本站的功能，请开启！</p>
+</noscript>
+<div class="man_linuxde_net_page">
+<div class="layout_hd">
+    <div class="logo l">
+        <h2><a title="Linux命令大全" href="http://man.linuxde.net/">
+            Linux命令大全            </a></h2>
+    </div>
+    <div class="nav r"><ul id="menu-%e8%8f%9c%e5%8d%951" class="menu"><li id="menu-item-4" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-4"><a href="http://man.linuxde.net/">首页搜索</a></li>
+<li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-6"><a href="http://man.linuxde.net/par/2">系统管理</a></li>
+<li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7"><a href="http://man.linuxde.net/par/5">网络管理</a></li>
+<li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-8"><a href="http://man.linuxde.net/par/4">软件·打印·开发·工具</a></li>
+<li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9"><a href="http://man.linuxde.net/par/1">文件和目录管理</a></li>
+<li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://man.linuxde.net/par/3">硬件·内核·Shell·监测</a></li>
+<li id="menu-item-2096" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2096"><a target="_blank" href="http://www.linuxde.net">Linux Today</a></li>
+</ul></div>    <div class="c"></div>
+</div>
+<div class="layout layout_bd">
+<script type='text/javascript'>
+function addLink() {
+    var body_element = document.getElementsByTagName('body')[0];
+    var selection;
+    selection = window.getSelection();
+    var pagelink = "<br /><br /> 来自: <a href='"+document.location.href+"'>"+document.location.href+"</a>"; 
+    var copy_text = selection + pagelink;
+    var new_div = document.createElement('div');
+    new_div.style.left='-99999px';
+    new_div.style.position='absolute';
+    body_element.appendChild(new_div );
+    new_div.innerHTML = copy_text ;
+    selection.selectAllChildren(new_div );
+    window.setTimeout(function() {
+        body_element.removeChild(new_div );
+    },0);
+}
+document.oncopy = addLink;
+</script>
+<div class="single_default">
+        <div class="main">
+        <div class="breadcrumb">当前位置：<a href="http://man.linuxde.net">首页</a> &raquo; <a href="http://man.linuxde.net/par/4" rel="category tag">软件·打印·开发·工具</a> &raquo; ldconfig</div>
+        <div class="post_hd clearfix">
+            <h1 class="l">ldconfig命令</h1>
+            <div class="tag f_yh r">
+                <a href="http://man.linuxde.net/sub/%e7%bc%96%e7%a8%8b%e5%bc%80%e5%8f%91" rel="tag">编程开发</a>            </div>
+        </div>
+        <div class="post_bd post">
+            <p>
+	<strong>ldconfig命令</strong>的用途主要是在默认搜寻目录<code>/lib</code>和<code>/usr/lib</code>以及动态库配置文件<code>/etc/<span class='wp_keywordlink'><a href="http://man.linuxde.net/ld" title="ld命令" target="_blank">ld</a></span>.so.conf</code>内所列的目录下，搜索出可共享的动态链接库（格式如lib*.so*）,进而创建出动态装入程序(ld.so)所需的连接和缓存文件。缓存文件默认为<code>/etc/ld.so.cache</code>，此文件保存已排好序的动态链接库名字列表，为了让动态链接库为系统所共享，需运行动态链接库的管理命令ldconfig，此执行程序存放在<code>/sbin</code>目录下。
+</p>
+<p>
+	ldconfig通常在系统启动时运行，而当用户安装了一个新的动态链接库时，就需要手工运行这个命令。
+</p>
+<h3>
+	语法<br />
+</h3>
+<pre>
+ldconfig [-v|--verbose] [-n] [-N] [-X] [-f CONF] [-C CACHE] [-r ROOT] [-l] [-p|--print-cache] [-c FORMAT] [--format=FORMAT] [-V] [-?|--<span class='wp_keywordlink'><a href="http://man.linuxde.net/help" title="help命令" target="_blank">help</a></span>|--usage] path... </pre>
+<h3>
+	选项<br />
+</h3>
+<pre>
+-v或--verbose：用此选项时，ldconfig将显示正在扫描的目录及搜索到的动态链接库，还有它所创建的连接的名字。
+-n：用此选项时,ldconfig仅扫描命令行指定的目录，不扫描默认目录（/lib、/usr/lib），也不扫描配置文件/etc/ld.so.conf所列的目录。
+-N：此选项指示ldconfig不重建缓存文件（/etc/ld.so.cache），若未用-X选项，ldconfig照常更新文件的连接。
+-X：此选项指示ldconfig不更新文件的连接，若未用-N选项，则缓存文件正常更新。
+-f CONF：此选项指定动态链接库的配置文件为CONF，系统默认为/etc/ld.so.conf。
+-C CACHE：此选项指定生成的缓存文件为CACHE，系统默认的是/etc/ld.so.cache，此文件存放已排好序的可共享的动态链接库的列表。
+-r ROOT：此选项改变应用程序的根目录为ROOT（是调用<span class='wp_keywordlink'><a href="http://man.linuxde.net/chroot" title="chroot命令" target="_blank">chroot</a></span>函数实现的）。选择此项时，系统默认的配置文件/etc/ld.so.conf，实际对应的为ROOT/etc/ld.so.conf。如用-r /usr/zzz时，打开配置文件/etc/ld.so.conf时，实际打开的是/usr/zzz/etc/ld.so.conf文件。用此选项，可以大大增加动态链接库管理的灵活性。
+-l：通常情况下,ldconfig搜索动态链接库时将自动建立动态链接库的连接，选择此项时，将进入专家模式，需要手工设置连接，一般用户不用此项。
+-p或--print-cache：此选项指示ldconfig打印出当前缓存文件所保存的所有共享库的名字。
+-c FORMAT 或 --format=FORMAT：此选项用于指定缓存文件所使用的格式，共有三种：old(老格式)，new(新格式)和compat（兼容格式，此为默认格式）。
+-V：此选项打印出ldconfig的版本信息，而后退出。
+-? 或 --help 或 --usage：这三个选项作用相同，都是让ldconfig打印出其帮助信息，而后退出。</pre>
+<p>
+	<strong>ldconfig几个需要注意的地方：</strong>
+</p>
+<ol>
+<li>
+		往<code>/lib</code>和<code>/usr/lib</code>里面加东西，是不用修改<code>/etc/ld.so.conf</code>的，但是完了之后要调一下ldconfig，不然这个library会找不到。
+	</li>
+<li>
+		想往上面两个目录以外加东西的时候，一定要修改<code>/etc/ld.so.conf</code>，然后再调用ldconfig，不然也会找不到。
+	</li>
+<li>
+		比如安装了一个<span class='wp_keywordlink'><a href="http://man.linuxde.net/mysql" title="mysql命令" target="_blank">mysql</a></span>到<code>/usr/local/mysql</code>，mysql有一大堆library在<code>/usr/local/mysql/lib</code>下面，这时就需要在<code>/etc/ld.so.conf</code>下面加一行<code>/usr/local/mysql/lib</code>，保存过后ldconfig一下，新的library才能在程序运行时被找到。
+	</li>
+<li>
+		如果想在这两个目录以外放lib，但是又不想在<code>/etc/ld.so.conf</code>中加东西（或者是没有权限加东西）。那也可以，就是<span class='wp_keywordlink'><a href="http://man.linuxde.net/export" title="export命令" target="_blank">export</a></span>一个全局变量LD_LIBRARY_PATH，然后运行程序的时候就会去这个目录中找library。一般来讲这只是一种临时的解决方案，在没有权限或临时需要的时候使用。
+	</li>
+<li>
+		ldconfig做的这些东西都与运行程序时有关，跟编译时一点关系都没有。编译的时候还是该加-L就得加，不要混淆了。
+	</li>
+<li>
+		总之，就是不管做了什么关于library的变动后，最好都ldconfig一下，不然会出现一些意想不到的结果。不会花太多的时间，但是会省很多的事。
+	</li>
+<li>
+		再有，诸如libdb-4.3.so文件头中是会含有库名相关的信息的（即含&ldquo;libdb-4.3.so&rdquo;，可用strings命令察看），因此仅通过修改文件名以冒充某已被识别的库（如libdb-4.8.so）是行不通的。为此可在编译库的Makefile中直接修改配置信息，指定特别的库名。
+	</li>
+</ol>
+        </div>
+        <div class="post_ft">
+            <div class="title">最近更新的命令</div>
+            <ul>
+                <li><a href="http://man.linuxde.net/cut" title="cut">cut</a></li><li><a href="http://man.linuxde.net/sh" title="sh">sh</a></li><li><a href="http://man.linuxde.net/seq" title="seq">seq</a></li><li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li><li><a href="http://man.linuxde.net/syslog" title="syslog">syslog</a></li><li><a href="http://man.linuxde.net/inotifywait" title="inotifywait">inotifywait</a></li><li><a href="http://man.linuxde.net/dd" title="dd">dd</a></li><li><a href="http://man.linuxde.net/read" title="read">read</a></li><li><a href="http://man.linuxde.net/uname" title="uname">uname</a></li><li><a href="http://man.linuxde.net/pssh" title="pssh">pssh</a></li><li><a href="http://man.linuxde.net/tar" title="tar">tar</a></li><li><a href="http://man.linuxde.net/axel" title="axel">axel</a></li><li><a href="http://man.linuxde.net/losetup" title="losetup">losetup</a></li><li><a href="http://man.linuxde.net/lsb_release" title="lsb_release">lsb_release</a></li><li><a href="http://man.linuxde.net/tcpreplay" title="tcpreplay">tcpreplay</a></li><li><a href="http://man.linuxde.net/strings" title="strings">strings</a></li><li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li><li><a href="http://man.linuxde.net/speedtest-cli" title="speedtest-cli">speedtest-cli</a></li><li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li><li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li><li><a href="http://man.linuxde.net/dnf" title="dnf">dnf</a></li><li><a href="http://man.linuxde.net/nethogs" title="nethogs">nethogs</a></li><li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li><li><a href="http://man.linuxde.net/trap" title="trap">trap</a></li><li><a href="http://man.linuxde.net/let" title="let">let</a></li><li><a href="http://man.linuxde.net/ifstat" title="ifstat">ifstat</a></li><li><a href="http://man.linuxde.net/blkid" title="blkid">blkid</a></li><li><a href="http://man.linuxde.net/ipcrm" title="ipcrm">ipcrm</a></li><li><a href="http://man.linuxde.net/openssl" title="openssl">openssl</a></li><li><a href="http://man.linuxde.net/chage" title="chage">chage</a></li>            </ul>
+        </div>
+        <div id="comments">
+            <!-- You can start editing here. -->
+        </div>
+    </div>
+    
+<div class="sidebar">
+    <div class="widget related">
+        <div class="hd">
+            <h3>相关命令</h3>
+        </div>
+        <div class="bd">
+            <ul>
+                            <li><a href="http://man.linuxde.net/mktemp" title="mktemp">mktemp</a></li>
+                <li><a href="http://man.linuxde.net/ld" title="ld">ld</a></li>
+                <li><a href="http://man.linuxde.net/php" title="php">php</a></li>
+                <li><a href="http://man.linuxde.net/as" title="as">as</a></li>
+                <li><a href="http://man.linuxde.net/gdb" title="gdb">gdb</a></li>
+                <li><a href="http://man.linuxde.net/protoize" title="protoize">protoize</a></li>
+                <li><a href="http://man.linuxde.net/make" title="make">make</a></li>
+                <li><a href="http://man.linuxde.net/nm" title="nm">nm</a></li>
+                <li><a href="http://man.linuxde.net/indent" title="indent">indent</a></li>
+                <li><a href="http://man.linuxde.net/test" title="test">test</a></li>
+                <li><a href="http://man.linuxde.net/readelf" title="readelf">readelf</a></li>
+                <li><a href="http://man.linuxde.net/ldd" title="ldd">ldd</a></li>
+                <li><a href="http://man.linuxde.net/pstack" title="pstack">pstack</a></li>
+                <li><a href="http://man.linuxde.net/expr" title="expr">expr</a></li>
+                <li><a href="http://man.linuxde.net/unprotoize" title="unprotoize">unprotoize</a></li>
+                <li><a href="http://man.linuxde.net/gcc" title="gcc">gcc</a></li>
+                <li><a href="http://man.linuxde.net/gcov" title="gcov">gcov</a></li>
+                <li><a href="http://man.linuxde.net/perl" title="perl">perl</a></li>
+                <li><a href="http://man.linuxde.net/objdump" title="objdump">objdump</a></li>
+                </ul>
+        </div>
+    </div>
+    <div id="fixedBox">
+        <div id="float" class="dbox">
+            <div class="sidebar_search_box">
+                <form action="http://man.linuxde.net/">
+                    <input type="text" name="s" id="sidebar_search" value="命令搜索" onFocus="if (value =='命令搜索'){value =''}" onBlur="if (value ==''){value='命令搜索'}" />
+                </form>
+                <form action="http://man.linuxde.net/" method="post">
+                    <input type="text" name="ss" id="sidebar_search" value="命令直达" onFocus="if (value =='命令直达'){value =''}" onBlur="if (value ==''){value='命令直达'}" />
+                </form>
+            </div>
+            <div class="widget ad"> 
+				<!--
+				<script type="text/javascript">
+					document.write('<a style="display:none!important" id="tanx-a-mm_22964816_6616438_33736229"></a>');
+					tanx_s = document.createElement("script");
+					tanx_s.type = "text/javascript";
+					tanx_s.charset = "gbk";
+					tanx_s.id = "tanx-s-mm_22964816_6616438_33736229";
+					tanx_s.async = true;
+					tanx_s.src = "http://p.tanx.com/ex?i=mm_22964816_6616438_33736229";
+					tanx_h = document.getElementsByTagName("head")[0];
+					if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+				</script>
+				-->
+				<a title="linux马克杯" href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DbWlkMAz37zAcQipKwQzePDAVflQIoZepLKpWJ%2Bin0XJRAdhuF14FMdl7wKby%2Bc%2FExq3IhSJN6GSAAkUL03DNGUpamuccnq1qrmvEga4qAXJgE5NxN1hjMoxodiO%2Bbyu%2BIYULNg46oBA%3D" target="_blank"><img src="http://112.124.15.130/res/linuxde_man/images/s-ad.jpg" alt="linux马克杯"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="layout layout_ft">
+    <div class="footer">
+        <div class="copyright">
+            <a href="http://man.linuxde.net/" title="Linux命令大全">Linux命令大全</a>
+            <em class="sx"></em>
+            <a href="http://man.linuxde.net/about_us" title="关于">关于</a>
+            <em class="sx"></em>
+			收藏本站请使用Ctrl+D
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/shell-script" target="_blank">Shell脚本攻略</a>
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/docs/shell_regex.html" target="_blank">Shell正则表达式</a>
+			<em class="sx"></em>
+			共收录528条Linux系统指令
+        </div>
+        <div class="des">在Linux命令大全（man.linuxde.net）可以查询您所需要的Linux命令教程和相关实例。如果您觉得本站内容对您有所帮助，请推荐给更多需要帮助的人。</div>
+        <div class="info">
+		赞助商链接：<a href="http://www.1987.name/" target="_blank">组装电脑配置清单2017</a>,　运行在<a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DvTDIoAjlYzMcQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAhYdwmcpX19FpcfgoZBkhQKMhxXrDnK9L8ge8W1gUmbKFOH2PYQYfJNjOghCi4TzwOdn1BbglxZYxUhy8exlzcq9AmARIwX9K2Zg%2BdzdQFOwfMRvoxSVDSdLyrb2g0H2G5JcxXijM%2BwneEHpPTskRHknGN7svee8j7S4un6ZpbmpIYULNg46oBA%3D" target="_blank">阿里云服务器</a>！
+		</div>
+    </div>
+</div>
+</div>
+<!--js-->
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/sitejs.js"></script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div style="display:none"><script src="http://s17.cnzz.com/stat.php?id=5762282&web_id=5762282" language="JavaScript"></script></div>
+
+<!--活动推广
+<script type="text/javascript" src="http://112.124.15.130/res/ad/ad.js"></script>
+<style type="text/css">
+.ad-box{width:240px;height:277px;background:#CCC;position:fixed;right:-240px;bottom:10px;}
+.ad-img{position:relative;overflow:hidden;}
+.ad-close{width:30px;height:22px;line-height:22px;display:block;top:10px;right:10px;position:absolute;}
+</style>
+<div class="ad-box">
+    <div class="ad-img">
+        <a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DuGXlvKu7Iv4cQipKwQzePCperVdZeJviK7Vc7tFgwiFRAdhuF14FMZQUNi%2Bb4SgsMMgx22UI05aAAkUL03DNGT6XZIOJR7dCTAHi9HSRVmdzguIHwwNmQ6UuZxIcp9pfUIgVEmFmgnbDX0%2BHH2IEVaX4VWt66S4EJPwiig1bxLP9BvYCQR6XAr%2BKQ71wHNCAqP8YyUoZZlq4cXg3ii9waXPs9Sj9Qli1np4c65at3FeX3cwyLTlAhj2l4PysJx%2FP" target="_blank"><img src="http://112.124.15.130/res/ad/1111.jpg"></a>
+        <a href="javascript:" class="ad-close">关闭</a>
+    </div>
+</div>
+<!--推广结束-->
+
+</body></html>

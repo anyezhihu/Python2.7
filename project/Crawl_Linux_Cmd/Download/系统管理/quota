@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="renderer" content="webkit">
+<title>
+quota命令_Linux quota 命令用法详解：显示磁盘已使用的空间与限制</title>
+<link rel="shortcut icon" href="http://man.linuxde.net/favicon.ico" type="image/x-icon" />
+<link rel="pingback" href="http://man.linuxde.net/xmlrpc.php" />
+<link href="http://112.124.15.130/res/linuxde_man/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/jquery-1.8.3.min.js"></script>
+<!--[if IE 6]>
+<script src="http://112.124.15.130/res/linuxde_man/js/belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('*');</script>
+<script src="http://letskillie6.googlecode.com/svn/trunk/letskillie6.zh_CN.pack.js"></script>
+<![endif]-->
+<link rel='canonical' href='http://man.linuxde.net/quota' />
+</head>
+<body>
+<noscript>
+<p class="nojs">您的浏览器已经禁用了脚本，这会严重影响您正常使用本站的功能，请开启！</p>
+</noscript>
+<div class="man_linuxde_net_page">
+<div class="layout_hd">
+    <div class="logo l">
+        <h2><a title="Linux命令大全" href="http://man.linuxde.net/">
+            Linux命令大全            </a></h2>
+    </div>
+    <div class="nav r"><ul id="menu-%e8%8f%9c%e5%8d%951" class="menu"><li id="menu-item-4" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-4"><a href="http://man.linuxde.net/">首页搜索</a></li>
+<li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-6"><a href="http://man.linuxde.net/par/2">系统管理</a></li>
+<li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7"><a href="http://man.linuxde.net/par/5">网络管理</a></li>
+<li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8"><a href="http://man.linuxde.net/par/4">软件·打印·开发·工具</a></li>
+<li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9"><a href="http://man.linuxde.net/par/1">文件和目录管理</a></li>
+<li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://man.linuxde.net/par/3">硬件·内核·Shell·监测</a></li>
+<li id="menu-item-2096" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2096"><a target="_blank" href="http://www.linuxde.net">Linux Today</a></li>
+</ul></div>    <div class="c"></div>
+</div>
+<div class="layout layout_bd">
+<script type='text/javascript'>
+function addLink() {
+    var body_element = document.getElementsByTagName('body')[0];
+    var selection;
+    selection = window.getSelection();
+    var pagelink = "<br /><br /> 来自: <a href='"+document.location.href+"'>"+document.location.href+"</a>"; 
+    var copy_text = selection + pagelink;
+    var new_div = document.createElement('div');
+    new_div.style.left='-99999px';
+    new_div.style.position='absolute';
+    body_element.appendChild(new_div );
+    new_div.innerHTML = copy_text ;
+    selection.selectAllChildren(new_div );
+    window.setTimeout(function() {
+        body_element.removeChild(new_div );
+    },0);
+}
+document.oncopy = addLink;
+</script>
+<div class="single_default">
+        <div class="main">
+        <div class="breadcrumb">当前位置：<a href="http://man.linuxde.net">首页</a> &raquo; <a href="http://man.linuxde.net/par/2" rel="category tag">系统管理</a> &raquo; quota</div>
+        <div class="post_hd clearfix">
+            <h1 class="l">quota命令</h1>
+            <div class="tag f_yh r">
+                <a href="http://man.linuxde.net/sub/%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f%e7%ae%a1%e7%90%86" rel="tag">文件系统管理</a>            </div>
+        </div>
+        <div class="post_bd post">
+            <p>
+	<strong>quota命令</strong>用于显示用户或者工作组的磁盘配额信息。输出信息包括磁盘使用和配额限制。
+</p>
+<h3>
+	语法<br />
+</h3>
+<pre>
+quota(选项)(参数)</pre>
+<h3>
+	选项<br />
+</h3>
+<pre>
+-g：列出群组的磁盘空间限制；
+-q：简明列表，只列出超过限制的部分；
+-u：列出用户的磁盘空间限制；
+-v：显示该用户或群组，在所有挂入系统的存储设备的空间限制；
+-V：显示版本信息。</pre>
+<h3>
+	参数<br />
+</h3>
+<p>
+	用户或者工作组：指定要显示的用户或者工作组。
+</p>
+<h3>
+	实例<br />
+</h3>
+<p>
+	我们可以限制某一群组所能使用的最大磁盘配额，而且可以再限制某一使用者的最大磁盘配额 ，好比做一个收费的应用，vip可以得到空间更大一些。另外，以 Link 的方式，来使邮件可以作为限制的配额（更改<code>/var/spool/<span class='wp_keywordlink'><a href="http://man.linuxde.net/mail" title="mail命令" target="_blank">mail</a></span> </code>这个路径），不2，需要重新再规划一个硬盘！直接使用 Link 的方式指向 /home （或者其它已经做好的 quota 磁盘）就可以！这通常是用在原本规划不好，但是却又不想要更动原有主机架构的情况中！
+</p>
+<p>
+	要求：Linux 主机里面主要针对 quser1 及 quser2 两个使用者来进行磁盘配额， 且这两个使用者都是挂在 qgroup 组里面的。每个使用者总共有 50MB 的磁盘空间 (不考虑 inode) 限制！并且 soft limit 为 45 MB；而宽限时间设定为 1 天， 但是在一天之内必须要将多余的文件删除掉，否则将无法使用剩下的空间 ；gquota 这个组考虑最大限额，所以设定为 90 MB！（注意，这样设置的好处是富有弹性，好比现在的邮件服务，那么多用户，承诺给用户每人最大空间为数GB，然而人们不可能每人都会使用那么大的空间，所以邮件服务的总空间，实际上肯定不是注册客户数乘以数GB，否则这样得多大啊。）
+</p>
+<pre>
+[root@localhost ~]# <span class='wp_keywordlink'><a href="http://man.linuxde.net/groupadd" title="groupadd命令" target="_blank">groupadd</a></span> qgroup
+[root@localhost ~]# <span class='wp_keywordlink'><a href="http://man.linuxde.net/useradd" title="useradd命令" target="_blank">useradd</a></span> -m -g qgroup quser1
+[root@localhost ~]# useradd -m -g qgroup quser2
+[root@localhost ~]# <span class='wp_keywordlink'><a href="http://man.linuxde.net/passwd" title="passwd命令" target="_blank">passwd</a></span> quser1
+[root@localhost ~]# passwd quser2
+[root@localhost ~]# <span class='wp_keywordlink'><a href="http://man.linuxde.net/df" title="df命令" target="_blank">df</a></span>     ===&gt;  自己找一个合适的分区来做实验，这里用/disk2
+Filesystem             1K-blocks        Used      Available   Use% Mounted on
+/dev/hda1              5952252   3193292     2451720     57%     /
+/dev/hdb1            28267608       77904   26730604       1%     /disk2
+/dev/hda5              9492644     227252     8775412       3%     /disk1
+
+[root@localhost ~]# <span class='wp_keywordlink'><a href="http://man.linuxde.net/vi" title="vi命令" target="_blank">vi</a></span> /etc/fstab
+LABEL=/             /                ext3      defaults                                     1 1
+LABEL=/disk1    /disk1        ext3      defaults                                      1 2
+LABEL=/disk2    /disk2        ext3      defaults,usrquota,grpquota       1 2  
+/dev/hda3         swap         swap     defaults                                     0 0</pre>
+<p>
+	注意多了<code>usrquota,grpquota</code>，在<code>defaults,usrquota,grpquota</code>之间都没有空格，务必正确书写。这样就算加入了 quota 的磁盘格式了！不过，由于真正的 quota 在读取的时候是读取<code>/etc/mtab</code>这个文件的，而该文件需要重新开机之后才能够以/etc/fstab 的新数据进行改写！所以这个时候可以选择：重新开机 (<span class='wp_keywordlink'><a href="http://man.linuxde.net/reboot" title="reboot命令" target="_blank">reboot</a></span>)。
+</p>
+<p>
+	重新<code>remount filesystem</code>来驱动设定值。
+</p>
+<pre>
+[root@localhost ~]# <span class='wp_keywordlink'><a href="http://man.linuxde.net/umount" title="umount命令" target="_blank">umount</a></span> /dev/hdb1
+[root@localhost ~]# <span class='wp_keywordlink'><a href="http://man.linuxde.net/mount" title="mount命令" target="_blank">mount</a></span> -a
+[root@localhost ~]# <span class='wp_keywordlink'><a href="http://man.linuxde.net/grep" title="grep命令" target="_blank">grep</a></span> &#39;/disk2&#39; /etc/mtab
+/dev/hdb1 /disk2 ext3 rw,usrquota,grpquota 0 0</pre>
+<p>
+	事实上，也可以利用 mount 的 remount 功能。
+</p>
+<pre>
+[root@localhost ~]# mount -o remount /disk2</pre>
+<p>
+	这样就已经成功的将 filesystem 的 quota 功能加入。
+</p>
+<p>
+	扫瞄磁盘的使用者使用状况，并产生重要的 aquota.group 与 aquota.user：
+</p>
+<pre>
+[root@localhost ~]# <span class='wp_keywordlink'><a href="http://man.linuxde.net/quotacheck" title="quotacheck命令" target="_blank">quotacheck</a></span> -avug
+quotacheck: Scanning /dev/hdb1 [/disk2] done
+quotacheck: Checked 3 directories and 4 files
+
+[root@localhost ~]# ll /disk2
+-rw-------  1 root root  6144 Sep  6 11:44 aquota.group
+-rw-------  1 root root  6144 Sep  6 11:44 aquota.user</pre>
+<p>
+	使用 quotacheck 就可以轻易的将所需要的数据给他输出了！但奇怪的是，在某些 Linux 版本中，不能够以 aquota.user(group) 来启动quota ，可能是因为旧版 quota 的关系， 所以就另外做了一个 link 文件按来欺骗 quota，这个动作非必要。（主要是学习这个思维很重要）
+</p>
+<pre>
+[root@localhost ~]# <span class='wp_keywordlink'><a href="http://man.linuxde.net/cd" title="cd命令" target="_blank">cd</a></span> /disk2
+[root@localhost ~]# <span class='wp_keywordlink'><a href="http://man.linuxde.net/ln" title="ln命令" target="_blank">ln</a></span> -s aquota.user quota.user
+[root@localhost ~]# ln -s aquota.group quota.group</pre>
+<p>
+	启动 quota 的限额：
+</p>
+<pre>
+[root@localhost ~]# <span class='wp_keywordlink'><a href="http://man.linuxde.net/quotaon" title="quotaon命令" target="_blank">quotaon</a></span> -avug
+/dev/hdb1 [/disk2]: group quotas turned on
+/dev/hdb1 [/disk2]: user quotas turned on    ===&gt;  看到turned on，才是真的成功！</pre>
+<p>
+	编辑使用者的可使用空间：
+</p>
+<pre>
+[root@localhost ~]# <span class='wp_keywordlink'><a href="http://man.linuxde.net/edquota" title="edquota命令" target="_blank">edquota</a></span> -u quser1
+Disk quotas for user quser1 (uid 502):
+  Filesystem    blocks    soft    hard   inodes   soft   hard
+  /dev/hdb1           0     45000    50000         0      0      0
+[root@localhost ~]# edquota -p quser1 quser2      ===&gt;  直接复制给quser2</pre>
+<p>
+	接下来要来设定宽限时间，还是使用 edquota
+</p>
+<pre>
+[root@localhost ~]# edquota -t
+Grace period before enforcing soft limits for <span class='wp_keywordlink'><a href="http://man.linuxde.net/users" title="users命令" target="_blank">users</a></span>:
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/time" title="time命令" target="_blank">time</a></span> units may be: days, hours, minutes, or seconds
+  Filesystem             Block grace period     Inode grace period
+  /dev/hdb1                     1days                  7days</pre>
+<p>
+	使用<code>quota -v</code>来查询：
+</p>
+<pre>
+[root@localhost ~]# quota -vu quser1 quser2
+Disk quotas for user quser1 (uid 502):
+     Filesystem  blocks   quota      limit   grace   files   quota   limit   grace
+      /dev/hdb1         0    45000    50000                   0       0       0
+Disk quotas for user quser2 (uid 503):
+     Filesystem  blocks   quota      limit   grace   files   quota   limit   grace
+      /dev/hdb1         0    45000    50000                   0       0       0</pre>
+<p>
+	注意，由于使用者尚未超过45 MB，所以 grace ( 宽限时间 ) 就不会出现。
+</p>
+<p>
+	编辑群组可使用的空间：
+</p>
+<pre>
+[root@localhost ~]# edquota -g qgroup
+Disk quotas for group qgroup (gid 502):
+  Filesystem     blocks       soft       hard    inodes   soft   hard
+  /dev/hdb1            0      80000   90000           0      0      0
+
+[root@localhost ~]# quota -vg qgroup
+Disk quotas for group qgroup (gid 502):
+     Filesystem   blocks    quota      limit      grace    files   quota   limit   grace
+      /dev/hdb1         0     80000   90000                       0        0        0</pre>
+        </div>
+        <div class="post_ft">
+            <div class="title">最近更新的命令</div>
+            <ul>
+                <li><a href="http://man.linuxde.net/cut" title="cut">cut</a></li><li><a href="http://man.linuxde.net/sh" title="sh">sh</a></li><li><a href="http://man.linuxde.net/seq" title="seq">seq</a></li><li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li><li><a href="http://man.linuxde.net/syslog" title="syslog">syslog</a></li><li><a href="http://man.linuxde.net/inotifywait" title="inotifywait">inotifywait</a></li><li><a href="http://man.linuxde.net/dd" title="dd">dd</a></li><li><a href="http://man.linuxde.net/read" title="read">read</a></li><li><a href="http://man.linuxde.net/uname" title="uname">uname</a></li><li><a href="http://man.linuxde.net/pssh" title="pssh">pssh</a></li><li><a href="http://man.linuxde.net/tar" title="tar">tar</a></li><li><a href="http://man.linuxde.net/axel" title="axel">axel</a></li><li><a href="http://man.linuxde.net/losetup" title="losetup">losetup</a></li><li><a href="http://man.linuxde.net/lsb_release" title="lsb_release">lsb_release</a></li><li><a href="http://man.linuxde.net/tcpreplay" title="tcpreplay">tcpreplay</a></li><li><a href="http://man.linuxde.net/strings" title="strings">strings</a></li><li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li><li><a href="http://man.linuxde.net/speedtest-cli" title="speedtest-cli">speedtest-cli</a></li><li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li><li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li><li><a href="http://man.linuxde.net/dnf" title="dnf">dnf</a></li><li><a href="http://man.linuxde.net/nethogs" title="nethogs">nethogs</a></li><li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li><li><a href="http://man.linuxde.net/trap" title="trap">trap</a></li><li><a href="http://man.linuxde.net/let" title="let">let</a></li><li><a href="http://man.linuxde.net/ifstat" title="ifstat">ifstat</a></li><li><a href="http://man.linuxde.net/blkid" title="blkid">blkid</a></li><li><a href="http://man.linuxde.net/ipcrm" title="ipcrm">ipcrm</a></li><li><a href="http://man.linuxde.net/openssl" title="openssl">openssl</a></li><li><a href="http://man.linuxde.net/chage" title="chage">chage</a></li>            </ul>
+        </div>
+        <div id="comments">
+            <!-- You can start editing here. -->
+        </div>
+    </div>
+    
+<div class="sidebar">
+    <div class="widget related">
+        <div class="hd">
+            <h3>相关命令</h3>
+        </div>
+        <div class="bd">
+            <ul>
+                            <li><a href="http://man.linuxde.net/quotaon" title="quotaon">quotaon</a></li>
+                <li><a href="http://man.linuxde.net/e2fsck" title="e2fsck">e2fsck</a></li>
+                <li><a href="http://man.linuxde.net/e2label" title="e2label">e2label</a></li>
+                <li><a href="http://man.linuxde.net/fsck" title="fsck">fsck</a></li>
+                <li><a href="http://man.linuxde.net/umount" title="umount">umount</a></li>
+                <li><a href="http://man.linuxde.net/mountpoint" title="mountpoint">mountpoint</a></li>
+                <li><a href="http://man.linuxde.net/findfs" title="findfs">findfs</a></li>
+                <li><a href="http://man.linuxde.net/quotastats" title="quotastats">quotastats</a></li>
+                <li><a href="http://man.linuxde.net/swapon" title="swapon">swapon</a></li>
+                <li><a href="http://man.linuxde.net/resize2fs" title="resize2fs">resize2fs</a></li>
+                <li><a href="http://man.linuxde.net/quotaoff" title="quotaoff">quotaoff</a></li>
+                <li><a href="http://man.linuxde.net/dumpe2fs" title="dumpe2fs">dumpe2fs</a></li>
+                <li><a href="http://man.linuxde.net/mkfs" title="mkfs">mkfs</a></li>
+                <li><a href="http://man.linuxde.net/edquota" title="edquota">edquota</a></li>
+                <li><a href="http://man.linuxde.net/e2image" title="e2image">e2image</a></li>
+                <li><a href="http://man.linuxde.net/tune2fs" title="tune2fs">tune2fs</a></li>
+                <li><a href="http://man.linuxde.net/mount" title="mount">mount</a></li>
+                <li><a href="http://man.linuxde.net/sync" title="sync">sync</a></li>
+                <li><a href="http://man.linuxde.net/mke2fs" title="mke2fs">mke2fs</a></li>
+                <li><a href="http://man.linuxde.net/repquota" title="repquota">repquota</a></li>
+                </ul>
+        </div>
+    </div>
+    <div id="fixedBox">
+        <div id="float" class="dbox">
+            <div class="sidebar_search_box">
+                <form action="http://man.linuxde.net/">
+                    <input type="text" name="s" id="sidebar_search" value="命令搜索" onFocus="if (value =='命令搜索'){value =''}" onBlur="if (value ==''){value='命令搜索'}" />
+                </form>
+                <form action="http://man.linuxde.net/" method="post">
+                    <input type="text" name="ss" id="sidebar_search" value="命令直达" onFocus="if (value =='命令直达'){value =''}" onBlur="if (value ==''){value='命令直达'}" />
+                </form>
+            </div>
+            <div class="widget ad"> 
+				<!--
+				<script type="text/javascript">
+					document.write('<a style="display:none!important" id="tanx-a-mm_22964816_6616438_33736229"></a>');
+					tanx_s = document.createElement("script");
+					tanx_s.type = "text/javascript";
+					tanx_s.charset = "gbk";
+					tanx_s.id = "tanx-s-mm_22964816_6616438_33736229";
+					tanx_s.async = true;
+					tanx_s.src = "http://p.tanx.com/ex?i=mm_22964816_6616438_33736229";
+					tanx_h = document.getElementsByTagName("head")[0];
+					if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+				</script>
+				-->
+				<a title="linux马克杯" href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DbWlkMAz37zAcQipKwQzePDAVflQIoZepLKpWJ%2Bin0XJRAdhuF14FMdl7wKby%2Bc%2FExq3IhSJN6GSAAkUL03DNGUpamuccnq1qrmvEga4qAXJgE5NxN1hjMoxodiO%2Bbyu%2BIYULNg46oBA%3D" target="_blank"><img src="http://112.124.15.130/res/linuxde_man/images/s-ad.jpg" alt="linux马克杯"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="layout layout_ft">
+    <div class="footer">
+        <div class="copyright">
+            <a href="http://man.linuxde.net/" title="Linux命令大全">Linux命令大全</a>
+            <em class="sx"></em>
+            <a href="http://man.linuxde.net/about_us" title="关于">关于</a>
+            <em class="sx"></em>
+			收藏本站请使用Ctrl+D
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/shell-script" target="_blank">Shell脚本攻略</a>
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/docs/shell_regex.html" target="_blank">Shell正则表达式</a>
+			<em class="sx"></em>
+			共收录528条Linux系统指令
+        </div>
+        <div class="des">在Linux命令大全（man.linuxde.net）可以查询您所需要的Linux命令教程和相关实例。如果您觉得本站内容对您有所帮助，请推荐给更多需要帮助的人。</div>
+        <div class="info">
+		赞助商链接：<a href="http://www.1987.name/" target="_blank">组装电脑配置清单2017</a>,　运行在<a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DvTDIoAjlYzMcQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAhYdwmcpX19FpcfgoZBkhQKMhxXrDnK9L8ge8W1gUmbKFOH2PYQYfJNjOghCi4TzwOdn1BbglxZYxUhy8exlzcq9AmARIwX9K2Zg%2BdzdQFOwfMRvoxSVDSdLyrb2g0H2G5JcxXijM%2BwneEHpPTskRHknGN7svee8j7S4un6ZpbmpIYULNg46oBA%3D" target="_blank">阿里云服务器</a>！
+		</div>
+    </div>
+</div>
+</div>
+<!--js-->
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/sitejs.js"></script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div style="display:none"><script src="http://s17.cnzz.com/stat.php?id=5762282&web_id=5762282" language="JavaScript"></script></div>
+
+<!--活动推广
+<script type="text/javascript" src="http://112.124.15.130/res/ad/ad.js"></script>
+<style type="text/css">
+.ad-box{width:240px;height:277px;background:#CCC;position:fixed;right:-240px;bottom:10px;}
+.ad-img{position:relative;overflow:hidden;}
+.ad-close{width:30px;height:22px;line-height:22px;display:block;top:10px;right:10px;position:absolute;}
+</style>
+<div class="ad-box">
+    <div class="ad-img">
+        <a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DuGXlvKu7Iv4cQipKwQzePCperVdZeJviK7Vc7tFgwiFRAdhuF14FMZQUNi%2Bb4SgsMMgx22UI05aAAkUL03DNGT6XZIOJR7dCTAHi9HSRVmdzguIHwwNmQ6UuZxIcp9pfUIgVEmFmgnbDX0%2BHH2IEVaX4VWt66S4EJPwiig1bxLP9BvYCQR6XAr%2BKQ71wHNCAqP8YyUoZZlq4cXg3ii9waXPs9Sj9Qli1np4c65at3FeX3cwyLTlAhj2l4PysJx%2FP" target="_blank"><img src="http://112.124.15.130/res/ad/1111.jpg"></a>
+        <a href="javascript:" class="ad-close">关闭</a>
+    </div>
+</div>
+<!--推广结束-->
+
+</body></html>

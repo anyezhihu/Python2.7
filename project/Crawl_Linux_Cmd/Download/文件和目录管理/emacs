@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="renderer" content="webkit">
+<title>
+emacs命令_Linux emacs 命令用法详解：功能强大的全屏文本编辑器</title>
+<link rel="shortcut icon" href="http://man.linuxde.net/favicon.ico" type="image/x-icon" />
+<link rel="pingback" href="http://man.linuxde.net/xmlrpc.php" />
+<link href="http://112.124.15.130/res/linuxde_man/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/jquery-1.8.3.min.js"></script>
+<!--[if IE 6]>
+<script src="http://112.124.15.130/res/linuxde_man/js/belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('*');</script>
+<script src="http://letskillie6.googlecode.com/svn/trunk/letskillie6.zh_CN.pack.js"></script>
+<![endif]-->
+<link rel='canonical' href='http://man.linuxde.net/emacs' />
+</head>
+<body>
+<noscript>
+<p class="nojs">您的浏览器已经禁用了脚本，这会严重影响您正常使用本站的功能，请开启！</p>
+</noscript>
+<div class="man_linuxde_net_page">
+<div class="layout_hd">
+    <div class="logo l">
+        <h2><a title="Linux命令大全" href="http://man.linuxde.net/">
+            Linux命令大全            </a></h2>
+    </div>
+    <div class="nav r"><ul id="menu-%e8%8f%9c%e5%8d%951" class="menu"><li id="menu-item-4" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-4"><a href="http://man.linuxde.net/">首页搜索</a></li>
+<li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-6"><a href="http://man.linuxde.net/par/2">系统管理</a></li>
+<li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7"><a href="http://man.linuxde.net/par/5">网络管理</a></li>
+<li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8"><a href="http://man.linuxde.net/par/4">软件·打印·开发·工具</a></li>
+<li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-9"><a href="http://man.linuxde.net/par/1">文件和目录管理</a></li>
+<li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://man.linuxde.net/par/3">硬件·内核·Shell·监测</a></li>
+<li id="menu-item-2096" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2096"><a target="_blank" href="http://www.linuxde.net">Linux Today</a></li>
+</ul></div>    <div class="c"></div>
+</div>
+<div class="layout layout_bd">
+<script type='text/javascript'>
+function addLink() {
+    var body_element = document.getElementsByTagName('body')[0];
+    var selection;
+    selection = window.getSelection();
+    var pagelink = "<br /><br /> 来自: <a href='"+document.location.href+"'>"+document.location.href+"</a>"; 
+    var copy_text = selection + pagelink;
+    var new_div = document.createElement('div');
+    new_div.style.left='-99999px';
+    new_div.style.position='absolute';
+    body_element.appendChild(new_div );
+    new_div.innerHTML = copy_text ;
+    selection.selectAllChildren(new_div );
+    window.setTimeout(function() {
+        body_element.removeChild(new_div );
+    },0);
+}
+document.oncopy = addLink;
+</script>
+<div class="single_default">
+        <div class="main">
+        <div class="breadcrumb">当前位置：<a href="http://man.linuxde.net">首页</a> &raquo; <a href="http://man.linuxde.net/par/1" rel="category tag">文件和目录管理</a> &raquo; emacs</div>
+        <div class="post_hd clearfix">
+            <h1 class="l">emacs命令</h1>
+            <div class="tag f_yh r">
+                <a href="http://man.linuxde.net/sub/%e6%96%87%e4%bb%b6%e7%bc%96%e8%be%91" rel="tag">文件编辑</a>            </div>
+        </div>
+        <div class="post_bd post">
+            <p>
+	<strong>emacs命令</strong>是由GNU组织的创始人Richard Stallman开发的一个功能强大的全屏文本编辑器，它支持多种编程语言，具有很多优良的特性。有众多的系统管理员和软件开发者使用emacs。
+</p>
+<h3>
+	语法<br />
+</h3>
+<pre>
+emacs(选项)(参数)</pre>
+<h3>
+	选项<br />
+</h3>
+<pre>
++&lt;行号&gt;：启动emacs编辑器，并将光标移动到制定行号的行；
+-q：启动emacs编辑器，而不加载初始化文件；
+-u&lt;用户&gt;：启动emacs编辑器时，加载指定用户的初始化文件；
+-t&lt;文件&gt;：启动emacs编辑器时，把指定的文件作为中端，不适用标准输入（stdin）与标准输出（stdout）；
+-f&lt;函数&gt;：执行指定lisp（广泛应用于人工智能领域的编程语言）函数；
+-l&lt;lisp代码文件&gt;：加载指定的lisp代码文件；
+-<span class='wp_keywordlink'><a href="http://man.linuxde.net/batch" title="batch命令" target="_blank">batch</a></span>：以批处理模式运行emacs编辑器。</pre>
+<h3>
+	参数<br />
+</h3>
+<p>
+	文件：指定要编辑的文本文件。
+</p>
+<h2>
+	emacs命令操作大全<br />
+</h2>
+<p>
+	基本命令
+</p>
+<pre>
+C-x C-c : 退出Emacs
+C-x C-f : 打开一个文件，如果文件不存在，则创建一个文件
+C-g : 取消未完成的命令</pre>
+<p>
+	编辑
+</p>
+<pre>
+C-z (redefined): Undo；原来C-z是挂起Emacs（然后用<span class='wp_keywordlink'><a href="http://man.linuxde.net/fg" title="fg命令" target="_blank">fg</a></span>命令调出）；C-x u 是默认的命令； 移动一下光标，再C-z就可以redo
+M-d : 删除光标后的词语</pre>
+<p>
+	移动光标
+</p>
+<pre>
+C-v : 向前翻页
+M-v : 向后翻页
+M-r : 将光标移动到屏幕中间那行
+C-a : 移到行首
+M-a : 移到句首，从行首到句首之间可能有空格
+C-e : 移到行尾
+M-e : 移到句尾
+M-{ : 向上移动一段
+M-} : 向下移动一段
+C-right : 向前移动一个单词
+C-left : 向后移动一个单词
+C-up : 向前移动一段
+C-down : 向后移动一段
+M-&lt; : 移到整个文本开头
+M-&gt; : 移到整个文本末尾
+C-u 数字 命令 : 执行多次(数字表示次数)该命令；&quot;M-数字 命令&quot; 也可以
+M-x goto-line : 移动到某一行
+C-l : 重绘屏幕，效果就是当前编辑行移动窗口中央</pre>
+<p>
+	Buffer 相关
+</p>
+<pre>
+C-x k : 关闭当前buffer
+C-x b : 切换到前一个编辑的buffer
+C-x C-b : 列出当前所有buffer
+C-x C-s : 保存当前buffer
+C-x s : 保存所有未保存的buffer，会提示你是否需要保存
+C-x C-<span class='wp_keywordlink'><a href="http://man.linuxde.net/w" title="w命令" target="_blank">w</a></span> : 文件另存为</pre>
+<p>
+	拷贝与粘贴
+</p>
+<pre>
+M-space (redefined): 设置mark; C-@ 是默认命令
+C-w (redefined) : 剪切一块区域；如果没有设置mark，则是剪切一行
+M-w (redefined) : 拷贝一块区域；如果没有设置mark, 则是拷贝一行
+C-k : 从当前位置剪切到行尾
+C-y : 粘贴
+M-y : 用C-y拉回最近被除去的文本后，换成 M-y可以拉回以前被除去的文本。键入多次的M-y可以拉回更早以前被除去的文本。
+C-x r k : 执行矩形区域的剪切
+C-x r y : 执行矩形区域的粘贴</pre>
+<pre>
+窗口操作
+C-x 0 : 关闭当前窗口
+C-x 1 : 将当前窗口最大化
+C-x 2 : 垂直分割窗口
+C-x 3 : 水平分割窗口
+M-o (redefined) : 在窗口之间切换; C-x o 是默认命令
+C-x 5 1/2/3/0 : 对frame类似的操作
+C-x &lt; : 窗口内容右卷
+C-x &gt; : 窗口内容左卷（这两个命令在垂直分割窗口后比较有用）
+(C-u) C-x ^ : 加高当前窗口，如果有C-u，则每次加高4行
+(C-u) C-x } : 加宽当前窗口
+(C-u) C-x { : 压窄当前窗口
+ESC C-v : 在其它窗口进行卷屏操作</pre>
+<p>
+	搜索和替换
+</p>
+<pre>
+C-s : 向前搜索（增量式搜索）；连续C-s，跳到下一个搜索到的目标
+C-s RET : 普通搜索
+C-r : 向前搜索
+C-s RET C-w : 按单词查询
+M-% : 查询替换，也就是替换前会询问一下
+M-x replace-string : 普通替换</pre>
+<p>
+	Tags
+</p>
+<pre>
+M-! etags .c .h : 创建TAGS文件
+M-. : 跳到tag所在位置
+M-x list-tags : 列出tags</pre>
+<p>
+	书签
+</p>
+<pre>
+C-x r m : 设置书签bookmark
+C-x r b : 跳到bookmark处</pre>
+<p>
+	帮助
+</p>
+<pre>
+C-h ? : 查看帮助信息
+C-h f : 查看一个函数
+C-h v : 查看一个变量
+C-h k : 查看一个键绑定 (C－h c 也是查看键绑定，但是信息较简略)
+C-h C-f : 查看一个函数的<span class='wp_keywordlink'><a href="http://man.linuxde.net/info" title="info命令" target="_blank">info</a></span>，非常有用
+C-h i : 看Info</pre>
+<p>
+	其它
+</p>
+<pre>
+C-M-\ : 对选中区域，按照某种格式(比如C程序)进行格式化
+C-x h : 全部选中
+M-! : 执行外部shell命令
+M-x shell : 模拟shell的buffer
+M-x term : 模拟terminal, C-c k 关闭terminal
+C-x C-q : 修改buffer的只读属性</pre>
+        </div>
+        <div class="post_ft">
+            <div class="title">最近更新的命令</div>
+            <ul>
+                <li><a href="http://man.linuxde.net/cut" title="cut">cut</a></li><li><a href="http://man.linuxde.net/sh" title="sh">sh</a></li><li><a href="http://man.linuxde.net/seq" title="seq">seq</a></li><li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li><li><a href="http://man.linuxde.net/syslog" title="syslog">syslog</a></li><li><a href="http://man.linuxde.net/inotifywait" title="inotifywait">inotifywait</a></li><li><a href="http://man.linuxde.net/dd" title="dd">dd</a></li><li><a href="http://man.linuxde.net/read" title="read">read</a></li><li><a href="http://man.linuxde.net/uname" title="uname">uname</a></li><li><a href="http://man.linuxde.net/pssh" title="pssh">pssh</a></li><li><a href="http://man.linuxde.net/tar" title="tar">tar</a></li><li><a href="http://man.linuxde.net/axel" title="axel">axel</a></li><li><a href="http://man.linuxde.net/losetup" title="losetup">losetup</a></li><li><a href="http://man.linuxde.net/lsb_release" title="lsb_release">lsb_release</a></li><li><a href="http://man.linuxde.net/tcpreplay" title="tcpreplay">tcpreplay</a></li><li><a href="http://man.linuxde.net/strings" title="strings">strings</a></li><li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li><li><a href="http://man.linuxde.net/speedtest-cli" title="speedtest-cli">speedtest-cli</a></li><li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li><li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li><li><a href="http://man.linuxde.net/dnf" title="dnf">dnf</a></li><li><a href="http://man.linuxde.net/nethogs" title="nethogs">nethogs</a></li><li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li><li><a href="http://man.linuxde.net/trap" title="trap">trap</a></li><li><a href="http://man.linuxde.net/let" title="let">let</a></li><li><a href="http://man.linuxde.net/ifstat" title="ifstat">ifstat</a></li><li><a href="http://man.linuxde.net/blkid" title="blkid">blkid</a></li><li><a href="http://man.linuxde.net/ipcrm" title="ipcrm">ipcrm</a></li><li><a href="http://man.linuxde.net/openssl" title="openssl">openssl</a></li><li><a href="http://man.linuxde.net/chage" title="chage">chage</a></li>            </ul>
+        </div>
+        <div id="comments">
+            <!-- You can start editing here. -->
+        </div>
+    </div>
+    
+<div class="sidebar">
+    <div class="widget related">
+        <div class="hd">
+            <h3>相关命令</h3>
+        </div>
+        <div class="bd">
+            <ul>
+                            <li><a href="http://man.linuxde.net/vi" title="vi">vi</a></li>
+                <li><a href="http://man.linuxde.net/sed" title="sed">sed</a></li>
+                <li><a href="http://man.linuxde.net/joe" title="joe">joe</a></li>
+                <li><a href="http://man.linuxde.net/nano" title="nano">nano</a></li>
+                <li><a href="http://man.linuxde.net/jed" title="jed">jed</a></li>
+                <li><a href="http://man.linuxde.net/pico" title="pico">pico</a></li>
+                <li><a href="http://man.linuxde.net/ex" title="ex">ex</a></li>
+                <li><a href="http://man.linuxde.net/ed" title="ed">ed</a></li>
+                </ul>
+        </div>
+    </div>
+    <div id="fixedBox">
+        <div id="float" class="dbox">
+            <div class="sidebar_search_box">
+                <form action="http://man.linuxde.net/">
+                    <input type="text" name="s" id="sidebar_search" value="命令搜索" onFocus="if (value =='命令搜索'){value =''}" onBlur="if (value ==''){value='命令搜索'}" />
+                </form>
+                <form action="http://man.linuxde.net/" method="post">
+                    <input type="text" name="ss" id="sidebar_search" value="命令直达" onFocus="if (value =='命令直达'){value =''}" onBlur="if (value ==''){value='命令直达'}" />
+                </form>
+            </div>
+            <div class="widget ad"> 
+				<!--
+				<script type="text/javascript">
+					document.write('<a style="display:none!important" id="tanx-a-mm_22964816_6616438_33736229"></a>');
+					tanx_s = document.createElement("script");
+					tanx_s.type = "text/javascript";
+					tanx_s.charset = "gbk";
+					tanx_s.id = "tanx-s-mm_22964816_6616438_33736229";
+					tanx_s.async = true;
+					tanx_s.src = "http://p.tanx.com/ex?i=mm_22964816_6616438_33736229";
+					tanx_h = document.getElementsByTagName("head")[0];
+					if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+				</script>
+				-->
+				<a title="linux马克杯" href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DbWlkMAz37zAcQipKwQzePDAVflQIoZepLKpWJ%2Bin0XJRAdhuF14FMdl7wKby%2Bc%2FExq3IhSJN6GSAAkUL03DNGUpamuccnq1qrmvEga4qAXJgE5NxN1hjMoxodiO%2Bbyu%2BIYULNg46oBA%3D" target="_blank"><img src="http://112.124.15.130/res/linuxde_man/images/s-ad.jpg" alt="linux马克杯"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="layout layout_ft">
+    <div class="footer">
+        <div class="copyright">
+            <a href="http://man.linuxde.net/" title="Linux命令大全">Linux命令大全</a>
+            <em class="sx"></em>
+            <a href="http://man.linuxde.net/about_us" title="关于">关于</a>
+            <em class="sx"></em>
+			收藏本站请使用Ctrl+D
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/shell-script" target="_blank">Shell脚本攻略</a>
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/docs/shell_regex.html" target="_blank">Shell正则表达式</a>
+			<em class="sx"></em>
+			共收录528条Linux系统指令
+        </div>
+        <div class="des">在Linux命令大全（man.linuxde.net）可以查询您所需要的Linux命令教程和相关实例。如果您觉得本站内容对您有所帮助，请推荐给更多需要帮助的人。</div>
+        <div class="info">
+		赞助商链接：<a href="http://www.1987.name/" target="_blank">组装电脑配置清单2017</a>,　运行在<a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DvTDIoAjlYzMcQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAhYdwmcpX19FpcfgoZBkhQKMhxXrDnK9L8ge8W1gUmbKFOH2PYQYfJNjOghCi4TzwOdn1BbglxZYxUhy8exlzcq9AmARIwX9K2Zg%2BdzdQFOwfMRvoxSVDSdLyrb2g0H2G5JcxXijM%2BwneEHpPTskRHknGN7svee8j7S4un6ZpbmpIYULNg46oBA%3D" target="_blank">阿里云服务器</a>！
+		</div>
+    </div>
+</div>
+</div>
+<!--js-->
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/sitejs.js"></script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div style="display:none"><script src="http://s17.cnzz.com/stat.php?id=5762282&web_id=5762282" language="JavaScript"></script></div>
+
+<!--活动推广
+<script type="text/javascript" src="http://112.124.15.130/res/ad/ad.js"></script>
+<style type="text/css">
+.ad-box{width:240px;height:277px;background:#CCC;position:fixed;right:-240px;bottom:10px;}
+.ad-img{position:relative;overflow:hidden;}
+.ad-close{width:30px;height:22px;line-height:22px;display:block;top:10px;right:10px;position:absolute;}
+</style>
+<div class="ad-box">
+    <div class="ad-img">
+        <a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DuGXlvKu7Iv4cQipKwQzePCperVdZeJviK7Vc7tFgwiFRAdhuF14FMZQUNi%2Bb4SgsMMgx22UI05aAAkUL03DNGT6XZIOJR7dCTAHi9HSRVmdzguIHwwNmQ6UuZxIcp9pfUIgVEmFmgnbDX0%2BHH2IEVaX4VWt66S4EJPwiig1bxLP9BvYCQR6XAr%2BKQ71wHNCAqP8YyUoZZlq4cXg3ii9waXPs9Sj9Qli1np4c65at3FeX3cwyLTlAhj2l4PysJx%2FP" target="_blank"><img src="http://112.124.15.130/res/ad/1111.jpg"></a>
+        <a href="javascript:" class="ad-close">关闭</a>
+    </div>
+</div>
+<!--推广结束-->
+
+</body></html>
