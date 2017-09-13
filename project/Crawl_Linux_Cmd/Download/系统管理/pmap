@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="renderer" content="webkit">
+<title>
+pmap命令_Linux pmap 命令用法详解：报告进程的内存映射关系</title>
+<link rel="shortcut icon" href="http://man.linuxde.net/favicon.ico" type="image/x-icon" />
+<link rel="pingback" href="http://man.linuxde.net/xmlrpc.php" />
+<link href="http://112.124.15.130/res/linuxde_man/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/jquery-1.8.3.min.js"></script>
+<!--[if IE 6]>
+<script src="http://112.124.15.130/res/linuxde_man/js/belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('*');</script>
+<script src="http://letskillie6.googlecode.com/svn/trunk/letskillie6.zh_CN.pack.js"></script>
+<![endif]-->
+<link rel='canonical' href='http://man.linuxde.net/pmap' />
+</head>
+<body>
+<noscript>
+<p class="nojs">您的浏览器已经禁用了脚本，这会严重影响您正常使用本站的功能，请开启！</p>
+</noscript>
+<div class="man_linuxde_net_page">
+<div class="layout_hd">
+    <div class="logo l">
+        <h2><a title="Linux命令大全" href="http://man.linuxde.net/">
+            Linux命令大全            </a></h2>
+    </div>
+    <div class="nav r"><ul id="menu-%e8%8f%9c%e5%8d%951" class="menu"><li id="menu-item-4" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-4"><a href="http://man.linuxde.net/">首页搜索</a></li>
+<li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-6"><a href="http://man.linuxde.net/par/2">系统管理</a></li>
+<li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7"><a href="http://man.linuxde.net/par/5">网络管理</a></li>
+<li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8"><a href="http://man.linuxde.net/par/4">软件·打印·开发·工具</a></li>
+<li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9"><a href="http://man.linuxde.net/par/1">文件和目录管理</a></li>
+<li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://man.linuxde.net/par/3">硬件·内核·Shell·监测</a></li>
+<li id="menu-item-2096" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2096"><a target="_blank" href="http://www.linuxde.net">Linux Today</a></li>
+</ul></div>    <div class="c"></div>
+</div>
+<div class="layout layout_bd">
+<script type='text/javascript'>
+function addLink() {
+    var body_element = document.getElementsByTagName('body')[0];
+    var selection;
+    selection = window.getSelection();
+    var pagelink = "<br /><br /> 来自: <a href='"+document.location.href+"'>"+document.location.href+"</a>"; 
+    var copy_text = selection + pagelink;
+    var new_div = document.createElement('div');
+    new_div.style.left='-99999px';
+    new_div.style.position='absolute';
+    body_element.appendChild(new_div );
+    new_div.innerHTML = copy_text ;
+    selection.selectAllChildren(new_div );
+    window.setTimeout(function() {
+        body_element.removeChild(new_div );
+    },0);
+}
+document.oncopy = addLink;
+</script>
+<div class="single_default">
+        <div class="main">
+        <div class="breadcrumb">当前位置：<a href="http://man.linuxde.net">首页</a> &raquo; <a href="http://man.linuxde.net/par/2" rel="category tag">系统管理</a> &raquo; pmap</div>
+        <div class="post_hd clearfix">
+            <h1 class="l">pmap命令</h1>
+            <div class="tag f_yh r">
+                <a href="http://man.linuxde.net/sub/%e8%bf%9b%e7%a8%8b%e5%92%8c%e4%bd%9c%e4%b8%9a%e7%ae%a1%e7%90%86" rel="tag">进程和作业管理</a>            </div>
+        </div>
+        <div class="post_bd post">
+            <p>
+	<strong>pmap命令</strong>用于报告进程的内存映射关系，是Linux调试及运维一个很好的工具。
+</p>
+<h3>
+	语法<br />
+</h3>
+<pre>
+pmap(选项)(参数)</pre>
+<h3>
+	选项<br />
+</h3>
+<pre>
+-x：显示扩展格式；
+-d：显示设备格式；
+-q：不显示头尾行；
+-V：显示指定版本。</pre>
+<h3>
+	参数<br />
+</h3>
+<p>
+	进程号：指定需要显示内存映射关系的进程号，可以是多个进程号。
+</p>
+<h3>
+	实例<br />
+</h3>
+<pre>
+<span style="color:#B22222;"><span class='wp_keywordlink'><a href="http://man.linuxde.net/pidof" title="pidof命令" target="_blank">pidof</a></span> nginx</span>
+13312 5371
+
+<span style="color:#B22222;">pmap -x 5371</span>
+5371:   nginx: worker process                
+Address           Kbytes     RSS   Dirty Mode   Mapping
+0000000000400000     564     344       0 r-x--  nginx
+000000000068c000      68      68      60 rw---  nginx
+000000000069d000      56      12      12 rw---    [ anon ]
+000000000a0c8000    1812    1684    1684 rw---    [ anon ]
+0000003ac0a00000     112      40       0 r-x--  <span class='wp_keywordlink'><a href="http://man.linuxde.net/ld" title="ld命令" target="_blank">ld</a></span>-2.5.so
+0000003ac0c1c000       4       4       4 r----  ld-2.5.so
+0000003ac0c1d000       4       4       4 rw---  ld-2.5.so
+0000003ac0e00000    1340     284       0 r-x--  libc-2.5.so
+0000003ac0f4f000    2044       0       0 -----  libc-2.5.so
+0000003ac114e000      16      16       8 r----  libc-2.5.so
+0000003ac1152000       4       4       4 rw---  libc-2.5.so
+0000003ac1153000      20      20      20 rw---    [ anon ]
+0000003ac1200000       8       4       0 r-x--  libdl-2.5.so
+0000003ac1202000    2048       0       0 -----  libdl-2.5.so
+0000003ac1402000       4       4       4 r----  libdl-2.5.so
+0000003ac1403000       4       4       4 rw---  libdl-2.5.so
+0000003ac1600000      84       0       0 r-x--  libselinux.so.1
+0000003ac1615000    2048       0       0 -----  libselinux.so.1
+0000003ac1815000       8       8       8 rw---  libselinux.so.1
+0000003ac1817000       4       4       4 rw---    [ anon ]
+0000003ac1a00000     236       0       0 r-x--  libsepol.so.1
+0000003ac1a3b000    2048       0       0 -----  libsepol.so.1
+0000003ac1c3b000       4       4       4 rw---  libsepol.so.1
+0000003ac1c3c000      40       0       0 rw---    [ anon ]
+0000003ac1e00000      88      44       0 r-x--  libpthread-2.5.so
+0000003ac1e16000    2048       0       0 -----  libpthread-2.5.so
+0000003ac2016000       4       4       4 r----  libpthread-2.5.so
+0000003ac2017000       4       4       4 rw---  libpthread-2.5.so
+0000003ac2018000      16       4       4 rw---    [ anon ]
+0000003ac2600000      80      52       0 r-x--  libz.so.1.2.3
+0000003ac2614000    2044       0       0 -----  libz.so.1.2.3
+0000003ac2813000       4       4       4 rw---  libz.so.1.2.3
+0000003ac2a00000      36       4       0 r-x--  libcrypt-2.5.so
+0000003ac2a09000    2044       0       0 -----  libcrypt-2.5.so
+0000003ac2c08000       4       4       4 r----  libcrypt-2.5.so
+0000003ac2c09000       4       4       4 rw---  libcrypt-2.5.so
+0000003ac2c0a000     184       0       0 rw---    [ anon ]
+0000003ac3600000       8       0       0 r-x--  libkeyutils-1.2.so
+0000003ac3602000    2044       0       0 -----  libkeyutils-1.2.so
+0000003ac3801000       4       4       4 rw---  libkeyutils-1.2.so
+0000003ac3a00000      68       0       0 r-x--  libresolv-2.5.so
+0000003ac3a11000    2048       0       0 -----  libresolv-2.5.so
+0000003ac3c11000       4       4       4 r----  libresolv-2.5.so
+0000003ac3c12000       4       4       4 rw---  libresolv-2.5.so
+0000003ac3c13000       8       0       0 rw---    [ anon ]
+0000003ac3e00000       8       0       0 r-x--  libcom_err.so.2.1
+0000003ac3e02000    2044       0       0 -----  libcom_err.so.2.1
+0000003ac4001000       4       4       4 rw---  libcom_err.so.2.1
+0000003ac4200000    1204       8       0 r-x--  libcrypto.so.0.9.8e
+0000003ac432d000    2044       0       0 -----  libcrypto.so.0.9.8e
+0000003ac452c000     132      88      12 rw---  libcrypto.so.0.9.8e
+0000003ac454d000      16      12      12 rw---    [ anon ]
+0000003ac4600000     176       0       0 r-x--  libgssapi_krb5.so.2.2
+0000003ac462c000    2048       0       0 -----  libgssapi_krb5.so.2.2
+0000003ac482c000       8       8       8 rw---  libgssapi_krb5.so.2.2
+0000003ac4a00000     144       0       0 r-x--  libk5crypto.so.3.1
+0000003ac4a24000    2044       0       0 -----  libk5crypto.so.3.1
+0000003ac4c23000       8       8       8 rw---  libk5crypto.so.3.1
+0000003ac4e00000      32       0       0 r-x--  libkrb5support.so.0.1
+0000003ac4e08000    2044       0       0 -----  libkrb5support.so.0.1
+0000003ac5007000       4       4       4 rw---  libkrb5support.so.0.1
+0000003ac5200000     580       0       0 r-x--  libkrb5.so.3.3
+0000003ac5291000    2048       0       0 -----  libkrb5.so.3.3
+0000003ac5491000      16      16      12 rw---  libkrb5.so.3.3
+0000003ac5a00000     288       4       0 r-x--  libssl.so.0.9.8e
+0000003ac5a48000    2048       0       0 -----  libssl.so.0.9.8e
+0000003ac5c48000      24      16      12 rw---  libssl.so.0.9.8e
+00002b5751808000       8       8       8 rw---    [ anon ]
+00002b5751810000     108      36       0 r-x--  libpcre.so.1.2.0
+00002b575182b000    2044       0       0 -----  libpcre.so.1.2.0
+00002b5751a2a000       4       4       4 rw---  libpcre.so.1.2.0
+00002b5751a2b000      28      28      28 rw---    [ anon ]
+00002b5751a32000      40      20       0 r-x--  libnss_files-2.5.so
+00002b5751a3c000    2044       0       0 -----  libnss_files-2.5.so
+00002b5751c3b000       4       4       4 r----  libnss_files-2.5.so
+00002b5751c3c000       4       4       4 rw---  libnss_files-2.5.so
+00002b5751c3d000       4       4       4 rw-s-  zero (deleted)
+00002b5751c3e000   20012   20000   20000 rw---    [ anon ]
+00007fffbf2ce000      84      20      20 rw---    [ stack ]
+00007fffbf35e000      12       0       0 r-x--    [ anon ]
+ffffffffff600000    8192       0       0 -----    [ anon ]
+----------------  ------  ------  ------
+total kB           72880   22940   22000</pre>
+        </div>
+        <div class="post_ft">
+            <div class="title">最近更新的命令</div>
+            <ul>
+                <li><a href="http://man.linuxde.net/cut" title="cut">cut</a></li><li><a href="http://man.linuxde.net/sh" title="sh">sh</a></li><li><a href="http://man.linuxde.net/seq" title="seq">seq</a></li><li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li><li><a href="http://man.linuxde.net/syslog" title="syslog">syslog</a></li><li><a href="http://man.linuxde.net/inotifywait" title="inotifywait">inotifywait</a></li><li><a href="http://man.linuxde.net/dd" title="dd">dd</a></li><li><a href="http://man.linuxde.net/read" title="read">read</a></li><li><a href="http://man.linuxde.net/uname" title="uname">uname</a></li><li><a href="http://man.linuxde.net/pssh" title="pssh">pssh</a></li><li><a href="http://man.linuxde.net/tar" title="tar">tar</a></li><li><a href="http://man.linuxde.net/axel" title="axel">axel</a></li><li><a href="http://man.linuxde.net/losetup" title="losetup">losetup</a></li><li><a href="http://man.linuxde.net/lsb_release" title="lsb_release">lsb_release</a></li><li><a href="http://man.linuxde.net/tcpreplay" title="tcpreplay">tcpreplay</a></li><li><a href="http://man.linuxde.net/strings" title="strings">strings</a></li><li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li><li><a href="http://man.linuxde.net/speedtest-cli" title="speedtest-cli">speedtest-cli</a></li><li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li><li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li><li><a href="http://man.linuxde.net/dnf" title="dnf">dnf</a></li><li><a href="http://man.linuxde.net/nethogs" title="nethogs">nethogs</a></li><li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li><li><a href="http://man.linuxde.net/trap" title="trap">trap</a></li><li><a href="http://man.linuxde.net/let" title="let">let</a></li><li><a href="http://man.linuxde.net/ifstat" title="ifstat">ifstat</a></li><li><a href="http://man.linuxde.net/blkid" title="blkid">blkid</a></li><li><a href="http://man.linuxde.net/ipcrm" title="ipcrm">ipcrm</a></li><li><a href="http://man.linuxde.net/openssl" title="openssl">openssl</a></li><li><a href="http://man.linuxde.net/chage" title="chage">chage</a></li>            </ul>
+        </div>
+        <div id="comments">
+            <!-- You can start editing here. -->
+        </div>
+    </div>
+    
+<div class="sidebar">
+    <div class="widget related">
+        <div class="hd">
+            <h3>相关命令</h3>
+        </div>
+        <div class="bd">
+            <ul>
+                            <li><a href="http://man.linuxde.net/init" title="init">init</a></li>
+                <li><a href="http://man.linuxde.net/telint" title="telint">telint</a></li>
+                <li><a href="http://man.linuxde.net/ipcrm" title="ipcrm">ipcrm</a></li>
+                <li><a href="http://man.linuxde.net/pstree" title="pstree">pstree</a></li>
+                <li><a href="http://man.linuxde.net/service" title="service">service</a></li>
+                <li><a href="http://man.linuxde.net/ipcs" title="ipcs">ipcs</a></li>
+                <li><a href="http://man.linuxde.net/atq" title="atq">atq</a></li>
+                <li><a href="http://man.linuxde.net/runlevel" title="runlevel">runlevel</a></li>
+                <li><a href="http://man.linuxde.net/ps" title="ps">ps</a></li>
+                <li><a href="http://man.linuxde.net/pgrep" title="pgrep">pgrep</a></li>
+                <li><a href="http://man.linuxde.net/crontab" title="crontab">crontab</a></li>
+                <li><a href="http://man.linuxde.net/atrm" title="atrm">atrm</a></li>
+                <li><a href="http://man.linuxde.net/pidof" title="pidof">pidof</a></li>
+                <li><a href="http://man.linuxde.net/systemctl" title="systemctl">systemctl</a></li>
+                <li><a href="http://man.linuxde.net/nice" title="nice">nice</a></li>
+                <li><a href="http://man.linuxde.net/w" title="w">w</a></li>
+                <li><a href="http://man.linuxde.net/skill" title="skill">skill</a></li>
+                <li><a href="http://man.linuxde.net/nohup" title="nohup">nohup</a></li>
+                <li><a href="http://man.linuxde.net/killall" title="killall">killall</a></li>
+                <li><a href="http://man.linuxde.net/watch" title="watch">watch</a></li>
+                </ul>
+        </div>
+    </div>
+    <div id="fixedBox">
+        <div id="float" class="dbox">
+            <div class="sidebar_search_box">
+                <form action="http://man.linuxde.net/">
+                    <input type="text" name="s" id="sidebar_search" value="命令搜索" onFocus="if (value =='命令搜索'){value =''}" onBlur="if (value ==''){value='命令搜索'}" />
+                </form>
+                <form action="http://man.linuxde.net/" method="post">
+                    <input type="text" name="ss" id="sidebar_search" value="命令直达" onFocus="if (value =='命令直达'){value =''}" onBlur="if (value ==''){value='命令直达'}" />
+                </form>
+            </div>
+            <div class="widget ad"> 
+				<!--
+				<script type="text/javascript">
+					document.write('<a style="display:none!important" id="tanx-a-mm_22964816_6616438_33736229"></a>');
+					tanx_s = document.createElement("script");
+					tanx_s.type = "text/javascript";
+					tanx_s.charset = "gbk";
+					tanx_s.id = "tanx-s-mm_22964816_6616438_33736229";
+					tanx_s.async = true;
+					tanx_s.src = "http://p.tanx.com/ex?i=mm_22964816_6616438_33736229";
+					tanx_h = document.getElementsByTagName("head")[0];
+					if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+				</script>
+				-->
+				<a title="linux马克杯" href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DbWlkMAz37zAcQipKwQzePDAVflQIoZepLKpWJ%2Bin0XJRAdhuF14FMdl7wKby%2Bc%2FExq3IhSJN6GSAAkUL03DNGUpamuccnq1qrmvEga4qAXJgE5NxN1hjMoxodiO%2Bbyu%2BIYULNg46oBA%3D" target="_blank"><img src="http://112.124.15.130/res/linuxde_man/images/s-ad.jpg" alt="linux马克杯"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="layout layout_ft">
+    <div class="footer">
+        <div class="copyright">
+            <a href="http://man.linuxde.net/" title="Linux命令大全">Linux命令大全</a>
+            <em class="sx"></em>
+            <a href="http://man.linuxde.net/about_us" title="关于">关于</a>
+            <em class="sx"></em>
+			收藏本站请使用Ctrl+D
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/shell-script" target="_blank">Shell脚本攻略</a>
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/docs/shell_regex.html" target="_blank">Shell正则表达式</a>
+			<em class="sx"></em>
+			共收录528条Linux系统指令
+        </div>
+        <div class="des">在Linux命令大全（man.linuxde.net）可以查询您所需要的Linux命令教程和相关实例。如果您觉得本站内容对您有所帮助，请推荐给更多需要帮助的人。</div>
+        <div class="info">
+		赞助商链接：<a href="http://www.1987.name/" target="_blank">组装电脑配置清单2017</a>,　运行在<a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DvTDIoAjlYzMcQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAhYdwmcpX19FpcfgoZBkhQKMhxXrDnK9L8ge8W1gUmbKFOH2PYQYfJNjOghCi4TzwOdn1BbglxZYxUhy8exlzcq9AmARIwX9K2Zg%2BdzdQFOwfMRvoxSVDSdLyrb2g0H2G5JcxXijM%2BwneEHpPTskRHknGN7svee8j7S4un6ZpbmpIYULNg46oBA%3D" target="_blank">阿里云服务器</a>！
+		</div>
+    </div>
+</div>
+</div>
+<!--js-->
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/sitejs.js"></script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div style="display:none"><script src="http://s17.cnzz.com/stat.php?id=5762282&web_id=5762282" language="JavaScript"></script></div>
+
+<!--活动推广
+<script type="text/javascript" src="http://112.124.15.130/res/ad/ad.js"></script>
+<style type="text/css">
+.ad-box{width:240px;height:277px;background:#CCC;position:fixed;right:-240px;bottom:10px;}
+.ad-img{position:relative;overflow:hidden;}
+.ad-close{width:30px;height:22px;line-height:22px;display:block;top:10px;right:10px;position:absolute;}
+</style>
+<div class="ad-box">
+    <div class="ad-img">
+        <a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DuGXlvKu7Iv4cQipKwQzePCperVdZeJviK7Vc7tFgwiFRAdhuF14FMZQUNi%2Bb4SgsMMgx22UI05aAAkUL03DNGT6XZIOJR7dCTAHi9HSRVmdzguIHwwNmQ6UuZxIcp9pfUIgVEmFmgnbDX0%2BHH2IEVaX4VWt66S4EJPwiig1bxLP9BvYCQR6XAr%2BKQ71wHNCAqP8YyUoZZlq4cXg3ii9waXPs9Sj9Qli1np4c65at3FeX3cwyLTlAhj2l4PysJx%2FP" target="_blank"><img src="http://112.124.15.130/res/ad/1111.jpg"></a>
+        <a href="javascript:" class="ad-close">关闭</a>
+    </div>
+</div>
+<!--推广结束-->
+
+</body></html>

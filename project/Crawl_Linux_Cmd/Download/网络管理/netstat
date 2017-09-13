@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="renderer" content="webkit">
+<title>
+netstat命令_Linux netstat 命令用法详解：查看Linux中网络系统状态信息</title>
+<link rel="shortcut icon" href="http://man.linuxde.net/favicon.ico" type="image/x-icon" />
+<link rel="pingback" href="http://man.linuxde.net/xmlrpc.php" />
+<link href="http://112.124.15.130/res/linuxde_man/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/jquery-1.8.3.min.js"></script>
+<!--[if IE 6]>
+<script src="http://112.124.15.130/res/linuxde_man/js/belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('*');</script>
+<script src="http://letskillie6.googlecode.com/svn/trunk/letskillie6.zh_CN.pack.js"></script>
+<![endif]-->
+<link rel='canonical' href='http://man.linuxde.net/netstat' />
+</head>
+<body>
+<noscript>
+<p class="nojs">您的浏览器已经禁用了脚本，这会严重影响您正常使用本站的功能，请开启！</p>
+</noscript>
+<div class="man_linuxde_net_page">
+<div class="layout_hd">
+    <div class="logo l">
+        <h2><a title="Linux命令大全" href="http://man.linuxde.net/">
+            Linux命令大全            </a></h2>
+    </div>
+    <div class="nav r"><ul id="menu-%e8%8f%9c%e5%8d%951" class="menu"><li id="menu-item-4" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-4"><a href="http://man.linuxde.net/">首页搜索</a></li>
+<li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-6"><a href="http://man.linuxde.net/par/2">系统管理</a></li>
+<li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-7"><a href="http://man.linuxde.net/par/5">网络管理</a></li>
+<li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8"><a href="http://man.linuxde.net/par/4">软件·打印·开发·工具</a></li>
+<li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9"><a href="http://man.linuxde.net/par/1">文件和目录管理</a></li>
+<li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://man.linuxde.net/par/3">硬件·内核·Shell·监测</a></li>
+<li id="menu-item-2096" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2096"><a target="_blank" href="http://www.linuxde.net">Linux Today</a></li>
+</ul></div>    <div class="c"></div>
+</div>
+<div class="layout layout_bd">
+<script type='text/javascript'>
+function addLink() {
+    var body_element = document.getElementsByTagName('body')[0];
+    var selection;
+    selection = window.getSelection();
+    var pagelink = "<br /><br /> 来自: <a href='"+document.location.href+"'>"+document.location.href+"</a>"; 
+    var copy_text = selection + pagelink;
+    var new_div = document.createElement('div');
+    new_div.style.left='-99999px';
+    new_div.style.position='absolute';
+    body_element.appendChild(new_div );
+    new_div.innerHTML = copy_text ;
+    selection.selectAllChildren(new_div );
+    window.setTimeout(function() {
+        body_element.removeChild(new_div );
+    },0);
+}
+document.oncopy = addLink;
+</script>
+<div class="single_default">
+        <div class="main">
+        <div class="breadcrumb">当前位置：<a href="http://man.linuxde.net">首页</a> &raquo; <a href="http://man.linuxde.net/par/5" rel="category tag">网络管理</a> &raquo; netstat</div>
+        <div class="post_hd clearfix">
+            <h1 class="l">netstat命令</h1>
+            <div class="tag f_yh r">
+                <a href="http://man.linuxde.net/sub/%e7%bd%91%e7%bb%9c%e6%b5%8b%e8%af%95" rel="tag">网络测试</a>            </div>
+        </div>
+        <div class="post_bd post">
+            <p>
+	<strong>netstat命令</strong>用来打印Linux中网络系统的状态信息，可让你得知整个Linux系统的网络情况。
+</p>
+<h3>
+	语法<br />
+</h3>
+<pre>
+netstat(选项)</pre>
+<h3>
+	选项<br />
+</h3>
+<pre>
+-a或--all：显示所有连线中的Socket；
+-A&lt;网络类型&gt;或--&lt;网络类型&gt;：列出该网络类型连线中的相关地址；
+-c或--continuous：持续列出网络状态；
+-C或--cache：显示路由器配置的快取信息；
+-e或--extend：显示网络其他相关信息；
+-F或--fib：显示FIB；
+-g或--<span class='wp_keywordlink'><a href="http://man.linuxde.net/groups" title="groups命令" target="_blank">groups</a></span>：显示多重广播功能群组组员名单；
+-h或--<span class='wp_keywordlink'><a href="http://man.linuxde.net/help" title="help命令" target="_blank">help</a></span>：在线帮助；
+-i或--interfaces：显示网络界面信息表单；
+-l或--listening：显示监控中的服务器的Socket；
+-M或--masquerade：显示伪装的网络连线；
+-n或--numeric：直接使用<span class='wp_keywordlink'><a href="http://man.linuxde.net/ip" title="ip命令" target="_blank">ip</a></span>地址，而不通过域名服务器；
+-N或--netlink或--symbolic：显示网络硬件外围设备的符号连接名称；
+-o或--timers：显示计时器；
+-p或--programs：显示正在使用Socket的程序识别码和程序名称；
+-r或--<span class='wp_keywordlink'><a href="http://man.linuxde.net/route" title="route命令" target="_blank">route</a></span>：显示Routing Table；
+-s或--statistice：显示网络工作信息统计表；
+-t或--tcp：显示TCP传输协议的连线状况；
+-u或--udp：显示UDP传输协议的连线状况；
+-v或--verbose：显示指令执行过程；
+-V或--version：显示版本信息；
+-<span class='wp_keywordlink'><a href="http://man.linuxde.net/w" title="w命令" target="_blank">w</a></span>或--raw：显示RAW传输协议的连线状况；
+-x或--unix：此参数的效果和指定&quot;-A unix&quot;参数相同；
+--ip或--inet：此参数的效果和指定&quot;-A inet&quot;参数相同。</pre>
+<h3>
+	实例<br />
+</h3>
+<p>
+	<strong>列出所有端口 (包括监听和未监听的)</strong>
+</p>
+<pre>
+netstat -a     #列出所有端口
+netstat -<span class='wp_keywordlink'><a href="http://man.linuxde.net/at" title="at命令" target="_blank">at</a></span>    #列出所有tcp端口
+netstat -au    #列出所有udp端口                             </pre>
+<p>
+	<strong>列出所有处于监听状态的 Sockets</strong>
+</p>
+<pre>
+netstat -l        #只显示监听端口
+netstat -lt       #只列出所有监听 tcp 端口
+netstat -lu       #只列出所有监听 udp 端口
+netstat -lx       #只列出所有监听 UNIX 端口</pre>
+<p>
+	<strong>显示每个协议的统计信息</strong>
+</p>
+<pre>
+netstat -s   显示所有端口的统计信息
+netstat -st   显示TCP端口的统计信息
+netstat -<span class='wp_keywordlink'><a href="http://man.linuxde.net/su" title="su命令" target="_blank">su</a></span>   显示UDP端口的统计信息
+</pre>
+<p>
+	<strong>在netstat输出中显示 PID 和进程名称</strong>
+</p>
+<pre>
+netstat -pt</pre>
+<p>
+	<code>netstat -p</code>可以与其它开关一起使用，就可以添加&ldquo;PID/进程名称&rdquo;到netstat输出中，这样debugging的时候可以很方便的发现特定端口运行的程序。
+</p>
+<p>
+	<strong>在netstat输出中不显示主机，端口和用户名(<span class='wp_keywordlink'><a href="http://man.linuxde.net/host" title="host命令" target="_blank">host</a></span>, port or user)</strong>
+</p>
+<p>
+	当你不想让主机，端口和用户名显示，使用<code>netstat -n</code>。将会使用数字代替那些名称。同样可以加速输出，因为不用进行比对查询。
+</p>
+<pre>
+netstat -an</pre>
+<p>
+	如果只是不想让这三个名称中的一个被显示，使用以下命令:
+</p>
+<pre>
+netsat -a --numeric-ports
+netsat -a --numeric-hosts
+netsat -a --numeric-<span class='wp_keywordlink'><a href="http://man.linuxde.net/users" title="users命令" target="_blank">users</a></span></pre>
+<p>
+	<strong>持续输出netstat信息</strong>
+</p>
+<pre>
+netstat -c   <span style="color:#808080;">#每隔一秒输出网络信息</span></pre>
+<p>
+	<strong>显示系统不支持的地址族(Address Families)</strong>
+</p>
+<pre>
+netstat --verbose</pre>
+<p>
+	在输出的末尾，会有如下的信息：
+</p>
+<pre>
+netstat: no support for `AF IPX&#39; on this system.
+netstat: no support for `AF AX25&#39; on this system.
+netstat: no support for `AF X25&#39; on this system.
+netstat: no support for `AF NETROM&#39; on this system.</pre>
+<p>
+	<strong>显示核心路由信息</strong>
+</p>
+<pre>
+netstat -r</pre>
+<p>
+	使用<code>netstat -rn</code>显示数字格式，不查询主机名称。
+</p>
+<p>
+	<strong>找出程序运行的端口</strong>
+</p>
+<p>
+	并不是所有的进程都能找到，没有权限的会不显示，使用 root 权限查看所有的信息。
+</p>
+<pre>
+netstat -ap | <span class='wp_keywordlink'><a href="http://man.linuxde.net/grep" title="grep命令" target="_blank">grep</a></span> <span class='wp_keywordlink'><a href="http://man.linuxde.net/ssh" title="ssh命令" target="_blank">ssh</a></span></pre>
+<p>
+	找出运行在指定端口的进程：
+</p>
+<pre>
+netstat -an | grep &#39;:80&#39;</pre>
+<p>
+	<strong>显示网络接口列表</strong>
+</p>
+<pre>
+netstat -i</pre>
+<p>
+	显示详细信息，像是<span class='wp_keywordlink'><a href="http://man.linuxde.net/ifconfig" title="ifconfig命令" target="_blank">ifconfig</a></span>使用<code>netstat -ie</code>。
+</p>
+<p>
+	<strong>IP和TCP分析</strong>
+</p>
+<p>
+	查看连接某服务端口最多的的IP地址：
+</p>
+<pre>
+netstat -ntu | grep :80 | <span class='wp_keywordlink'><a href="http://man.linuxde.net/awk" title="awk命令" target="_blank">awk</a></span> &#39;{print $5}&#39; | <span class='wp_keywordlink'><a href="http://man.linuxde.net/cut" title="cut命令" target="_blank">cut</a></span> -d: -f1 | awk &#39;{++ip[$1]} END {for(i in ip) print ip[i],&quot;\t&quot;,i}&#39; | <span class='wp_keywordlink'><a href="http://man.linuxde.net/sort" title="sort命令" target="_blank">sort</a></span> -nr</pre>
+<p>
+	TCP各种状态列表：
+</p>
+<pre>
+netstat -nt | grep -e 127.0.0.1 -e 0.0.0.0 -e ::: -v | awk &#39;/^tcp/ {++state[$NF]} END {for(i in state) print i,"\t",state[i]}&#39;</pre>
+<p>
+	查看phpcgi进程数，如果接近预设值，说明不够用，需要增加：
+</p>
+<pre>
+netstat -anpo | grep &quot;<span class='wp_keywordlink'><a href="http://man.linuxde.net/php" title="php命令" target="_blank">php</a></span>-cgi&quot; | <span class='wp_keywordlink'><a href="http://man.linuxde.net/wc" title="wc命令" target="_blank">wc</a></span> -l</pre>
+        </div>
+        <div class="post_ft">
+            <div class="title">最近更新的命令</div>
+            <ul>
+                <li><a href="http://man.linuxde.net/cut" title="cut">cut</a></li><li><a href="http://man.linuxde.net/sh" title="sh">sh</a></li><li><a href="http://man.linuxde.net/seq" title="seq">seq</a></li><li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li><li><a href="http://man.linuxde.net/syslog" title="syslog">syslog</a></li><li><a href="http://man.linuxde.net/inotifywait" title="inotifywait">inotifywait</a></li><li><a href="http://man.linuxde.net/dd" title="dd">dd</a></li><li><a href="http://man.linuxde.net/read" title="read">read</a></li><li><a href="http://man.linuxde.net/uname" title="uname">uname</a></li><li><a href="http://man.linuxde.net/pssh" title="pssh">pssh</a></li><li><a href="http://man.linuxde.net/tar" title="tar">tar</a></li><li><a href="http://man.linuxde.net/axel" title="axel">axel</a></li><li><a href="http://man.linuxde.net/losetup" title="losetup">losetup</a></li><li><a href="http://man.linuxde.net/lsb_release" title="lsb_release">lsb_release</a></li><li><a href="http://man.linuxde.net/tcpreplay" title="tcpreplay">tcpreplay</a></li><li><a href="http://man.linuxde.net/strings" title="strings">strings</a></li><li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li><li><a href="http://man.linuxde.net/speedtest-cli" title="speedtest-cli">speedtest-cli</a></li><li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li><li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li><li><a href="http://man.linuxde.net/dnf" title="dnf">dnf</a></li><li><a href="http://man.linuxde.net/nethogs" title="nethogs">nethogs</a></li><li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li><li><a href="http://man.linuxde.net/trap" title="trap">trap</a></li><li><a href="http://man.linuxde.net/let" title="let">let</a></li><li><a href="http://man.linuxde.net/ifstat" title="ifstat">ifstat</a></li><li><a href="http://man.linuxde.net/blkid" title="blkid">blkid</a></li><li><a href="http://man.linuxde.net/ipcrm" title="ipcrm">ipcrm</a></li><li><a href="http://man.linuxde.net/openssl" title="openssl">openssl</a></li><li><a href="http://man.linuxde.net/chage" title="chage">chage</a></li>            </ul>
+        </div>
+        <div id="comments">
+            <!-- You can start editing here. -->
+        </div>
+    </div>
+    
+<div class="sidebar">
+    <div class="widget related">
+        <div class="hd">
+            <h3>相关命令</h3>
+        </div>
+        <div class="bd">
+            <ul>
+                            <li><a href="http://man.linuxde.net/host" title="host">host</a></li>
+                <li><a href="http://man.linuxde.net/arpwatch" title="arpwatch">arpwatch</a></li>
+                <li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li>
+                <li><a href="http://man.linuxde.net/arping" title="arping">arping</a></li>
+                <li><a href="http://man.linuxde.net/nc_netcat" title="nc/netcat">nc/netcat</a></li>
+                <li><a href="http://man.linuxde.net/traceroute" title="traceroute">traceroute</a></li>
+                <li><a href="http://man.linuxde.net/dig" title="dig">dig</a></li>
+                <li><a href="http://man.linuxde.net/arp" title="arp">arp</a></li>
+                <li><a href="http://man.linuxde.net/iperf" title="iperf">iperf</a></li>
+                <li><a href="http://man.linuxde.net/ping" title="ping">ping</a></li>
+                <li><a href="http://man.linuxde.net/tracepath" title="tracepath">tracepath</a></li>
+                <li><a href="http://man.linuxde.net/nslookup" title="nslookup">nslookup</a></li>
+                </ul>
+        </div>
+    </div>
+    <div id="fixedBox">
+        <div id="float" class="dbox">
+            <div class="sidebar_search_box">
+                <form action="http://man.linuxde.net/">
+                    <input type="text" name="s" id="sidebar_search" value="命令搜索" onFocus="if (value =='命令搜索'){value =''}" onBlur="if (value ==''){value='命令搜索'}" />
+                </form>
+                <form action="http://man.linuxde.net/" method="post">
+                    <input type="text" name="ss" id="sidebar_search" value="命令直达" onFocus="if (value =='命令直达'){value =''}" onBlur="if (value ==''){value='命令直达'}" />
+                </form>
+            </div>
+            <div class="widget ad"> 
+				<!--
+				<script type="text/javascript">
+					document.write('<a style="display:none!important" id="tanx-a-mm_22964816_6616438_33736229"></a>');
+					tanx_s = document.createElement("script");
+					tanx_s.type = "text/javascript";
+					tanx_s.charset = "gbk";
+					tanx_s.id = "tanx-s-mm_22964816_6616438_33736229";
+					tanx_s.async = true;
+					tanx_s.src = "http://p.tanx.com/ex?i=mm_22964816_6616438_33736229";
+					tanx_h = document.getElementsByTagName("head")[0];
+					if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+				</script>
+				-->
+				<a title="linux马克杯" href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DbWlkMAz37zAcQipKwQzePDAVflQIoZepLKpWJ%2Bin0XJRAdhuF14FMdl7wKby%2Bc%2FExq3IhSJN6GSAAkUL03DNGUpamuccnq1qrmvEga4qAXJgE5NxN1hjMoxodiO%2Bbyu%2BIYULNg46oBA%3D" target="_blank"><img src="http://112.124.15.130/res/linuxde_man/images/s-ad.jpg" alt="linux马克杯"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="layout layout_ft">
+    <div class="footer">
+        <div class="copyright">
+            <a href="http://man.linuxde.net/" title="Linux命令大全">Linux命令大全</a>
+            <em class="sx"></em>
+            <a href="http://man.linuxde.net/about_us" title="关于">关于</a>
+            <em class="sx"></em>
+			收藏本站请使用Ctrl+D
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/shell-script" target="_blank">Shell脚本攻略</a>
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/docs/shell_regex.html" target="_blank">Shell正则表达式</a>
+			<em class="sx"></em>
+			共收录528条Linux系统指令
+        </div>
+        <div class="des">在Linux命令大全（man.linuxde.net）可以查询您所需要的Linux命令教程和相关实例。如果您觉得本站内容对您有所帮助，请推荐给更多需要帮助的人。</div>
+        <div class="info">
+		赞助商链接：<a href="http://www.1987.name/" target="_blank">组装电脑配置清单2017</a>,　运行在<a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DvTDIoAjlYzMcQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAhYdwmcpX19FpcfgoZBkhQKMhxXrDnK9L8ge8W1gUmbKFOH2PYQYfJNjOghCi4TzwOdn1BbglxZYxUhy8exlzcq9AmARIwX9K2Zg%2BdzdQFOwfMRvoxSVDSdLyrb2g0H2G5JcxXijM%2BwneEHpPTskRHknGN7svee8j7S4un6ZpbmpIYULNg46oBA%3D" target="_blank">阿里云服务器</a>！
+		</div>
+    </div>
+</div>
+</div>
+<!--js-->
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/sitejs.js"></script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div style="display:none"><script src="http://s17.cnzz.com/stat.php?id=5762282&web_id=5762282" language="JavaScript"></script></div>
+
+<!--活动推广
+<script type="text/javascript" src="http://112.124.15.130/res/ad/ad.js"></script>
+<style type="text/css">
+.ad-box{width:240px;height:277px;background:#CCC;position:fixed;right:-240px;bottom:10px;}
+.ad-img{position:relative;overflow:hidden;}
+.ad-close{width:30px;height:22px;line-height:22px;display:block;top:10px;right:10px;position:absolute;}
+</style>
+<div class="ad-box">
+    <div class="ad-img">
+        <a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DuGXlvKu7Iv4cQipKwQzePCperVdZeJviK7Vc7tFgwiFRAdhuF14FMZQUNi%2Bb4SgsMMgx22UI05aAAkUL03DNGT6XZIOJR7dCTAHi9HSRVmdzguIHwwNmQ6UuZxIcp9pfUIgVEmFmgnbDX0%2BHH2IEVaX4VWt66S4EJPwiig1bxLP9BvYCQR6XAr%2BKQ71wHNCAqP8YyUoZZlq4cXg3ii9waXPs9Sj9Qli1np4c65at3FeX3cwyLTlAhj2l4PysJx%2FP" target="_blank"><img src="http://112.124.15.130/res/ad/1111.jpg"></a>
+        <a href="javascript:" class="ad-close">关闭</a>
+    </div>
+</div>
+<!--推广结束-->
+
+</body></html>

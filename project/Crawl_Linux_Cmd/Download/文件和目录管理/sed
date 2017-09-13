@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="renderer" content="webkit">
+<title>
+sed命令_Linux sed 命令用法详解：功能强大的流式文本编辑器</title>
+<link rel="shortcut icon" href="http://man.linuxde.net/favicon.ico" type="image/x-icon" />
+<link rel="pingback" href="http://man.linuxde.net/xmlrpc.php" />
+<link href="http://112.124.15.130/res/linuxde_man/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/jquery-1.8.3.min.js"></script>
+<!--[if IE 6]>
+<script src="http://112.124.15.130/res/linuxde_man/js/belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('*');</script>
+<script src="http://letskillie6.googlecode.com/svn/trunk/letskillie6.zh_CN.pack.js"></script>
+<![endif]-->
+<link rel='canonical' href='http://man.linuxde.net/sed' />
+<link rel="stylesheet" href="http://man.linuxde.net/wp-content/plugins/wp-content-index/wp-content-index.css" type="text/css" type="text/css" media="all" />
+</head>
+<body>
+<noscript>
+<p class="nojs">您的浏览器已经禁用了脚本，这会严重影响您正常使用本站的功能，请开启！</p>
+</noscript>
+<div class="man_linuxde_net_page">
+<div class="layout_hd">
+    <div class="logo l">
+        <h2><a title="Linux命令大全" href="http://man.linuxde.net/">
+            Linux命令大全            </a></h2>
+    </div>
+    <div class="nav r"><ul id="menu-%e8%8f%9c%e5%8d%951" class="menu"><li id="menu-item-4" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-4"><a href="http://man.linuxde.net/">首页搜索</a></li>
+<li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-6"><a href="http://man.linuxde.net/par/2">系统管理</a></li>
+<li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7"><a href="http://man.linuxde.net/par/5">网络管理</a></li>
+<li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8"><a href="http://man.linuxde.net/par/4">软件·打印·开发·工具</a></li>
+<li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-9"><a href="http://man.linuxde.net/par/1">文件和目录管理</a></li>
+<li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://man.linuxde.net/par/3">硬件·内核·Shell·监测</a></li>
+<li id="menu-item-2096" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2096"><a target="_blank" href="http://www.linuxde.net">Linux Today</a></li>
+</ul></div>    <div class="c"></div>
+</div>
+<div class="layout layout_bd">
+<script type='text/javascript'>
+function addLink() {
+    var body_element = document.getElementsByTagName('body')[0];
+    var selection;
+    selection = window.getSelection();
+    var pagelink = "<br /><br /> 来自: <a href='"+document.location.href+"'>"+document.location.href+"</a>"; 
+    var copy_text = selection + pagelink;
+    var new_div = document.createElement('div');
+    new_div.style.left='-99999px';
+    new_div.style.position='absolute';
+    body_element.appendChild(new_div );
+    new_div.innerHTML = copy_text ;
+    selection.selectAllChildren(new_div );
+    window.setTimeout(function() {
+        body_element.removeChild(new_div );
+    },0);
+}
+document.oncopy = addLink;
+</script>
+<div class="single_default">
+        <div class="main">
+        <div class="breadcrumb">当前位置：<a href="http://man.linuxde.net">首页</a> &raquo; <a href="http://man.linuxde.net/par/1" rel="category tag">文件和目录管理</a> &raquo; sed</div>
+        <div class="post_hd clearfix">
+            <h1 class="l">sed命令</h1>
+            <div class="tag f_yh r">
+                <a href="http://man.linuxde.net/sub/%e6%96%87%e4%bb%b6%e7%bc%96%e8%be%91" rel="tag">文件编辑</a>            </div>
+        </div>
+        <div class="post_bd post">
+            <div id="content-index" class="content-index" style="float:right;"><div class="content-index-title">本文索引</div><span class="content-index-toctoggle">[<a id="content-index-togglelink" href="javascript:content_index_toggleToc()">隐藏</a>]</span>
+<script type="text/javascript" language="javascript">
+window.content_index_showTocToggle=true;function content_index_toggleToc(){var tts="显示";var tth="隐藏";if(window.content_index_showTocToggle){window.content_index_showTocToggle=false;document.getElementById("content-index-contents").style.display="none";document.getElementById("content-index-togglelink").innerHTML=tts}else{window.content_index_showTocToggle=true;document.getElementById("content-index-contents").style.display="block";document.getElementById("content-index-togglelink").innerHTML=tth}}
+</script>
+<ul id="content-index-contents"><li class="content-index-level-1"><a href="http://man.linuxde.net/sed#sed的选项、命令、替换标记" title="sed的选项、命令、替换标记"><span>sed的选项、命令、替换标记</span></a><ul class="children"><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#选项" title="选项"><span>选项</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#参数" title="参数"><span>参数</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#sed命令" title="sed命令"><span>sed命令</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#sed替换标记" title="sed替换标记"><span>sed替换标记</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#sed元字符集" title="sed元字符集"><span>sed元字符集</span></a></li></ul></li><li class="content-index-level-1"><a href="http://man.linuxde.net/sed#sed用法实例" title="sed用法实例"><span>sed用法实例</span></a><ul class="children"><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#替换操作：s命令" title="替换操作：s命令"><span>替换操作：s命令</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#全面替换标记g" title="全面替换标记g"><span>全面替换标记g</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#定界符" title="定界符"><span>定界符</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#删除操作：d命令" title="删除操作：d命令"><span>删除操作：d命令</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#已匹配字符串标记&amp;" title="已匹配字符串标记&amp;"><span>已匹配字符串标记&amp;</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#子串匹配标记\1" title="子串匹配标记\1"><span>子串匹配标记\1</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#组合多个表达式" title="组合多个表达式"><span>组合多个表达式</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#引用" title="引用"><span>引用</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#选定行的范围：,（逗号）" title="选定行的范围：,（逗号）"><span>选定行的范围：,（逗号）</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#多点编辑：e命令" title="多点编辑：e命令"><span>多点编辑：e命令</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#从文件读入：r命令" title="从文件读入：r命令"><span>从文件读入：r命令</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#写入文件：w命令 &nbsp;" title="写入文件：w命令 &nbsp;"><span>写入文件：w命令 &nbsp;</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#追加（行下）：a\命令" title="追加（行下）：a\命令"><span>追加（行下）：a\命令</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#插入（行上）：i\命令" title="插入（行上）：i\命令"><span>插入（行上）：i\命令</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#下一个：n命令" title="下一个：n命令"><span>下一个：n命令</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#变形：y命令" title="变形：y命令"><span>变形：y命令</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#退出：q命令" title="退出：q命令"><span>退出：q命令</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#保持和获取：h命令和G命令" title="保持和获取：h命令和G命令"><span>保持和获取：h命令和G命令</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#保持和互换：h命令和x命令" title="保持和互换：h命令和x命令"><span>保持和互换：h命令和x命令</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#脚本scriptfile" title="脚本scriptfile"><span>脚本scriptfile</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#打印奇数行或偶数行" title="打印奇数行或偶数行"><span>打印奇数行或偶数行</span></a></li><li class="content-index-level-2"><a href="http://man.linuxde.net/sed#打印匹配字符串的下一行" title="打印匹配字符串的下一行"><span>打印匹配字符串的下一行</span></a></li></ul></li></ul></div>
+<p>
+	<strong>sed</strong>是一种流编辑器，它是文本处理中非常中的工具，能够完美的配合正则表达式使用，功能不同凡响。处理时，把当前处理的行存储在临时缓冲区中，称为&ldquo;模式空间&rdquo;（pattern space），接着用sed命令处理缓冲区中的内容，处理完成后，把缓冲区的内容送往屏幕。接着处理下一行，这样不断重复，直到文件末尾。文件内容并没有 改变，除非你使用重定向存储输出。Sed主要用来自动编辑一个或多个文件；简化对文件的反复操作；编写转换程序等。
+</p>
+<h2 id="sed的选项、命令、替换标记">
+	sed的选项、命令、替换标记<br />
+</h2>
+<p>
+	<strong>命令格式</strong>
+</p>
+<pre>
+sed [options] &#39;<span class='wp_keywordlink'><a href="http://man.linuxde.net/command" title="command命令" target="_blank">command</a></span>&#39; <span class='wp_keywordlink'><a href="http://man.linuxde.net/file" title="file命令" target="_blank">file</a></span>(s)
+sed [options] -f scriptfile file(s)</pre>
+<h3 id="选项">
+	选项<br />
+</h3>
+<pre>
+-e&lt;script&gt;或--expression=&lt;script&gt;：以选项中的指定的script来处理输入的文本文件；
+-f&lt;script文件&gt;或--file=&lt;script文件&gt;：以选项中指定的script文件来处理输入的文本文件；
+-h或--<span class='wp_keywordlink'><a href="http://man.linuxde.net/help" title="help命令" target="_blank">help</a></span>：显示帮助；
+-n或--quiet或&mdash;&mdash;silent：仅显示script处理后的结果；
+-V或--version：显示版本信息。</pre>
+<h3 id="参数">
+	参数<br />
+</h3>
+<p>
+	文件：指定待处理的文本文件列表。
+</p>
+<h3 id="sed命令">
+	sed命令<br />
+</h3>
+<pre>
+<strong>a\ </strong>在当前行下面插入文本。
+<strong>i\ </strong>在当前行上面插入文本。
+<strong>c\ </strong>把选定的行改为新的文本。
+<strong>d </strong>删除，删除选择的行。
+<strong>D</strong> 删除模板块的第一行。
+<strong>s</strong> 替换指定字符
+<strong>h </strong>拷贝模板块的内容到内存中的缓冲区。
+<strong>H</strong> 追加模板块的内容到内存中的缓冲区。
+<strong>g</strong> 获得内存缓冲区的内容，并替代当前模板块中的文本。
+<strong>G</strong> 获得内存缓冲区的内容，并追加到当前模板块文本的后面。
+<strong>l</strong> 列表不能打印字符的清单。
+<strong>n </strong>读取下一个输入行，用下一个命令处理新的行而不是用第一个命令。
+<strong>N </strong>追加下一个输入行到模板块后面并在二者间嵌入一个新行，改变当前行号码。
+<strong>p </strong>打印模板块的行。
+<strong>P</strong>(大写) 打印模板块的第一行。
+<strong>q </strong>退出Sed。
+<strong>b lable </strong>分支到脚本中带有标记的地方，如果分支不存在则分支到脚本的末尾。
+<strong>r file </strong>从file中读行。
+<strong>t label </strong>if分支，从最后一行开始，条件一旦满足或者T，t命令，将导致分支到带有标号的命令处，或者到脚本的末尾。
+<strong>T label </strong>错误分支，从最后一行开始，一旦发生错误或者T，t命令，将导致分支到带有标号的命令处，或者到脚本的末尾。
+<strong><span class='wp_keywordlink'><a href="http://man.linuxde.net/w" title="w命令" target="_blank">w</a></span> file </strong>写并追加模板块到file末尾。  
+<strong>W file </strong>写并追加模板块的第一行到file末尾。  
+<strong>! </strong>表示后面的命令对所有没有被选定的行发生作用。  
+<strong>= </strong>打印当前行号码。  
+<strong>#</strong> 把注释扩展到下一个换行符以前。  </pre>
+<h3 id="sed替换标记">
+	sed替换标记<br />
+</h3>
+<pre>
+<strong>g </strong>表示行内全面替换。  
+<strong>p </strong>表示打印行。  
+<strong>w</strong> 表示把行写入一个文件。  
+<strong>x </strong>表示互换模板块中的文本和缓冲区中的文本。  
+<strong>y </strong>表示把一个字符翻译为另外的字符（但是不用于正则表达式）
+<strong>\1 </strong>子串匹配标记
+<strong>&amp; </strong>已匹配字符串标记</pre>
+<h3 id="sed元字符集">
+	sed元字符集<br />
+</h3>
+<pre>
+<strong>^ </strong>匹配行开始，如：/^sed/匹配所有以sed开头的行。
+<strong>$</strong> 匹配行结束，如：/sed$/匹配所有以sed结尾的行。
+<strong>. </strong>匹配一个非换行符的任意字符，如：/s.d/匹配s后接一个任意字符，最后是d。
+<strong>* </strong>匹配0个或多个字符，如：/*sed/匹配所有模板是一个或多个空格后紧跟sed的行。
+<strong>[] </strong>匹配一个指定范围内的字符，如/[<span class='wp_keywordlink'><a href="http://man.linuxde.net/ss" title="ss命令" target="_blank">ss</a></span>]<span class='wp_keywordlink'><a href="http://man.linuxde.net/ed" title="ed命令" target="_blank">ed</a></span>/匹配sed和Sed。  
+<strong>[^] </strong>匹配一个不在指定范围内的字符，如：/[^A-RT-Z]ed/匹配不包含A-R和T-Z的一个字母开头，紧跟ed的行。
+<strong>\(..\) </strong>匹配子串，保存匹配的字符，如s/\(love\)able/\1rs，loveable被替换成lovers。
+<strong>&amp; </strong>保存搜索字符用来替换其他字符，如s/love/**&amp;**/，love这成**love**。
+<strong>\&lt; </strong>匹配单词的开始，如:/\&lt;love/匹配包含以love开头的单词的行。
+<strong>\&gt; </strong>匹配单词的结束，如/love\&gt;/匹配包含以love结尾的单词的行。
+<strong>x\{m\} </strong>重复字符x，m次，如：/0\{5\}/匹配包含5个0的行。
+<strong>x\{m,\} </strong>重复字符x，至少m次，如：/0\{5,\}/匹配至少有5个0的行。
+<strong>x\{m,n\} </strong>重复字符x，至少m次，不多于n次，如：/0\{5,10\}/匹配5~10个0的行。<span id="cke_bm_209E" style="display: none;"> </span></pre>
+<h2 id="sed用法实例">
+	sed用法实例<br />
+</h2>
+<h3 id="替换操作：s命令">
+	替换操作：s命令<br />
+</h3>
+<p>
+	替换文本中的字符串：
+</p>
+<pre>
+sed &#39;<span style="color:#f00;">s</span>/book/books/&#39; file</pre>
+<p>
+	<strong>-n选项</strong>和<strong>p命令</strong>一起使用表示只打印那些发生替换的行：
+</p>
+<p>
+	sed <span style="color:#f00;">-n</span> &#39;s/<span class='wp_keywordlink'><a href="http://man.linuxde.net/test" title="test命令" target="_blank">test</a></span>/TEST/<span style="color:#f00;">p</span>&#39; file
+</p>
+<p>
+	直接编辑文件<strong>选项-i</strong>，会匹配file文件中每一行的第一个book替换为books：
+</p>
+<pre>
+sed <span style="color:#f00;">-i</span> &#39;s/book/books/g&#39; file</pre>
+<h3 id="全面替换标记g">
+	全面替换标记g<br />
+</h3>
+<p>
+	使用后缀 /g 标记会替换每一行中的所有匹配：
+</p>
+<pre>
+sed &#39;s/book/books/<span style="color:#f00;">g</span>&#39; file</pre>
+<p>
+	当需要从第N处匹配开始替换时，可以使用 /Ng：
+</p>
+<pre>
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/echo" title="echo命令" target="_blank">echo</a></span> sksksksksksk | sed &#39;s/sk/SK/<span style="color:#f00;">2g</span>&#39;
+skSKSKSKSKSK
+
+echo sksksksksksk | sed &#39;s/sk/SK/<span style="color:#f00;">3g</span>&#39;
+skskSKSKSKSK
+
+echo sksksksksksk | sed &#39;s/sk/SK/<span style="color:#f00;">4g</span>&#39;
+skskskSKSKSK</pre>
+<h3 id="定界符">
+	定界符<br />
+</h3>
+<p>
+	以上命令中字符 / 在sed中作为定界符使用，也可以使用任意的定界符：
+</p>
+<pre>
+sed &#39;s:test:TEXT:g&#39;
+sed &#39;s|test|TEXT|g&#39;</pre>
+<p>
+	定界符出现在样式内部时，需要进行转义：
+</p>
+<pre>
+sed &#39;s/\/bin/\/usr\/local\/bin/g&#39;</pre>
+<h3 id="删除操作：d命令">
+	删除操作：d命令<br />
+</h3>
+<p>
+	删除空白行：
+</p>
+<pre>
+sed &#39;<span style="color:#f00;">/^$/d</span>&#39; file</pre>
+<p>
+	删除文件的第2行：
+</p>
+<pre>
+sed &#39;<span style="color:#f00;">2d</span>&#39; file</pre>
+<p>
+	删除文件的第2行到末尾所有行：
+</p>
+<pre>
+sed &#39;<span style="color:#f00;">2,$d</span>&#39; file</pre>
+<p>
+	删除文件最后一行：
+</p>
+<pre>
+sed &#39;<span style="color:#f00;">$d</span>&#39; file</pre>
+<p>
+	删除文件中所有开头是test的行：
+</p>
+<pre>
+sed &#39;/<span style="color:#f00;">^test</span>/&#39;<span style="color:#f00;">d</span> file</pre>
+<h3 id="已匹配字符串标记&amp;">
+	已匹配字符串标记&amp;<br />
+</h3>
+<p>
+	正则表达式 \w\+ 匹配每一个单词，使用 [&amp;] 替换它，&amp; 对应于之前所匹配到的单词：
+</p>
+<pre>
+echo this is a test line | sed &#39;s/\w\+/[<span style="color:#f00;">&amp;</span>]/g&#39;
+[this] [is] [a] [test] [line]</pre>
+<p>
+	所有以192.168.0.1开头的行都会被替换成它自已加localhost：
+</p>
+<pre>
+sed &#39;s/^192.168.0.1/<span style="color:#f00;">&amp;</span>localhost/&#39; file
+192.168.0.1localhost</pre>
+<h3 id="子串匹配标记<h3">
+	子串匹配标记\1<br />
+</h3>
+<p>
+	匹配给定样式的其中一部分：
+</p>
+<pre>
+echo this is digit 7 in a number | sed &#39;s/digit \([0-9]\)/<span style="color:#f00;">\1</span>/&#39;
+this is 7 in a number</pre>
+<p>
+	命令中 digit 7，被替换成了 7。样式匹配到的子串是 7，\(..\) 用于匹配子串，对于匹配到的第一个子串就标记为 <strong>\1</strong>，依此类推匹配到的第二个结果就是 <strong>\2</strong>，例如：
+</p>
+<pre>
+echo aaa BBB | sed &#39;s/\([a-z]\+\) \([A-Z]\+\)/<span style="color:#f00;">\2</span> <span style="color:#f00;">\1</span>/&#39;
+BBB aaa</pre>
+<p>
+	love被标记为1，所有loveable会被替换成lovers，并打印出来：
+</p>
+<pre>
+sed -n &#39;s/\(love\)able/<span style="color:#f00;">\1</span>rs/p&#39; file</pre>
+<h3 id="组合多个表达式">
+	组合多个表达式<br />
+</h3>
+<pre>
+sed &#39;表达式&#39; | sed &#39;表达式&#39;
+
+等价于：
+
+sed &#39;表达式<span style="color:#f00;">;</span> 表达式&#39;</pre>
+<h3 id="引用">
+	引用<br />
+</h3>
+<p>
+	sed表达式可以使用单引号来引用，但是如果表达式内部包含变量字符串，就需要使用双引号。
+</p>
+<pre>
+test=hello
+echo hello WORLD | sed <span style="color:#f00;">&quot;</span>s/$test/HELLO<span style="color:#f00;">&quot;</span>
+HELLO WORLD</pre>
+<h3 id="选定行的范围：,（逗号）">
+	选定行的范围：,（逗号）<br />
+</h3>
+<p>
+	所有在模板test和check所确定的范围内的行都被打印：
+</p>
+<pre>
+sed -n &#39;/test/<span style="color:#f00;">,</span>/check/p&#39; file</pre>
+<p>
+	打印从第5行开始到第一个包含以test开始的行之间的所有行：
+</p>
+<pre>
+sed -n &#39;5<span style="color:#f00;">,</span>/^test/p&#39; file</pre>
+<p>
+	对于模板test和west之间的行，每行的末尾用字符串aaa bbb替换：
+</p>
+<pre>
+sed &#39;/test/<span style="color:#f00;">,</span>/west/s/$/aaa bbb/&#39; file</pre>
+<h3 id="多点编辑：e命令">
+	多点编辑：e命令<br />
+</h3>
+<p>
+	-e选项允许在同一行里执行多条命令：
+</p>
+<pre>
+sed <span style="color:#f00;">-e</span> &#39;1,5d&#39; <span style="color:#f00;">-e</span> &#39;s/test/check/&#39; file</pre>
+<p>
+	上面sed表达式的第一条命令删除1至5行，第二条命令用check替换test。命令的执行顺序对结果有影响。如果两个命令都是替换命令，那么第一个替换命令将影响第二个替换命令的结果。
+</p>
+<p>
+	和 -e 等价的命令是 --expression：
+</p>
+<pre>
+sed <span style="color:#f00;">--expression=</span>&#39;s/test/check/&#39; <span style="color:#f00;">--expression=</span>&#39;/love/d&#39; file</pre>
+<h3 id="从文件读入：r命令">
+	从文件读入：r命令<br />
+</h3>
+<p>
+	file里的内容被读进来，显示在与test匹配的行后面，如果匹配多行，则file的内容将显示在所有匹配行的下面：
+</p>
+<pre>
+sed &#39;/test/<span style="color:#f00;">r</span> file&#39; filename</pre>
+<h3 id="写入文件：w命令 &nbsp;">
+	写入文件：w命令 &nbsp;<br />
+</h3>
+<p>
+	在example中所有包含test的行都被写入file里：
+</p>
+<pre>
+sed -n &#39;/test/<span style="color:#f00;">w</span> file&#39; example</pre>
+<h3 id="追加（行下）：a\命令">
+	追加（行下）：a\命令<br />
+</h3>
+<p>
+	将 this is a test line 追加到 以test 开头的行后面：
+</p>
+<pre>
+sed &#39;/^test/<span style="color:#f00;">a\</span>this is a test line&#39; file</pre>
+<p>
+	在 test.conf 文件第2行之后插入 this is a test line：
+</p>
+<pre>
+sed -i &#39;2<span style="color:#f00;">a\</span>this is a test line&#39; test.conf</pre>
+<h3 id="插入（行上）：i\命令">
+	插入（行上）：i\命令<br />
+</h3>
+<p>
+	将 this is a test line 追加到以test开头的行前面：
+</p>
+<pre>
+sed &#39;/^test/<span style="color:#f00;">i\</span>this is a test line&#39; file</pre>
+<p>
+	在test.conf文件第5行之前插入this is a test line：
+</p>
+<pre>
+sed -i &#39;5<span style="color:#f00;">i\</span>this is a test line&#39; test.conf</pre>
+<h3 id="下一个：n命令">
+	下一个：n命令<br />
+</h3>
+<p>
+	如果test被匹配，则移动到匹配行的下一行，替换这一行的aa，变为bb，并打印该行，然后继续：
+</p>
+<pre>
+sed &#39;/test/{ <span style="color:#f00;">n</span>; s/aa/bb/; }&#39; file</pre>
+<h3 id="变形：y命令">
+	变形：y命令<br />
+</h3>
+<p>
+	把1~10行内所有abcde转变为大写，注意，正则表达式元字符不能使用这个命令：
+</p>
+<pre>
+sed &#39;1,10<span style="color:#f00;">y</span>/abcde/ABCDE/&#39; file</pre>
+<h3 id="退出：q命令">
+	退出：q命令<br />
+</h3>
+<p>
+	打印完第10行后，退出sed
+</p>
+<pre>
+sed &#39;10<span style="color:#f00;">q</span>&#39; file</pre>
+<h3 id="保持和获取：h命令和G命令">
+	保持和获取：h命令和G命令<br />
+</h3>
+<p>
+	在sed处理文件的时候，每一行都被保存在一个叫模式空间的临时缓冲区中，除非行被删除或者输出被取消，否则所有被处理的行都将 打印在屏幕上。接着模式空间被清空，并存入新的一行等待处理。
+</p>
+<pre>
+sed -e &#39;/test/<span style="color:#f00;">h</span>&#39; -e &#39;<span style="color:#f00;">$G</span>&#39; file</pre>
+<p>
+	在这个例子里，匹配test的行被找到后，将存入模式空间，h命令将其复制并存入一个称为保持缓存区的特殊缓冲区内。第二条语句的意思是，当到达最后一行后，G命令取出保持缓冲区的行，然后把它放回模式空间中，且追加到现在已经存在于模式空间中的行的末尾。在这个例子中就是追加到最后一行。简单来说，任何包含test的行都被复制并追加到该文件的末尾。
+</p>
+<h3 id="保持和互换：h命令和x命令">
+	保持和互换：h命令和x命令<br />
+</h3>
+<p>
+	互换模式空间和保持缓冲区的内容。也就是把包含test与check的行互换：
+</p>
+<pre>
+sed -e &#39;/test/<span style="color:#f00;">h</span>&#39; -e &#39;/check/<span style="color:#f00;">x</span>&#39; file</pre>
+<h3 id="脚本scriptfile">
+	脚本scriptfile<br />
+</h3>
+<p>
+	sed脚本是一个sed的命令清单，启动Sed时以-f选项引导脚本文件名。Sed对于脚本中输入的命令非常挑剔，在命令的末尾不能有任何空白或文本，如果在一行中有多个命令，要用分号分隔。以#开头的行为注释行，且不能跨行。
+</p>
+<pre>
+sed [options] <span style="color:#f00;">-f scriptfile</span> file(s)</pre>
+<h3 id="打印奇数行或偶数行">
+	打印奇数行或偶数行<br />
+</h3>
+<p>
+	方法1：
+</p>
+<pre>
+sed -n &#39;<span style="color:#f00;">p;n</span>&#39; test.txt  #奇数行
+sed -n &#39;<span style="color:#f00;">n;p</span>&#39; test.txt  #偶数行
+</pre>
+<p>
+	方法2：
+</p>
+<pre>
+sed -n &#39;<span style="color:#f00;">1~2p</span>&#39; test.txt  #奇数行
+sed -n &#39;<span style="color:#f00;">2~2p</span>&#39; test.txt  #偶数行
+</pre>
+<h3 id="打印匹配字符串的下一行">
+	打印匹配字符串的下一行<br />
+</h3>
+<pre>
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/grep" title="grep命令" target="_blank">grep</a></span> -A 1 SCC URFILE
+sed -n &#39;/SCC/{n;p}&#39; URFILE
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/awk" title="awk命令" target="_blank">awk</a></span> &#39;/SCC/{getline; print}&#39; URFILE
+</pre>
+        </div>
+        <div class="post_ft">
+            <div class="title">最近更新的命令</div>
+            <ul>
+                <li><a href="http://man.linuxde.net/cut" title="cut">cut</a></li><li><a href="http://man.linuxde.net/sh" title="sh">sh</a></li><li><a href="http://man.linuxde.net/seq" title="seq">seq</a></li><li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li><li><a href="http://man.linuxde.net/syslog" title="syslog">syslog</a></li><li><a href="http://man.linuxde.net/inotifywait" title="inotifywait">inotifywait</a></li><li><a href="http://man.linuxde.net/dd" title="dd">dd</a></li><li><a href="http://man.linuxde.net/read" title="read">read</a></li><li><a href="http://man.linuxde.net/uname" title="uname">uname</a></li><li><a href="http://man.linuxde.net/pssh" title="pssh">pssh</a></li><li><a href="http://man.linuxde.net/tar" title="tar">tar</a></li><li><a href="http://man.linuxde.net/axel" title="axel">axel</a></li><li><a href="http://man.linuxde.net/losetup" title="losetup">losetup</a></li><li><a href="http://man.linuxde.net/lsb_release" title="lsb_release">lsb_release</a></li><li><a href="http://man.linuxde.net/tcpreplay" title="tcpreplay">tcpreplay</a></li><li><a href="http://man.linuxde.net/strings" title="strings">strings</a></li><li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li><li><a href="http://man.linuxde.net/speedtest-cli" title="speedtest-cli">speedtest-cli</a></li><li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li><li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li><li><a href="http://man.linuxde.net/dnf" title="dnf">dnf</a></li><li><a href="http://man.linuxde.net/nethogs" title="nethogs">nethogs</a></li><li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li><li><a href="http://man.linuxde.net/trap" title="trap">trap</a></li><li><a href="http://man.linuxde.net/let" title="let">let</a></li><li><a href="http://man.linuxde.net/ifstat" title="ifstat">ifstat</a></li><li><a href="http://man.linuxde.net/blkid" title="blkid">blkid</a></li><li><a href="http://man.linuxde.net/ipcrm" title="ipcrm">ipcrm</a></li><li><a href="http://man.linuxde.net/openssl" title="openssl">openssl</a></li><li><a href="http://man.linuxde.net/chage" title="chage">chage</a></li>            </ul>
+        </div>
+        <div id="comments">
+            <!-- You can start editing here. -->
+        </div>
+    </div>
+    
+<div class="sidebar">
+    <div class="widget related">
+        <div class="hd">
+            <h3>相关命令</h3>
+        </div>
+        <div class="bd">
+            <ul>
+                            <li><a href="http://man.linuxde.net/ex" title="ex">ex</a></li>
+                <li><a href="http://man.linuxde.net/pico" title="pico">pico</a></li>
+                <li><a href="http://man.linuxde.net/joe" title="joe">joe</a></li>
+                <li><a href="http://man.linuxde.net/nano" title="nano">nano</a></li>
+                <li><a href="http://man.linuxde.net/vi" title="vi">vi</a></li>
+                <li><a href="http://man.linuxde.net/jed" title="jed">jed</a></li>
+                <li><a href="http://man.linuxde.net/ed" title="ed">ed</a></li>
+                <li><a href="http://man.linuxde.net/emacs" title="emacs">emacs</a></li>
+                </ul>
+        </div>
+    </div>
+    <div id="fixedBox">
+        <div id="float" class="dbox">
+            <div class="sidebar_search_box">
+                <form action="http://man.linuxde.net/">
+                    <input type="text" name="s" id="sidebar_search" value="命令搜索" onFocus="if (value =='命令搜索'){value =''}" onBlur="if (value ==''){value='命令搜索'}" />
+                </form>
+                <form action="http://man.linuxde.net/" method="post">
+                    <input type="text" name="ss" id="sidebar_search" value="命令直达" onFocus="if (value =='命令直达'){value =''}" onBlur="if (value ==''){value='命令直达'}" />
+                </form>
+            </div>
+            <div class="widget ad"> 
+				<!--
+				<script type="text/javascript">
+					document.write('<a style="display:none!important" id="tanx-a-mm_22964816_6616438_33736229"></a>');
+					tanx_s = document.createElement("script");
+					tanx_s.type = "text/javascript";
+					tanx_s.charset = "gbk";
+					tanx_s.id = "tanx-s-mm_22964816_6616438_33736229";
+					tanx_s.async = true;
+					tanx_s.src = "http://p.tanx.com/ex?i=mm_22964816_6616438_33736229";
+					tanx_h = document.getElementsByTagName("head")[0];
+					if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+				</script>
+				-->
+				<a title="linux马克杯" href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DbWlkMAz37zAcQipKwQzePDAVflQIoZepLKpWJ%2Bin0XJRAdhuF14FMdl7wKby%2Bc%2FExq3IhSJN6GSAAkUL03DNGUpamuccnq1qrmvEga4qAXJgE5NxN1hjMoxodiO%2Bbyu%2BIYULNg46oBA%3D" target="_blank"><img src="http://112.124.15.130/res/linuxde_man/images/s-ad.jpg" alt="linux马克杯"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="layout layout_ft">
+    <div class="footer">
+        <div class="copyright">
+            <a href="http://man.linuxde.net/" title="Linux命令大全">Linux命令大全</a>
+            <em class="sx"></em>
+            <a href="http://man.linuxde.net/about_us" title="关于">关于</a>
+            <em class="sx"></em>
+			收藏本站请使用Ctrl+D
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/shell-script" target="_blank">Shell脚本攻略</a>
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/docs/shell_regex.html" target="_blank">Shell正则表达式</a>
+			<em class="sx"></em>
+			共收录528条Linux系统指令
+        </div>
+        <div class="des">在Linux命令大全（man.linuxde.net）可以查询您所需要的Linux命令教程和相关实例。如果您觉得本站内容对您有所帮助，请推荐给更多需要帮助的人。</div>
+        <div class="info">
+		赞助商链接：<a href="http://www.1987.name/" target="_blank">组装电脑配置清单2017</a>,　运行在<a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DvTDIoAjlYzMcQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAhYdwmcpX19FpcfgoZBkhQKMhxXrDnK9L8ge8W1gUmbKFOH2PYQYfJNjOghCi4TzwOdn1BbglxZYxUhy8exlzcq9AmARIwX9K2Zg%2BdzdQFOwfMRvoxSVDSdLyrb2g0H2G5JcxXijM%2BwneEHpPTskRHknGN7svee8j7S4un6ZpbmpIYULNg46oBA%3D" target="_blank">阿里云服务器</a>！
+		</div>
+    </div>
+</div>
+</div>
+<!--js-->
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/sitejs.js"></script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div style="display:none"><script src="http://s17.cnzz.com/stat.php?id=5762282&web_id=5762282" language="JavaScript"></script></div>
+
+<!--活动推广
+<script type="text/javascript" src="http://112.124.15.130/res/ad/ad.js"></script>
+<style type="text/css">
+.ad-box{width:240px;height:277px;background:#CCC;position:fixed;right:-240px;bottom:10px;}
+.ad-img{position:relative;overflow:hidden;}
+.ad-close{width:30px;height:22px;line-height:22px;display:block;top:10px;right:10px;position:absolute;}
+</style>
+<div class="ad-box">
+    <div class="ad-img">
+        <a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DuGXlvKu7Iv4cQipKwQzePCperVdZeJviK7Vc7tFgwiFRAdhuF14FMZQUNi%2Bb4SgsMMgx22UI05aAAkUL03DNGT6XZIOJR7dCTAHi9HSRVmdzguIHwwNmQ6UuZxIcp9pfUIgVEmFmgnbDX0%2BHH2IEVaX4VWt66S4EJPwiig1bxLP9BvYCQR6XAr%2BKQ71wHNCAqP8YyUoZZlq4cXg3ii9waXPs9Sj9Qli1np4c65at3FeX3cwyLTlAhj2l4PysJx%2FP" target="_blank"><img src="http://112.124.15.130/res/ad/1111.jpg"></a>
+        <a href="javascript:" class="ad-close">关闭</a>
+    </div>
+</div>
+<!--推广结束-->
+
+</body></html>

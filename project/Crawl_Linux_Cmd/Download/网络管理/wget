@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="renderer" content="webkit">
+<title>
+wget命令_Linux wget 命令用法详解：Linux系统下载文件工具</title>
+<link rel="shortcut icon" href="http://man.linuxde.net/favicon.ico" type="image/x-icon" />
+<link rel="pingback" href="http://man.linuxde.net/xmlrpc.php" />
+<link href="http://112.124.15.130/res/linuxde_man/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/jquery-1.8.3.min.js"></script>
+<!--[if IE 6]>
+<script src="http://112.124.15.130/res/linuxde_man/js/belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('*');</script>
+<script src="http://letskillie6.googlecode.com/svn/trunk/letskillie6.zh_CN.pack.js"></script>
+<![endif]-->
+<link rel='canonical' href='http://man.linuxde.net/wget' />
+</head>
+<body>
+<noscript>
+<p class="nojs">您的浏览器已经禁用了脚本，这会严重影响您正常使用本站的功能，请开启！</p>
+</noscript>
+<div class="man_linuxde_net_page">
+<div class="layout_hd">
+    <div class="logo l">
+        <h2><a title="Linux命令大全" href="http://man.linuxde.net/">
+            Linux命令大全            </a></h2>
+    </div>
+    <div class="nav r"><ul id="menu-%e8%8f%9c%e5%8d%951" class="menu"><li id="menu-item-4" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-4"><a href="http://man.linuxde.net/">首页搜索</a></li>
+<li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-6"><a href="http://man.linuxde.net/par/2">系统管理</a></li>
+<li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-7"><a href="http://man.linuxde.net/par/5">网络管理</a></li>
+<li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8"><a href="http://man.linuxde.net/par/4">软件·打印·开发·工具</a></li>
+<li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9"><a href="http://man.linuxde.net/par/1">文件和目录管理</a></li>
+<li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://man.linuxde.net/par/3">硬件·内核·Shell·监测</a></li>
+<li id="menu-item-2096" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2096"><a target="_blank" href="http://www.linuxde.net">Linux Today</a></li>
+</ul></div>    <div class="c"></div>
+</div>
+<div class="layout layout_bd">
+<script type='text/javascript'>
+function addLink() {
+    var body_element = document.getElementsByTagName('body')[0];
+    var selection;
+    selection = window.getSelection();
+    var pagelink = "<br /><br /> 来自: <a href='"+document.location.href+"'>"+document.location.href+"</a>"; 
+    var copy_text = selection + pagelink;
+    var new_div = document.createElement('div');
+    new_div.style.left='-99999px';
+    new_div.style.position='absolute';
+    body_element.appendChild(new_div );
+    new_div.innerHTML = copy_text ;
+    selection.selectAllChildren(new_div );
+    window.setTimeout(function() {
+        body_element.removeChild(new_div );
+    },0);
+}
+document.oncopy = addLink;
+</script>
+<div class="single_default">
+        <div class="main">
+        <div class="breadcrumb">当前位置：<a href="http://man.linuxde.net">首页</a> &raquo; <a href="http://man.linuxde.net/par/5" rel="category tag">网络管理</a> &raquo; wget</div>
+        <div class="post_hd clearfix">
+            <h1 class="l">wget命令</h1>
+            <div class="tag f_yh r">
+                <a href="http://man.linuxde.net/sub/%e7%bd%91%e7%bb%9c%e5%ba%94%e7%94%a8" rel="tag">网络应用</a>            </div>
+        </div>
+        <div class="post_bd post">
+            <p>
+	<strong>wget命令</strong>用来从指定的URL下载文件。wget非常稳定，它在带宽很窄的情况下和不稳定网络中有很强的适应性，如果是由于网络的原因下载失败，wget会不断的尝试，直到整个文件下载完毕。如果是服务器打断下载过程，它会再次联到服务器上从停止的地方继续下载。这对从那些限定了链接时间的服务器上下载大文件非常有用。
+</p>
+<h3>
+	语法<br />
+</h3>
+<pre>
+wget(选项)(参数)</pre>
+<h3>
+	选项<br />
+</h3>
+<pre>
+-a&lt;日志文件&gt;：在指定的日志文件中记录资料的执行过程；
+-A&lt;后缀名&gt;：指定要下载文件的后缀名，多个后缀名之间使用逗号进行分隔；
+-b：进行后台的方式运行wget；
+-B&lt;连接地址&gt;：设置参考的连接地址的基地地址；
+-c：继续执行上次终端的任务；
+-C&lt;标志&gt;：设置服务器数据块功能标志on为激活，off为关闭，默认值为on；
+-d：调试模式运行指令；
+-D&lt;域名列表&gt;：设置顺着的域名列表，域名之间用&ldquo;，&rdquo;分隔；
+-e&lt;指令&gt;：作为文件&ldquo;.wgetrc&rdquo;中的一部分执行指定的指令；
+-h：显示指令帮助信息；
+-i&lt;文件&gt;：从指定文件获取要下载的URL地址；
+-l&lt;目录列表&gt;：设置顺着的目录列表，多个目录用&ldquo;，&rdquo;分隔；
+-L：仅顺着关联的连接；
+-r：递归下载方式；
+-<span class='wp_keywordlink'><a href="http://man.linuxde.net/nc_netcat" title="nc命令" target="_blank">nc</a></span>：文件存在时，下载文件不覆盖原有文件；
+-nv：下载时只显示更新和出错信息，不显示指令的详细执行过程；
+-q：不显示指令执行过程；
+-nh：不查询主机名称；
+-v：显示详细执行过程；
+-V：显示版本信息；
+--passive-<span class='wp_keywordlink'><a href="http://man.linuxde.net/ftp" title="ftp命令" target="_blank">ftp</a></span>：使用被动模式PASV连接FTP服务器；
+--follow-ftp：从HTML文件中下载FTP连接文件。</pre>
+<h3>
+	参数<br />
+</h3>
+<p>
+	URL：下载指定的URL地址。
+</p>
+<h3>
+	实例<br />
+</h3>
+<p>
+	<strong>使用wget下载单个文件</strong>
+</p>
+<pre>
+wget http://www.linuxde.net/testfile.<span class='wp_keywordlink'><a href="http://man.linuxde.net/zip" title="zip命令" target="_blank">zip</a></span></pre>
+<p>
+	以下的例子是从网络下载一个文件并保存在当前目录，在下载的过程中会显示进度条，包含（下载完成百分比，已经下载的字节，当前下载速度，剩余下载时间）。
+</p>
+<p>
+	<strong>下载并以不同的文件名保存</strong>
+</p>
+<pre>
+wget -O wordpress.zip http://www.linuxde.net/download.aspx?<span class='wp_keywordlink'><a href="http://man.linuxde.net/id" title="id命令" target="_blank">id</a></span>=1080</pre>
+<p>
+	wget默认会以最后一个符合<code>/</code>的后面的字符来命令，对于动态链接的下载通常文件名会不正确。
+</p>
+<p>
+	<span style="color:#FF0000;">错误：</span>下面的例子会下载一个文件并以名称<code>download.aspx?id=1080</code>保存:
+</p>
+<pre>
+wget http://www.linuxde.net/download?id=1</pre>
+<p>
+	即使下载的文件是zip格式，它仍然以<code>download.<span class='wp_keywordlink'><a href="http://man.linuxde.net/php" title="php命令" target="_blank">php</a></span>?id=1080</code>命令。
+</p>
+<p>
+	<span style="color:#008000;">正确：</span>为了解决这个问题，我们可以使用参数<code>-O</code>来指定一个文件名：
+</p>
+<pre>
+wget -O wordpress.zip http://www.linuxde.net/download.aspx?id=1080</pre>
+<p>
+	<strong>wget限速下载</strong>
+</p>
+<pre>
+wget --limit-rate=300k http://www.linuxde.net/testfile.zip</pre>
+<p>
+	当你执行wget的时候，它默认会占用全部可能的宽带下载。但是当你准备下载一个大文件，而你还需要下载其它文件时就有必要限速了。
+</p>
+<p>
+	<strong>使用wget断点续传</strong>
+</p>
+<pre>
+wget -c http://www.linuxde.net/testfile.zip</pre>
+<p>
+	使用<code>wget&nbsp;-c</code>重新启动下载中断的文件，对于我们下载大文件时突然由于网络等原因中断非常有帮助，我们可以继续接着下载而不是重新下载一个文件。需要继续中断的下载时可以使用<code>-c</code>参数。
+</p>
+<p>
+	<strong>使用wget后台下载</strong>
+</p>
+<pre>
+wget -b http://www.linuxde.net/testfile.zip
+
+Continuing in background, pid 1840.
+Output will be written to `wget-log&#39;.</pre>
+<p>
+	对于下载非常大的文件的时候，我们可以使用参数<code>-b</code>进行后台下载，你可以使用以下命令来察看下载进度：
+</p>
+<pre>
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/tail" title="tail命令" target="_blank">tail</a></span> -f wget-log</pre>
+<p>
+	<strong>伪装代理名称下载</strong>
+</p>
+<pre>
+wget --user-agent=&quot;Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.204 Safari/534.16&quot; http://www.linuxde.net/testfile.zip</pre>
+<p>
+	有些网站能通过根据判断代理名称不是浏览器而拒绝你的下载请求。不过你可以通过<code>--user-agent</code>参数伪装。
+</p>
+<p>
+	<strong>测试下载链接</strong>
+</p>
+<p>
+	当你打算进行定时下载，你应该在预定时间测试下载链接是否有效。我们可以增加<code>--spider</code>参数进行检查。
+</p>
+<pre>
+wget --spider URL</pre>
+<p>
+	如果下载链接正确，将会显示:
+</p>
+<pre>
+Spider mode enabled. Check if remote <span class='wp_keywordlink'><a href="http://man.linuxde.net/file" title="file命令" target="_blank">file</a></span> exists.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/html]
+Remote file exists and could contain further links,
+but recursion is disabled -- not retrieving.</pre>
+<p>
+	这保证了下载能在预定的时间进行，但当你给错了一个链接，将会显示如下错误:
+</p>
+<pre>
+wget --spider url
+Spider mode enabled. Check if remote file exists.
+HTTP request sent, awaiting response... 404 Not Found
+Remote file does not exist -- broken link!!!</pre>
+<p>
+	你可以在以下几种情况下使用<code>--spider</code>参数：
+</p>
+<ul>
+<li>
+		定时下载之前进行检查
+	</li>
+<li>
+		间隔检测网站是否可用
+	</li>
+<li>
+		检查网站页面的死链接
+	</li>
+</ul>
+<p>
+	<strong>增加重试次数</strong>
+</p>
+<pre>
+wget --tries=40 URL</pre>
+<p>
+	如果网络有问题或下载一个大文件也有可能失败。wget默认重试20次连接下载文件。如果需要，你可以使用<code>--tries</code>增加重试次数。
+</p>
+<p>
+	<strong>下载多个文件</strong>
+</p>
+<pre>
+wget -i filelist.txt</pre>
+<p>
+	首先，保存一份下载链接文件：
+</p>
+<pre>
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/cat" title="cat命令" target="_blank">cat</a></span> &gt; filelist.txt
+url1
+url2
+url3
+url4</pre>
+<p>
+	接着使用这个文件和参数<code>-i</code>下载。
+</p>
+<p>
+	<strong>镜像网站</strong>
+</p>
+<pre>
+wget --mirror -p --convert-links -P ./LOCAL URL</pre>
+<p>
+	下载整个网站到本地。
+</p>
+<ul>
+<li>
+		<code>--miror</code>开户镜像下载。
+	</li>
+<li>
+		<code>-p</code>下载所有为了html页面显示正常的文件。
+	</li>
+<li>
+		<code>--convert-links</code>下载后，转换成本地的链接。
+	</li>
+<li>
+		<code>-P&nbsp;./LOCAL</code>保存所有文件和目录到本地指定目录。
+	</li>
+</ul>
+<p>
+	<strong>过滤指定格式下载</strong>
+</p>
+<pre>
+wget --<span class='wp_keywordlink'><a href="http://man.linuxde.net/reject" title="reject命令" target="_blank">reject</a></span>=gif ur</pre>
+<p>
+	下载一个网站，但你不希望下载图片，可以使用这条命令。
+</p>
+<p>
+	<strong>把下载信息存入日志文件</strong>
+</p>
+<pre>
+wget -o download.log URL</pre>
+<p>
+	不希望下载信息直接显示在终端而是在一个日志文件，可以使用。
+</p>
+<p>
+	<strong>限制总下载文件大小</strong>
+</p>
+<pre>
+wget -Q5m -i filelist.txt</pre>
+<p>
+	当你想要下载的文件超过5M而退出下载，你可以使用。注意：这个参数对单个文件下载不起作用，只能递归下载时才有效。
+</p>
+<p>
+	<strong>下载指定格式文件</strong>
+</p>
+<pre>
+wget -r -A.pdf url</pre>
+<p>
+	可以在以下情况使用该功能：
+</p>
+<ul>
+<li>
+		下载一个网站的所有图片。
+	</li>
+<li>
+		下载一个网站的所有视频。
+	</li>
+<li>
+		下载一个网站的所有PDF文件。
+	</li>
+</ul>
+<p>
+	<strong>FTP下载</strong>
+</p>
+<pre>
+wget ftp-url
+wget --ftp-user=USERNAME --ftp-password=PASSWORD url</pre>
+<p>
+	可以使用wget来完成ftp链接的下载。
+</p>
+<p>
+	使用wget匿名ftp下载：
+</p>
+<pre>
+wget ftp-url</pre>
+<p>
+	使用wget用户名和密码认证的ftp下载：
+</p>
+<pre>
+wget --ftp-user=USERNAME --ftp-password=PASSWORD url</pre>
+        </div>
+        <div class="post_ft">
+            <div class="title">最近更新的命令</div>
+            <ul>
+                <li><a href="http://man.linuxde.net/cut" title="cut">cut</a></li><li><a href="http://man.linuxde.net/sh" title="sh">sh</a></li><li><a href="http://man.linuxde.net/seq" title="seq">seq</a></li><li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li><li><a href="http://man.linuxde.net/syslog" title="syslog">syslog</a></li><li><a href="http://man.linuxde.net/inotifywait" title="inotifywait">inotifywait</a></li><li><a href="http://man.linuxde.net/dd" title="dd">dd</a></li><li><a href="http://man.linuxde.net/read" title="read">read</a></li><li><a href="http://man.linuxde.net/uname" title="uname">uname</a></li><li><a href="http://man.linuxde.net/pssh" title="pssh">pssh</a></li><li><a href="http://man.linuxde.net/tar" title="tar">tar</a></li><li><a href="http://man.linuxde.net/axel" title="axel">axel</a></li><li><a href="http://man.linuxde.net/losetup" title="losetup">losetup</a></li><li><a href="http://man.linuxde.net/lsb_release" title="lsb_release">lsb_release</a></li><li><a href="http://man.linuxde.net/tcpreplay" title="tcpreplay">tcpreplay</a></li><li><a href="http://man.linuxde.net/strings" title="strings">strings</a></li><li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li><li><a href="http://man.linuxde.net/speedtest-cli" title="speedtest-cli">speedtest-cli</a></li><li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li><li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li><li><a href="http://man.linuxde.net/dnf" title="dnf">dnf</a></li><li><a href="http://man.linuxde.net/nethogs" title="nethogs">nethogs</a></li><li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li><li><a href="http://man.linuxde.net/trap" title="trap">trap</a></li><li><a href="http://man.linuxde.net/let" title="let">let</a></li><li><a href="http://man.linuxde.net/ifstat" title="ifstat">ifstat</a></li><li><a href="http://man.linuxde.net/blkid" title="blkid">blkid</a></li><li><a href="http://man.linuxde.net/ipcrm" title="ipcrm">ipcrm</a></li><li><a href="http://man.linuxde.net/openssl" title="openssl">openssl</a></li><li><a href="http://man.linuxde.net/chage" title="chage">chage</a></li>            </ul>
+        </div>
+        <div id="comments">
+            <!-- You can start editing here. -->
+        </div>
+    </div>
+    
+<div class="sidebar">
+    <div class="widget related">
+        <div class="hd">
+            <h3>相关命令</h3>
+        </div>
+        <div class="bd">
+            <ul>
+                            <li><a href="http://man.linuxde.net/rexec" title="rexec">rexec</a></li>
+                <li><a href="http://man.linuxde.net/mail" title="mail">mail</a></li>
+                <li><a href="http://man.linuxde.net/rlogin" title="rlogin">rlogin</a></li>
+                <li><a href="http://man.linuxde.net/mailstat" title="mailstat">mailstat</a></li>
+                <li><a href="http://man.linuxde.net/elinks" title="elinks">elinks</a></li>
+                <li><a href="http://man.linuxde.net/lynx" title="lynx">lynx</a></li>
+                <li><a href="http://man.linuxde.net/rsh" title="rsh">rsh</a></li>
+                <li><a href="http://man.linuxde.net/telnet" title="telnet">telnet</a></li>
+                <li><a href="http://man.linuxde.net/axel" title="axel">axel</a></li>
+                <li><a href="http://man.linuxde.net/ipcalc" title="ipcalc">ipcalc</a></li>
+                <li><a href="http://man.linuxde.net/curl" title="curl">curl</a></li>
+                <li><a href="http://man.linuxde.net/jwhois" title="jwhois">jwhois</a></li>
+                <li><a href="http://man.linuxde.net/elm" title="elm">elm</a></li>
+                <li><a href="http://man.linuxde.net/lftpget" title="lftpget">lftpget</a></li>
+                <li><a href="http://man.linuxde.net/mailq" title="mailq">mailq</a></li>
+                <li><a href="http://man.linuxde.net/lftp" title="lftp">lftp</a></li>
+                </ul>
+        </div>
+    </div>
+    <div id="fixedBox">
+        <div id="float" class="dbox">
+            <div class="sidebar_search_box">
+                <form action="http://man.linuxde.net/">
+                    <input type="text" name="s" id="sidebar_search" value="命令搜索" onFocus="if (value =='命令搜索'){value =''}" onBlur="if (value ==''){value='命令搜索'}" />
+                </form>
+                <form action="http://man.linuxde.net/" method="post">
+                    <input type="text" name="ss" id="sidebar_search" value="命令直达" onFocus="if (value =='命令直达'){value =''}" onBlur="if (value ==''){value='命令直达'}" />
+                </form>
+            </div>
+            <div class="widget ad"> 
+				<!--
+				<script type="text/javascript">
+					document.write('<a style="display:none!important" id="tanx-a-mm_22964816_6616438_33736229"></a>');
+					tanx_s = document.createElement("script");
+					tanx_s.type = "text/javascript";
+					tanx_s.charset = "gbk";
+					tanx_s.id = "tanx-s-mm_22964816_6616438_33736229";
+					tanx_s.async = true;
+					tanx_s.src = "http://p.tanx.com/ex?i=mm_22964816_6616438_33736229";
+					tanx_h = document.getElementsByTagName("head")[0];
+					if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+				</script>
+				-->
+				<a title="linux马克杯" href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DbWlkMAz37zAcQipKwQzePDAVflQIoZepLKpWJ%2Bin0XJRAdhuF14FMdl7wKby%2Bc%2FExq3IhSJN6GSAAkUL03DNGUpamuccnq1qrmvEga4qAXJgE5NxN1hjMoxodiO%2Bbyu%2BIYULNg46oBA%3D" target="_blank"><img src="http://112.124.15.130/res/linuxde_man/images/s-ad.jpg" alt="linux马克杯"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="layout layout_ft">
+    <div class="footer">
+        <div class="copyright">
+            <a href="http://man.linuxde.net/" title="Linux命令大全">Linux命令大全</a>
+            <em class="sx"></em>
+            <a href="http://man.linuxde.net/about_us" title="关于">关于</a>
+            <em class="sx"></em>
+			收藏本站请使用Ctrl+D
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/shell-script" target="_blank">Shell脚本攻略</a>
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/docs/shell_regex.html" target="_blank">Shell正则表达式</a>
+			<em class="sx"></em>
+			共收录528条Linux系统指令
+        </div>
+        <div class="des">在Linux命令大全（man.linuxde.net）可以查询您所需要的Linux命令教程和相关实例。如果您觉得本站内容对您有所帮助，请推荐给更多需要帮助的人。</div>
+        <div class="info">
+		赞助商链接：<a href="http://www.1987.name/" target="_blank">组装电脑配置清单2017</a>,　运行在<a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DvTDIoAjlYzMcQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAhYdwmcpX19FpcfgoZBkhQKMhxXrDnK9L8ge8W1gUmbKFOH2PYQYfJNjOghCi4TzwOdn1BbglxZYxUhy8exlzcq9AmARIwX9K2Zg%2BdzdQFOwfMRvoxSVDSdLyrb2g0H2G5JcxXijM%2BwneEHpPTskRHknGN7svee8j7S4un6ZpbmpIYULNg46oBA%3D" target="_blank">阿里云服务器</a>！
+		</div>
+    </div>
+</div>
+</div>
+<!--js-->
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/sitejs.js"></script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div style="display:none"><script src="http://s17.cnzz.com/stat.php?id=5762282&web_id=5762282" language="JavaScript"></script></div>
+
+<!--活动推广
+<script type="text/javascript" src="http://112.124.15.130/res/ad/ad.js"></script>
+<style type="text/css">
+.ad-box{width:240px;height:277px;background:#CCC;position:fixed;right:-240px;bottom:10px;}
+.ad-img{position:relative;overflow:hidden;}
+.ad-close{width:30px;height:22px;line-height:22px;display:block;top:10px;right:10px;position:absolute;}
+</style>
+<div class="ad-box">
+    <div class="ad-img">
+        <a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DuGXlvKu7Iv4cQipKwQzePCperVdZeJviK7Vc7tFgwiFRAdhuF14FMZQUNi%2Bb4SgsMMgx22UI05aAAkUL03DNGT6XZIOJR7dCTAHi9HSRVmdzguIHwwNmQ6UuZxIcp9pfUIgVEmFmgnbDX0%2BHH2IEVaX4VWt66S4EJPwiig1bxLP9BvYCQR6XAr%2BKQ71wHNCAqP8YyUoZZlq4cXg3ii9waXPs9Sj9Qli1np4c65at3FeX3cwyLTlAhj2l4PysJx%2FP" target="_blank"><img src="http://112.124.15.130/res/ad/1111.jpg"></a>
+        <a href="javascript:" class="ad-close">关闭</a>
+    </div>
+</div>
+<!--推广结束-->
+
+</body></html>

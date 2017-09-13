@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="renderer" content="webkit">
+<title>
+chroot命令_Linux chroot 命令用法详解：把根目录换成指定的目的目录</title>
+<link rel="shortcut icon" href="http://man.linuxde.net/favicon.ico" type="image/x-icon" />
+<link rel="pingback" href="http://man.linuxde.net/xmlrpc.php" />
+<link href="http://112.124.15.130/res/linuxde_man/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/jquery-1.8.3.min.js"></script>
+<!--[if IE 6]>
+<script src="http://112.124.15.130/res/linuxde_man/js/belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('*');</script>
+<script src="http://letskillie6.googlecode.com/svn/trunk/letskillie6.zh_CN.pack.js"></script>
+<![endif]-->
+<link rel='canonical' href='http://man.linuxde.net/chroot' />
+</head>
+<body>
+<noscript>
+<p class="nojs">您的浏览器已经禁用了脚本，这会严重影响您正常使用本站的功能，请开启！</p>
+</noscript>
+<div class="man_linuxde_net_page">
+<div class="layout_hd">
+    <div class="logo l">
+        <h2><a title="Linux命令大全" href="http://man.linuxde.net/">
+            Linux命令大全            </a></h2>
+    </div>
+    <div class="nav r"><ul id="menu-%e8%8f%9c%e5%8d%951" class="menu"><li id="menu-item-4" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-4"><a href="http://man.linuxde.net/">首页搜索</a></li>
+<li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-6"><a href="http://man.linuxde.net/par/2">系统管理</a></li>
+<li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7"><a href="http://man.linuxde.net/par/5">网络管理</a></li>
+<li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8"><a href="http://man.linuxde.net/par/4">软件·打印·开发·工具</a></li>
+<li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9"><a href="http://man.linuxde.net/par/1">文件和目录管理</a></li>
+<li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://man.linuxde.net/par/3">硬件·内核·Shell·监测</a></li>
+<li id="menu-item-2096" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2096"><a target="_blank" href="http://www.linuxde.net">Linux Today</a></li>
+</ul></div>    <div class="c"></div>
+</div>
+<div class="layout layout_bd">
+<script type='text/javascript'>
+function addLink() {
+    var body_element = document.getElementsByTagName('body')[0];
+    var selection;
+    selection = window.getSelection();
+    var pagelink = "<br /><br /> 来自: <a href='"+document.location.href+"'>"+document.location.href+"</a>"; 
+    var copy_text = selection + pagelink;
+    var new_div = document.createElement('div');
+    new_div.style.left='-99999px';
+    new_div.style.position='absolute';
+    body_element.appendChild(new_div );
+    new_div.innerHTML = copy_text ;
+    selection.selectAllChildren(new_div );
+    window.setTimeout(function() {
+        body_element.removeChild(new_div );
+    },0);
+}
+document.oncopy = addLink;
+</script>
+<div class="single_default">
+        <div class="main">
+        <div class="breadcrumb">当前位置：<a href="http://man.linuxde.net">首页</a> &raquo; <a href="http://man.linuxde.net/par/2" rel="category tag">系统管理</a> &raquo; chroot</div>
+        <div class="post_hd clearfix">
+            <h1 class="l">chroot命令</h1>
+            <div class="tag f_yh r">
+                <a href="http://man.linuxde.net/sub/%e7%b3%bb%e7%bb%9f%e5%ae%89%e5%85%a8" rel="tag">系统安全</a>            </div>
+        </div>
+        <div class="post_bd post">
+            <p>
+	<strong>chroot命令</strong>用来在指定的根目录下运行指令。chroot，即 change root directory （更改 root 目录）。在 linux 系统中，系统默认的目录结构都是以<code>/</code>，即是以根 (root) 开始的。而在使用 chroot 之后，系统的目录结构将以指定的位置作为<code>/</code>位置。
+</p>
+<p>
+	在经过 chroot 命令之后，系统读取到的目录和文件将不在是旧系统根下的而是新根下（即被指定的新的位置）的目录结构和文件，因此它带来的好处大致有以下3个：
+</p>
+<p>
+	<strong>增加了系统的安全性，限制了用户的权力：</strong>
+</p>
+<p>
+	在经过 chroot 之后，在新根下将访问不到旧系统的根目录结构和文件，这样就增强了系统的安全性。这个一般是在登录 (<span class='wp_keywordlink'><a href="http://man.linuxde.net/login" title="login命令" target="_blank">login</a></span>) 前使用 chroot，以此达到用户不能访问一些特定的文件。
+</p>
+<p>
+	<strong>建立一个与原系统隔离的系统目录结构，方便用户的开发：</strong>
+</p>
+<p>
+	使用 chroot 后，系统读取的是新根下的目录和文件，这是一个与原系统根下文件不相关的目录结构。在这个新的环境中，可以用来测试软件的静态编译以及一些与系统不相关的独立开发。
+</p>
+<p>
+	<strong>切换系统的根目录位置，引导 Linux 系统启动以及急救系统等：</strong>
+</p>
+<p>
+	chroot 的作用就是切换系统的根位置，而这个作用最为明显的是在系统初始引导磁盘的处理过程中使用，从初始 RAM 磁盘 (initrd) 切换系统的根位置并执行真正的 <span class='wp_keywordlink'><a href="http://man.linuxde.net/init" title="init命令" target="_blank">init</a></span>。另外，当系统出现一些问题时，我们也可以使用 chroot 来切换到一个临时的系统。
+</p>
+<h3>
+	语法<br />
+</h3>
+<pre>
+chroot(选项)(参数)</pre>
+<h3>
+	选项<br />
+</h3>
+<pre>
+--<span class='wp_keywordlink'><a href="http://man.linuxde.net/help" title="help命令" target="_blank">help</a></span>：在线帮助；
+--version：显示版本信息。</pre>
+<h3>
+	参数<br />
+</h3>
+<ul>
+<li>
+		目录：指定新的根目录；
+	</li>
+<li>
+		指令：指定要执行的指令。
+	</li>
+</ul>
+<h3>
+	实例<br />
+</h3>
+<p>
+	<strong>将target作为根目录（运行其中的<code>/bin/sh</code>）:</strong>
+</p>
+<pre>
+chroot target /bin/sh</pre>
+<p>
+	这里,target是busybox安装好的路径，类似一个文件系统包含了许多工具。这样，将会进入一个shell界面，这个shell以target为根。运行<span class='wp_keywordlink'><a href="http://man.linuxde.net/exit" title="exit命令" target="_blank">exit</a></span>退出该shell又返回原来的本机环境了，也可以使用Ctrl+D。
+</p>
+<p>
+	注意：
+</p>
+<ul>
+<li>
+		根用户才行
+	</li>
+<li>
+		如果直接chroot target默认寻找target的/bin/bash.这会以target作为根目录
+	</li>
+</ul>
+<p>
+	将target作为根目录(运行其中的<code>/bin/<span class='wp_keywordlink'><a href="http://man.linuxde.net/ls" title="ls命令" target="_blank">ls</a></span></code>):
+</p>
+<pre>
+chroot target /bin/ls</pre>
+<p>
+	这里，target是busybox安装好的路径，类似一个文件系统包含了许多工具。这样运行的是target中的ls（不是本机的<code>/bin/ls</code>），然后返回立即本机的目录环境。
+</p>
+<p>
+	注意，自己在本地编译一个程序生成a.out之后，拷进<code>target/bin/</code>中这样运行却不行,因为它包含了动态连接的库，需要用<span class='wp_keywordlink'><a href="http://man.linuxde.net/ldd" title="ldd命令" target="_blank">ldd</a></span>查看a.out需要那些动态库，将这些库拷贝到新根的对应路径下才能执行。
+</p>
+<p>
+	<strong>用chroot运行自己编译的一个程序：</strong>
+</p>
+<p>
+	准备chroot的根目录：
+</p>
+<pre>
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/mkdir" title="mkdir命令" target="_blank">mkdir</a></span> newRoot</pre>
+<p>
+	编译自己的程序：
+</p>
+<pre>
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/gcc" title="gcc命令" target="_blank">gcc</a></span> main.c</pre>
+<p>
+	这里main.c生成a.out，功能是输出hello。
+</p>
+<p>
+	查看程序需要的库：
+</p>
+<pre>
+ldd a.out</pre>
+<p>
+	输入之后，输出如下：
+</p>
+<pre>
+linux-gate.so.1 = &amp;gt;  (0xb8034000)
+libc.so.6 = &amp;gt; /lib/tls/i686/cmov/libc.so.6 (0xb7eab000)
+/lib/<span class='wp_keywordlink'><a href="http://man.linuxde.net/ld" title="ld命令" target="_blank">ld</a></span>-linux.so.2 (0xb801a000)</pre>
+<p>
+	将程序需要的库和程序拷贝到新根目录下：
+</p>
+<pre>
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/cp" title="cp命令" target="_blank">cp</a></span> a.out newRoot
+mkdir newRoot/lib
+cp /lib/tls/i686/cmov/libc.so.6 newRoot/lib
+cp /lib/ld-linux.so.2 newRoot/lib</pre>
+<p>
+	这里newRoot内容将如下：
+</p>
+<pre>
+a.out lib/</pre>
+<p>
+	使用chroot运行自己的程序：
+</p>
+<pre>
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/su" title="su命令" target="_blank">su</a></span>
+chroot newRoot /a.out</pre>
+<p>
+	这样就能够正确运行a.out了，因为a.out使用到了其他的动态连接库，所以需要将库拷贝到newRoot中，如果没有其他库那么直接拷贝a.out就能运行。例如静态编译后的busybox，其安装目录中的<code>/bin/busybox</code>就没有依赖其他库。</p>
+        </div>
+        <div class="post_ft">
+            <div class="title">最近更新的命令</div>
+            <ul>
+                <li><a href="http://man.linuxde.net/cut" title="cut">cut</a></li><li><a href="http://man.linuxde.net/sh" title="sh">sh</a></li><li><a href="http://man.linuxde.net/seq" title="seq">seq</a></li><li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li><li><a href="http://man.linuxde.net/syslog" title="syslog">syslog</a></li><li><a href="http://man.linuxde.net/inotifywait" title="inotifywait">inotifywait</a></li><li><a href="http://man.linuxde.net/dd" title="dd">dd</a></li><li><a href="http://man.linuxde.net/read" title="read">read</a></li><li><a href="http://man.linuxde.net/uname" title="uname">uname</a></li><li><a href="http://man.linuxde.net/pssh" title="pssh">pssh</a></li><li><a href="http://man.linuxde.net/tar" title="tar">tar</a></li><li><a href="http://man.linuxde.net/axel" title="axel">axel</a></li><li><a href="http://man.linuxde.net/losetup" title="losetup">losetup</a></li><li><a href="http://man.linuxde.net/lsb_release" title="lsb_release">lsb_release</a></li><li><a href="http://man.linuxde.net/tcpreplay" title="tcpreplay">tcpreplay</a></li><li><a href="http://man.linuxde.net/strings" title="strings">strings</a></li><li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li><li><a href="http://man.linuxde.net/speedtest-cli" title="speedtest-cli">speedtest-cli</a></li><li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li><li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li><li><a href="http://man.linuxde.net/dnf" title="dnf">dnf</a></li><li><a href="http://man.linuxde.net/nethogs" title="nethogs">nethogs</a></li><li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li><li><a href="http://man.linuxde.net/trap" title="trap">trap</a></li><li><a href="http://man.linuxde.net/let" title="let">let</a></li><li><a href="http://man.linuxde.net/ifstat" title="ifstat">ifstat</a></li><li><a href="http://man.linuxde.net/blkid" title="blkid">blkid</a></li><li><a href="http://man.linuxde.net/ipcrm" title="ipcrm">ipcrm</a></li><li><a href="http://man.linuxde.net/openssl" title="openssl">openssl</a></li><li><a href="http://man.linuxde.net/chage" title="chage">chage</a></li>            </ul>
+        </div>
+        <div id="comments">
+            <!-- You can start editing here. -->
+        </div>
+    </div>
+    
+<div class="sidebar">
+    <div class="widget related">
+        <div class="hd">
+            <h3>相关命令</h3>
+        </div>
+        <div class="bd">
+            <ul>
+                            <li><a href="http://man.linuxde.net/syslog" title="syslog">syslog</a></li>
+                <li><a href="http://man.linuxde.net/openssl" title="openssl">openssl</a></li>
+                <li><a href="http://man.linuxde.net/lastlog" title="lastlog">lastlog</a></li>
+                <li><a href="http://man.linuxde.net/logsave" title="logsave">logsave</a></li>
+                <li><a href="http://man.linuxde.net/sudo" title="sudo">sudo</a></li>
+                <li><a href="http://man.linuxde.net/last" title="last">last</a></li>
+                <li><a href="http://man.linuxde.net/logwatch" title="logwatch">logwatch</a></li>
+                <li><a href="http://man.linuxde.net/logrotate" title="logrotate">logrotate</a></li>
+                <li><a href="http://man.linuxde.net/lastb" title="lastb">lastb</a></li>
+                </ul>
+        </div>
+    </div>
+    <div id="fixedBox">
+        <div id="float" class="dbox">
+            <div class="sidebar_search_box">
+                <form action="http://man.linuxde.net/">
+                    <input type="text" name="s" id="sidebar_search" value="命令搜索" onFocus="if (value =='命令搜索'){value =''}" onBlur="if (value ==''){value='命令搜索'}" />
+                </form>
+                <form action="http://man.linuxde.net/" method="post">
+                    <input type="text" name="ss" id="sidebar_search" value="命令直达" onFocus="if (value =='命令直达'){value =''}" onBlur="if (value ==''){value='命令直达'}" />
+                </form>
+            </div>
+            <div class="widget ad"> 
+				<!--
+				<script type="text/javascript">
+					document.write('<a style="display:none!important" id="tanx-a-mm_22964816_6616438_33736229"></a>');
+					tanx_s = document.createElement("script");
+					tanx_s.type = "text/javascript";
+					tanx_s.charset = "gbk";
+					tanx_s.id = "tanx-s-mm_22964816_6616438_33736229";
+					tanx_s.async = true;
+					tanx_s.src = "http://p.tanx.com/ex?i=mm_22964816_6616438_33736229";
+					tanx_h = document.getElementsByTagName("head")[0];
+					if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+				</script>
+				-->
+				<a title="linux马克杯" href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DbWlkMAz37zAcQipKwQzePDAVflQIoZepLKpWJ%2Bin0XJRAdhuF14FMdl7wKby%2Bc%2FExq3IhSJN6GSAAkUL03DNGUpamuccnq1qrmvEga4qAXJgE5NxN1hjMoxodiO%2Bbyu%2BIYULNg46oBA%3D" target="_blank"><img src="http://112.124.15.130/res/linuxde_man/images/s-ad.jpg" alt="linux马克杯"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="layout layout_ft">
+    <div class="footer">
+        <div class="copyright">
+            <a href="http://man.linuxde.net/" title="Linux命令大全">Linux命令大全</a>
+            <em class="sx"></em>
+            <a href="http://man.linuxde.net/about_us" title="关于">关于</a>
+            <em class="sx"></em>
+			收藏本站请使用Ctrl+D
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/shell-script" target="_blank">Shell脚本攻略</a>
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/docs/shell_regex.html" target="_blank">Shell正则表达式</a>
+			<em class="sx"></em>
+			共收录528条Linux系统指令
+        </div>
+        <div class="des">在Linux命令大全（man.linuxde.net）可以查询您所需要的Linux命令教程和相关实例。如果您觉得本站内容对您有所帮助，请推荐给更多需要帮助的人。</div>
+        <div class="info">
+		赞助商链接：<a href="http://www.1987.name/" target="_blank">组装电脑配置清单2017</a>,　运行在<a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DvTDIoAjlYzMcQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAhYdwmcpX19FpcfgoZBkhQKMhxXrDnK9L8ge8W1gUmbKFOH2PYQYfJNjOghCi4TzwOdn1BbglxZYxUhy8exlzcq9AmARIwX9K2Zg%2BdzdQFOwfMRvoxSVDSdLyrb2g0H2G5JcxXijM%2BwneEHpPTskRHknGN7svee8j7S4un6ZpbmpIYULNg46oBA%3D" target="_blank">阿里云服务器</a>！
+		</div>
+    </div>
+</div>
+</div>
+<!--js-->
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/sitejs.js"></script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div style="display:none"><script src="http://s17.cnzz.com/stat.php?id=5762282&web_id=5762282" language="JavaScript"></script></div>
+
+<!--活动推广
+<script type="text/javascript" src="http://112.124.15.130/res/ad/ad.js"></script>
+<style type="text/css">
+.ad-box{width:240px;height:277px;background:#CCC;position:fixed;right:-240px;bottom:10px;}
+.ad-img{position:relative;overflow:hidden;}
+.ad-close{width:30px;height:22px;line-height:22px;display:block;top:10px;right:10px;position:absolute;}
+</style>
+<div class="ad-box">
+    <div class="ad-img">
+        <a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DuGXlvKu7Iv4cQipKwQzePCperVdZeJviK7Vc7tFgwiFRAdhuF14FMZQUNi%2Bb4SgsMMgx22UI05aAAkUL03DNGT6XZIOJR7dCTAHi9HSRVmdzguIHwwNmQ6UuZxIcp9pfUIgVEmFmgnbDX0%2BHH2IEVaX4VWt66S4EJPwiig1bxLP9BvYCQR6XAr%2BKQ71wHNCAqP8YyUoZZlq4cXg3ii9waXPs9Sj9Qli1np4c65at3FeX3cwyLTlAhj2l4PysJx%2FP" target="_blank"><img src="http://112.124.15.130/res/ad/1111.jpg"></a>
+        <a href="javascript:" class="ad-close">关闭</a>
+    </div>
+</div>
+<!--推广结束-->
+
+</body></html>

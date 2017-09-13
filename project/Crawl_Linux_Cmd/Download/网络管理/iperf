@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="renderer" content="webkit">
+<title>
+iperf命令_Linux iperf 命令用法详解：网络性能测试工具</title>
+<link rel="shortcut icon" href="http://man.linuxde.net/favicon.ico" type="image/x-icon" />
+<link rel="pingback" href="http://man.linuxde.net/xmlrpc.php" />
+<link href="http://112.124.15.130/res/linuxde_man/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/jquery-1.8.3.min.js"></script>
+<!--[if IE 6]>
+<script src="http://112.124.15.130/res/linuxde_man/js/belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('*');</script>
+<script src="http://letskillie6.googlecode.com/svn/trunk/letskillie6.zh_CN.pack.js"></script>
+<![endif]-->
+<link rel='canonical' href='http://man.linuxde.net/iperf' />
+</head>
+<body>
+<noscript>
+<p class="nojs">您的浏览器已经禁用了脚本，这会严重影响您正常使用本站的功能，请开启！</p>
+</noscript>
+<div class="man_linuxde_net_page">
+<div class="layout_hd">
+    <div class="logo l">
+        <h2><a title="Linux命令大全" href="http://man.linuxde.net/">
+            Linux命令大全            </a></h2>
+    </div>
+    <div class="nav r"><ul id="menu-%e8%8f%9c%e5%8d%951" class="menu"><li id="menu-item-4" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-4"><a href="http://man.linuxde.net/">首页搜索</a></li>
+<li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-6"><a href="http://man.linuxde.net/par/2">系统管理</a></li>
+<li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-7"><a href="http://man.linuxde.net/par/5">网络管理</a></li>
+<li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8"><a href="http://man.linuxde.net/par/4">软件·打印·开发·工具</a></li>
+<li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9"><a href="http://man.linuxde.net/par/1">文件和目录管理</a></li>
+<li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://man.linuxde.net/par/3">硬件·内核·Shell·监测</a></li>
+<li id="menu-item-2096" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2096"><a target="_blank" href="http://www.linuxde.net">Linux Today</a></li>
+</ul></div>    <div class="c"></div>
+</div>
+<div class="layout layout_bd">
+<script type='text/javascript'>
+function addLink() {
+    var body_element = document.getElementsByTagName('body')[0];
+    var selection;
+    selection = window.getSelection();
+    var pagelink = "<br /><br /> 来自: <a href='"+document.location.href+"'>"+document.location.href+"</a>"; 
+    var copy_text = selection + pagelink;
+    var new_div = document.createElement('div');
+    new_div.style.left='-99999px';
+    new_div.style.position='absolute';
+    body_element.appendChild(new_div );
+    new_div.innerHTML = copy_text ;
+    selection.selectAllChildren(new_div );
+    window.setTimeout(function() {
+        body_element.removeChild(new_div );
+    },0);
+}
+document.oncopy = addLink;
+</script>
+<div class="single_default">
+        <div class="main">
+        <div class="breadcrumb">当前位置：<a href="http://man.linuxde.net">首页</a> &raquo; <a href="http://man.linuxde.net/par/5" rel="category tag">网络管理</a> &raquo; iperf</div>
+        <div class="post_hd clearfix">
+            <h1 class="l">iperf命令</h1>
+            <div class="tag f_yh r">
+                <a href="http://man.linuxde.net/sub/%e7%bd%91%e7%bb%9c%e6%b5%8b%e8%af%95" rel="tag">网络测试</a>            </div>
+        </div>
+        <div class="post_bd post">
+            <p>
+	<strong>iperf命令</strong>是一个网络性能测试工具。iperf可以测试TCP和UDP带宽质量。iperf可以测量最大TCP带宽，具有多种参数和UDP特性。iperf可以报告带宽，延迟抖动和数据包丢失。利用iperf这一特性，可以用来测试一些网络设备如路由器，防火墙，交换机等的性能。
+</p>
+<p>
+	iperf分为两种版本，Unix/Linux版和Windows版，Unix/Linux版更新比较快，版本最新。Windows版更新慢。Windows版的iperf叫jperf，或者xjperf。jperf是在iperf基础上开发了更好的UI和新的功能。
+</p>
+<p>
+	Linux版本下载地址：<a href="http://code.google.com/p/iperf/downloads/list" target="_blank">http://code.google.com/p/iperf/downloads/list</a>
+</p>
+<h3>
+	安装iperf<br />
+</h3>
+<p>
+	对于windows版的iperf，直接将解压出来的iperf.exe和cygwin1.dll复制到%systemroot%目录即可，对于linux版的iperf，请使用如下命令安装：
+</p>
+<pre>
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/gunzip" title="gunzip命令" target="_blank">gunzip</a></span> -c iperf<span style="color:#006400;">-&lt;version&gt;</span>.<span class='wp_keywordlink'><a href="http://man.linuxde.net/tar" title="tar命令" target="_blank">tar</a></span>.gz | tar -xvf -
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/cd" title="cd命令" target="_blank">cd</a></span> iperf<span style="color:#006400;">-&lt;version&gt;</span>
+./configure
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/make" title="make命令" target="_blank">make</a></span>
+make <span class='wp_keywordlink'><a href="http://man.linuxde.net/install" title="install命令" target="_blank">install</a></span></pre>
+<h3>
+	选项<br />
+</h3>
+<table>
+<tbody>
+<tr>
+<th>
+				命令行选项
+			</th>
+<th>
+				描述
+			</th>
+</tr>
+<tr>
+<td>
+				<span style="color:#FF0000;">客户端与服务器共用选项</span>
+			</td>
+</tr>
+<tr>
+<td>
+				-f, --format [bkmaBKMA]
+			</td>
+<td>
+				格式化带宽数输出。支持的格式有：<br />
+				&#39;b&#39; = bits/sec &#39;B&#39; = Bytes/sec<br />
+				&#39;k&#39; = Kbits/sec &#39;K&#39; = KBytes/sec<br />
+				&#39;m&#39; = Mbits/sec &#39;M&#39; = MBytes/sec<br />
+				&#39;g&#39; = Gbits/sec &#39;G&#39; = GBytes/sec<br />
+				&#39;a&#39; = adaptive bits/sec &#39;A&#39; = adaptive Bytes/sec<br />
+				自适应格式是kilo-和mega-二者之一。除了带宽之外的字段都输出为字节，除非指定输出的格式，默认的参数是a。<br />
+				注意：在计算字节byte时，Kilo = 1024， Mega = 1024^2，Giga = 1024^3。通常，在网络中，Kilo = 1000， Mega = 1000^2， and Giga = 1000^3，所以，Iperf也按此来计算比特（位）。如果这些困扰了你，那么请使用-f b参数，然后亲自计算一下。
+			</td>
+</tr>
+<tr>
+<td>
+				-i, --interval #
+			</td>
+<td>
+				设置每次报告之间的时间间隔，单位为秒。如果设置为非零值，就会按照此时间间隔输出测试报告。默认值为零。
+			</td>
+</tr>
+<tr>
+<td>
+				-l, --len #[KM]
+			</td>
+<td>
+				设置读写缓冲区的长度。TCP方式默认为8KB，UDP方式默认为1470字节。
+			</td>
+</tr>
+<tr>
+<td>
+				-m, --print_mss
+			</td>
+<td>
+				输出TCP MSS值（通过TCP_MAXSEG支持）。MSS值一般比MTU值小40字节。通常情况
+			</td>
+</tr>
+<tr>
+<td>
+				-p, --port #
+			</td>
+<td>
+				设置端口，与服务器端的监听端口一致。默认是5001端口，与ttcp的一样。
+			</td>
+</tr>
+<tr>
+<td>
+				-u, --udp
+			</td>
+<td>
+				使用UDP方式而不是TCP方式。参看-b选项。
+			</td>
+</tr>
+<tr>
+<td>
+				-<span class='wp_keywordlink'><a href="http://man.linuxde.net/w" title="w命令" target="_blank">w</a></span>, --window #[KM]
+			</td>
+<td>
+				设置套接字缓冲区为指定大小。对于TCP方式，此设置为TCP窗口大小。对于UDP方式，此设置为接受UDP数据包的缓冲区大小，限制可以接受数据包的最大值。
+			</td>
+</tr>
+<tr>
+<td>
+				-B, --<span class='wp_keywordlink'><a href="http://man.linuxde.net/bind" title="bind命令" target="_blank">bind</a></span> <span class='wp_keywordlink'><a href="http://man.linuxde.net/host" title="host命令" target="_blank">host</a></span>
+			</td>
+<td>
+				绑定到主机的多个地址中的一个。对于客户端来说，这个参数设置了出栈接口。对于服务器端来说，这个参数设置入栈接口。这个参数只用于具有多网络接口的主机。在Iperf的UDP模式下，此参数用于绑定和加入一个多播组。使用范围在224.0.0.0至239.255.255.255的多播地址。参考-T参数。
+			</td>
+</tr>
+<tr>
+<td>
+				-C, --compatibility
+			</td>
+<td>
+				与低版本的Iperf使用时，可以使用兼容模式。不需要两端同时使用兼容模式，但是强烈推荐两端同时使用兼容模式。某些情况下，使用某些数据流可以引起1.7版本的服务器端崩溃或引起非预期的连接尝试。
+			</td>
+</tr>
+<tr>
+<td>
+				-M, --mss #[KM}
+			</td>
+<td>
+				通过TCP_MAXSEG选项尝试设置TCP最大信息段的值。MSS值的大小通常是TCP/<span class='wp_keywordlink'><a href="http://man.linuxde.net/ip" title="ip命令" target="_blank">ip</a></span>头减去40字节。在以太网中，MSS值 为1460字节（MTU1500字节）。许多操作系统不支持此选项。
+			</td>
+</tr>
+<tr>
+<td>
+				-N, --nodelay
+			</td>
+<td>
+				设置TCP无延迟选项，禁用Nagle&#39;s运算法则。通常情况此选项对于交互程序，例如<span class='wp_keywordlink'><a href="http://man.linuxde.net/telnet" title="telnet命令" target="_blank">telnet</a></span>，是禁用的。
+			</td>
+</tr>
+<tr>
+<td>
+				-V (from v1.6 or higher)
+			</td>
+<td>
+				绑定一个IPv6地址。<br />
+				服务端：$ iperf -s &ndash;V<br />
+				客户端：$ iperf -c &lt;Server IPv6 Address&gt; -V<br />
+				注意：在1.6.3或更高版本中，指定IPv6地址不需要使用-B参数绑定，在1.6之前的版本则需要。在大多数操作系统中，将响应IPv4客户端映射的IPv4地址。
+			</td>
+</tr>
+<tr>
+<td>
+				<span style="color:#FF0000;">服务器端专用选项</span>
+			</td>
+</tr>
+<tr>
+<td>
+				-s, --server
+			</td>
+<td>
+				Iperf服务器模式
+			</td>
+</tr>
+<tr>
+<td>
+				-D (v1.2或更高版本)
+			</td>
+<td>
+				Unix平台下Iperf作为后台守护进程运行。在Win32平台下，Iperf将作为服务运行。
+			</td>
+</tr>
+<tr>
+<td>
+				-R(v1.2或更高版本，仅用于Windows)
+			</td>
+<td>
+				卸载Iperf服务（如果它在运行）。
+			</td>
+</tr>
+<tr>
+<td>
+				-o(v1.2或更高版本，仅用于Windows)
+			</td>
+<td>
+				重定向输出到指定文件
+			</td>
+</tr>
+<tr>
+<td>
+				-c, --client host
+			</td>
+<td>
+				如果Iperf运行在服务器模式，并且用-c参数指定一个主机，那么Iperf将只接受指定主机的连接。此参数不能工作于UDP模式。
+			</td>
+</tr>
+<tr>
+<td>
+				-P, --parallel #
+			</td>
+<td>
+				服务器关闭之前保持的连接数。默认是0，这意味着永远接受连接。
+			</td>
+</tr>
+<tr>
+<td>
+				<span style="color:#FF0000;">客户端专用选项</span>
+			</td>
+</tr>
+<tr>
+<td>
+				-b, --bandwidth #[KM]
+			</td>
+<td>
+				UDP模式使用的带宽，单位bits/sec。此选项与-u选项相关。默认值是1 Mbit/sec。
+			</td>
+</tr>
+<tr>
+<td>
+				-c, --client host
+			</td>
+<td>
+				运行Iperf的客户端模式，连接到指定的Iperf服务器端。
+			</td>
+</tr>
+<tr>
+<td>
+				-d, --dualtest
+			</td>
+<td>
+				运行双测试模式。这将使服务器端反向连接到客户端，使用-L 参数中指定的端口（或默认使用客户端连接到服务器端的端口）。这些在操作的同时就立即完成了。如果你想要一个交互的测试，请尝试-r参数。
+			</td>
+</tr>
+<tr>
+<td>
+				-n, --num #[KM]
+			</td>
+<td>
+				传送的缓冲器数量。通常情况，Iperf按照10秒钟发送数据。-n参数跨越此限制，按照指定次数发送指定长度的数据，而不论该操作耗费多少时间。参考-l与-t选项。
+			</td>
+</tr>
+<tr>
+<td>
+				-r, --tradeoff
+			</td>
+<td>
+				往复测试模式。当客户端到服务器端的测试结束时，服务器端通过-l选项指定的端口（或默认为客户端连接到服务器端的端口），反向连接至客户端。当客户端连接终止时，反向连接随即开始。如果需要同时进行双向测试，请尝试-d参数。
+			</td>
+</tr>
+<tr>
+<td>
+				-t, --<span class='wp_keywordlink'><a href="http://man.linuxde.net/time" title="time命令" target="_blank">time</a></span> #
+			</td>
+<td>
+				设置传输的总时间。Iperf在指定的时间内，重复的发送指定长度的数据包。默认是10秒钟。参考-l与-n选项。
+			</td>
+</tr>
+<tr>
+<td>
+				-L, --listenport #
+			</td>
+<td>
+				指定服务端反向连接到客户端时使用的端口。默认使用客户端连接至服务端的端口。
+			</td>
+</tr>
+<tr>
+<td>
+				-P, --parallel #
+			</td>
+<td>
+				线程数。指定客户端与服务端之间使用的线程数。默认是1线程。需要客户端与服务器端同时使用此参数。
+			</td>
+</tr>
+<tr>
+<td>
+				-S, --tos #
+			</td>
+<td>
+				出栈数据包的服务类型。许多路由器忽略TOS字段。你可以指定这个值，使用以&quot;0x&quot;开始的16进制数，或以&quot;0&quot;开始的8进制数或10进制数。<br />
+				例如，16进制&#39;0x10&#39; = 8进制&#39;020&#39; = 十进制&#39;16&#39;。TOS值1349就是：<br />
+				IPTOS_LOWDELAY minimize delay 0x10<br />
+				IPTOS_THROUGHPUT maximize throughput 0x08<br />
+				IPTOS_RELIABILITY maximize reliability 0x04<br />
+				IPTOS_LOWCOST minimize cost 0x02
+			</td>
+</tr>
+<tr>
+<td>
+				-T, --ttl #
+			</td>
+<td>
+				出栈多播数据包的TTL值。这本质上就是数据通过路由器的跳数。默认是1，链接本地。
+			</td>
+</tr>
+<tr>
+<td>
+				-F (from v1.2 or higher)
+			</td>
+<td>
+				使用特定的数据流测量带宽，例如指定的文件。<br />
+				$ iperf -c &lt;server address&gt; -F &lt;<span class='wp_keywordlink'><a href="http://man.linuxde.net/file" title="file命令" target="_blank">file</a></span>-name&gt;
+			</td>
+</tr>
+<tr>
+<td>
+				-I (from v1.2 or higher)
+			</td>
+<td>
+				与-F一样，由标准输入输出文件输入数据。
+			</td>
+</tr>
+<tr>
+<td>
+				杂项
+			</td>
+</tr>
+<tr>
+<td>
+				-h, --<span class='wp_keywordlink'><a href="http://man.linuxde.net/help" title="help命令" target="_blank">help</a></span>
+			</td>
+<td>
+				显示命令行参考并退出 。
+			</td>
+</tr>
+<tr>
+<td>
+				-v, --version
+			</td>
+<td>
+				显示版本信息和编译信息并退出。
+			</td>
+</tr>
+</tbody>
+</table>
+<h3>
+	实例<br />
+</h3>
+<p>
+	带宽测试通常采用UDP模式，因为能测出极限带宽、时延抖动、丢包率。在进行测试时，首先以链路理论带宽作为数据发送速率进行测试，例如，从客户端到服务器之间的链路的理论带宽为100Mbps，先用<code>-b 100M</code>进行测试，然后根据测试结果（包括实际带宽，时延抖动和丢包率），再以实际带宽作为数据发送速率进行测试，会发现时延抖动和丢包率比第一次好很多，重复测试几次，就能得出稳定的实际带宽。
+</p>
+<p>
+	<strong>UDP模式</strong>
+</p>
+<p>
+	服务器端：
+</p>
+<pre>
+iperf -u -s</pre>
+<p>
+	客户端：
+</p>
+<pre>
+iperf -u -c 192.168.1.1 -b 100M -t 60</pre>
+<p>
+	在udp模式下，以100Mbps为数据发送速率，客户端到服务器192.168.1.1上传带宽测试，测试时间为60秒。
+</p>
+<pre>
+iperf -u -c 192.168.1.1 -b 5M -P 30 -t 60</pre>
+<p>
+	客户端同时向服务器端发起30个连接线程，以5Mbps为数据发送速率。
+</p>
+<pre>
+iperf -u -c 192.168.1.1 -b 100M -d -t 60</pre>
+<p>
+	以100M为数据发送速率，进行上下行带宽测试。
+</p>
+<p>
+	<strong>TCP模式</strong>
+</p>
+<p>
+	服务器端：
+</p>
+<pre>
+iperf -s</pre>
+<p>
+	客户端：
+</p>
+<pre>
+iperf -c 192.168.1.1 -t 60</pre>
+<p>
+	在tcp模式下，客户端到服务器192.168.1.1上传带宽测试，测试时间为60秒。
+</p>
+<pre>
+iperf -c 192.168.1.1  -P 30 -t 60</pre>
+<p>
+	客户端同时向服务器端发起30个连接线程。
+</p>
+<pre>
+iperf -c 192.168.1.1  -d -t 60</pre>
+<p>
+	进行上下行带宽测试。</p>
+        </div>
+        <div class="post_ft">
+            <div class="title">最近更新的命令</div>
+            <ul>
+                <li><a href="http://man.linuxde.net/cut" title="cut">cut</a></li><li><a href="http://man.linuxde.net/sh" title="sh">sh</a></li><li><a href="http://man.linuxde.net/seq" title="seq">seq</a></li><li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li><li><a href="http://man.linuxde.net/syslog" title="syslog">syslog</a></li><li><a href="http://man.linuxde.net/inotifywait" title="inotifywait">inotifywait</a></li><li><a href="http://man.linuxde.net/dd" title="dd">dd</a></li><li><a href="http://man.linuxde.net/read" title="read">read</a></li><li><a href="http://man.linuxde.net/uname" title="uname">uname</a></li><li><a href="http://man.linuxde.net/pssh" title="pssh">pssh</a></li><li><a href="http://man.linuxde.net/tar" title="tar">tar</a></li><li><a href="http://man.linuxde.net/axel" title="axel">axel</a></li><li><a href="http://man.linuxde.net/losetup" title="losetup">losetup</a></li><li><a href="http://man.linuxde.net/lsb_release" title="lsb_release">lsb_release</a></li><li><a href="http://man.linuxde.net/tcpreplay" title="tcpreplay">tcpreplay</a></li><li><a href="http://man.linuxde.net/strings" title="strings">strings</a></li><li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li><li><a href="http://man.linuxde.net/speedtest-cli" title="speedtest-cli">speedtest-cli</a></li><li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li><li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li><li><a href="http://man.linuxde.net/dnf" title="dnf">dnf</a></li><li><a href="http://man.linuxde.net/nethogs" title="nethogs">nethogs</a></li><li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li><li><a href="http://man.linuxde.net/trap" title="trap">trap</a></li><li><a href="http://man.linuxde.net/let" title="let">let</a></li><li><a href="http://man.linuxde.net/ifstat" title="ifstat">ifstat</a></li><li><a href="http://man.linuxde.net/blkid" title="blkid">blkid</a></li><li><a href="http://man.linuxde.net/ipcrm" title="ipcrm">ipcrm</a></li><li><a href="http://man.linuxde.net/openssl" title="openssl">openssl</a></li><li><a href="http://man.linuxde.net/chage" title="chage">chage</a></li>            </ul>
+        </div>
+        <div id="comments">
+            <!-- You can start editing here. -->
+        </div>
+    </div>
+    
+<div class="sidebar">
+    <div class="widget related">
+        <div class="hd">
+            <h3>相关命令</h3>
+        </div>
+        <div class="bd">
+            <ul>
+                            <li><a href="http://man.linuxde.net/netstat" title="netstat">netstat</a></li>
+                <li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li>
+                <li><a href="http://man.linuxde.net/nc_netcat" title="nc/netcat">nc/netcat</a></li>
+                <li><a href="http://man.linuxde.net/host" title="host">host</a></li>
+                <li><a href="http://man.linuxde.net/arpwatch" title="arpwatch">arpwatch</a></li>
+                <li><a href="http://man.linuxde.net/ping" title="ping">ping</a></li>
+                <li><a href="http://man.linuxde.net/nslookup" title="nslookup">nslookup</a></li>
+                <li><a href="http://man.linuxde.net/dig" title="dig">dig</a></li>
+                <li><a href="http://man.linuxde.net/arp" title="arp">arp</a></li>
+                <li><a href="http://man.linuxde.net/arping" title="arping">arping</a></li>
+                <li><a href="http://man.linuxde.net/traceroute" title="traceroute">traceroute</a></li>
+                <li><a href="http://man.linuxde.net/tracepath" title="tracepath">tracepath</a></li>
+                </ul>
+        </div>
+    </div>
+    <div id="fixedBox">
+        <div id="float" class="dbox">
+            <div class="sidebar_search_box">
+                <form action="http://man.linuxde.net/">
+                    <input type="text" name="s" id="sidebar_search" value="命令搜索" onFocus="if (value =='命令搜索'){value =''}" onBlur="if (value ==''){value='命令搜索'}" />
+                </form>
+                <form action="http://man.linuxde.net/" method="post">
+                    <input type="text" name="ss" id="sidebar_search" value="命令直达" onFocus="if (value =='命令直达'){value =''}" onBlur="if (value ==''){value='命令直达'}" />
+                </form>
+            </div>
+            <div class="widget ad"> 
+				<!--
+				<script type="text/javascript">
+					document.write('<a style="display:none!important" id="tanx-a-mm_22964816_6616438_33736229"></a>');
+					tanx_s = document.createElement("script");
+					tanx_s.type = "text/javascript";
+					tanx_s.charset = "gbk";
+					tanx_s.id = "tanx-s-mm_22964816_6616438_33736229";
+					tanx_s.async = true;
+					tanx_s.src = "http://p.tanx.com/ex?i=mm_22964816_6616438_33736229";
+					tanx_h = document.getElementsByTagName("head")[0];
+					if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+				</script>
+				-->
+				<a title="linux马克杯" href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DbWlkMAz37zAcQipKwQzePDAVflQIoZepLKpWJ%2Bin0XJRAdhuF14FMdl7wKby%2Bc%2FExq3IhSJN6GSAAkUL03DNGUpamuccnq1qrmvEga4qAXJgE5NxN1hjMoxodiO%2Bbyu%2BIYULNg46oBA%3D" target="_blank"><img src="http://112.124.15.130/res/linuxde_man/images/s-ad.jpg" alt="linux马克杯"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="layout layout_ft">
+    <div class="footer">
+        <div class="copyright">
+            <a href="http://man.linuxde.net/" title="Linux命令大全">Linux命令大全</a>
+            <em class="sx"></em>
+            <a href="http://man.linuxde.net/about_us" title="关于">关于</a>
+            <em class="sx"></em>
+			收藏本站请使用Ctrl+D
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/shell-script" target="_blank">Shell脚本攻略</a>
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/docs/shell_regex.html" target="_blank">Shell正则表达式</a>
+			<em class="sx"></em>
+			共收录528条Linux系统指令
+        </div>
+        <div class="des">在Linux命令大全（man.linuxde.net）可以查询您所需要的Linux命令教程和相关实例。如果您觉得本站内容对您有所帮助，请推荐给更多需要帮助的人。</div>
+        <div class="info">
+		赞助商链接：<a href="http://www.1987.name/" target="_blank">组装电脑配置清单2017</a>,　运行在<a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DvTDIoAjlYzMcQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAhYdwmcpX19FpcfgoZBkhQKMhxXrDnK9L8ge8W1gUmbKFOH2PYQYfJNjOghCi4TzwOdn1BbglxZYxUhy8exlzcq9AmARIwX9K2Zg%2BdzdQFOwfMRvoxSVDSdLyrb2g0H2G5JcxXijM%2BwneEHpPTskRHknGN7svee8j7S4un6ZpbmpIYULNg46oBA%3D" target="_blank">阿里云服务器</a>！
+		</div>
+    </div>
+</div>
+</div>
+<!--js-->
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/sitejs.js"></script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div style="display:none"><script src="http://s17.cnzz.com/stat.php?id=5762282&web_id=5762282" language="JavaScript"></script></div>
+
+<!--活动推广
+<script type="text/javascript" src="http://112.124.15.130/res/ad/ad.js"></script>
+<style type="text/css">
+.ad-box{width:240px;height:277px;background:#CCC;position:fixed;right:-240px;bottom:10px;}
+.ad-img{position:relative;overflow:hidden;}
+.ad-close{width:30px;height:22px;line-height:22px;display:block;top:10px;right:10px;position:absolute;}
+</style>
+<div class="ad-box">
+    <div class="ad-img">
+        <a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DuGXlvKu7Iv4cQipKwQzePCperVdZeJviK7Vc7tFgwiFRAdhuF14FMZQUNi%2Bb4SgsMMgx22UI05aAAkUL03DNGT6XZIOJR7dCTAHi9HSRVmdzguIHwwNmQ6UuZxIcp9pfUIgVEmFmgnbDX0%2BHH2IEVaX4VWt66S4EJPwiig1bxLP9BvYCQR6XAr%2BKQ71wHNCAqP8YyUoZZlq4cXg3ii9waXPs9Sj9Qli1np4c65at3FeX3cwyLTlAhj2l4PysJx%2FP" target="_blank"><img src="http://112.124.15.130/res/ad/1111.jpg"></a>
+        <a href="javascript:" class="ad-close">关闭</a>
+    </div>
+</div>
+<!--推广结束-->
+
+</body></html>

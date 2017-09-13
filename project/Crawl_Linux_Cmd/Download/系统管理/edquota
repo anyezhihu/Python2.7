@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="renderer" content="webkit">
+<title>
+edquota命令_Linux edquota 命令用法详解：用于编辑指定用户或工作组磁盘配额</title>
+<link rel="shortcut icon" href="http://man.linuxde.net/favicon.ico" type="image/x-icon" />
+<link rel="pingback" href="http://man.linuxde.net/xmlrpc.php" />
+<link href="http://112.124.15.130/res/linuxde_man/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/jquery-1.8.3.min.js"></script>
+<!--[if IE 6]>
+<script src="http://112.124.15.130/res/linuxde_man/js/belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('*');</script>
+<script src="http://letskillie6.googlecode.com/svn/trunk/letskillie6.zh_CN.pack.js"></script>
+<![endif]-->
+<link rel='canonical' href='http://man.linuxde.net/edquota' />
+</head>
+<body>
+<noscript>
+<p class="nojs">您的浏览器已经禁用了脚本，这会严重影响您正常使用本站的功能，请开启！</p>
+</noscript>
+<div class="man_linuxde_net_page">
+<div class="layout_hd">
+    <div class="logo l">
+        <h2><a title="Linux命令大全" href="http://man.linuxde.net/">
+            Linux命令大全            </a></h2>
+    </div>
+    <div class="nav r"><ul id="menu-%e8%8f%9c%e5%8d%951" class="menu"><li id="menu-item-4" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-4"><a href="http://man.linuxde.net/">首页搜索</a></li>
+<li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-6"><a href="http://man.linuxde.net/par/2">系统管理</a></li>
+<li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7"><a href="http://man.linuxde.net/par/5">网络管理</a></li>
+<li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8"><a href="http://man.linuxde.net/par/4">软件·打印·开发·工具</a></li>
+<li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9"><a href="http://man.linuxde.net/par/1">文件和目录管理</a></li>
+<li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://man.linuxde.net/par/3">硬件·内核·Shell·监测</a></li>
+<li id="menu-item-2096" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2096"><a target="_blank" href="http://www.linuxde.net">Linux Today</a></li>
+</ul></div>    <div class="c"></div>
+</div>
+<div class="layout layout_bd">
+<script type='text/javascript'>
+function addLink() {
+    var body_element = document.getElementsByTagName('body')[0];
+    var selection;
+    selection = window.getSelection();
+    var pagelink = "<br /><br /> 来自: <a href='"+document.location.href+"'>"+document.location.href+"</a>"; 
+    var copy_text = selection + pagelink;
+    var new_div = document.createElement('div');
+    new_div.style.left='-99999px';
+    new_div.style.position='absolute';
+    body_element.appendChild(new_div );
+    new_div.innerHTML = copy_text ;
+    selection.selectAllChildren(new_div );
+    window.setTimeout(function() {
+        body_element.removeChild(new_div );
+    },0);
+}
+document.oncopy = addLink;
+</script>
+<div class="single_default">
+        <div class="main">
+        <div class="breadcrumb">当前位置：<a href="http://man.linuxde.net">首页</a> &raquo; <a href="http://man.linuxde.net/par/2" rel="category tag">系统管理</a> &raquo; edquota</div>
+        <div class="post_hd clearfix">
+            <h1 class="l">edquota命令</h1>
+            <div class="tag f_yh r">
+                <a href="http://man.linuxde.net/sub/%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f%e7%ae%a1%e7%90%86" rel="tag">文件系统管理</a>            </div>
+        </div>
+        <div class="post_bd post">
+            <p>
+	<strong>edquota命令</strong>用于编辑指定用户或工作组磁盘配额。edquota预设会使用<span class='wp_keywordlink'><a href="http://man.linuxde.net/vi" title="vi命令" target="_blank">vi</a></span>来编辑使用者或群组的<span class='wp_keywordlink'><a href="http://man.linuxde.net/quota" title="quota命令" target="_blank">quota</a></span>设置。
+</p>
+<h3>
+	语法<br />
+</h3>
+<pre>
+edquota(选项)(参数)</pre>
+<h3>
+	选项<br />
+</h3>
+<pre>
+-u：设置用户的quota，这是预设的参数；
+-g：设置群组的quota；
+-p&lt;源用户名称&gt;：将源用户的quota设置套用至其他用户或群组；
+-t：设置宽限期限。</pre>
+<h3>
+	参数<br />
+</h3>
+<p>
+	用户：指定要编辑磁盘配额限制的用户名或者工作组。
+</p>
+<h3>
+	实例<br />
+</h3>
+<p>
+	<strong>配置系统的磁盘配额支持</strong>
+</p>
+<p>
+	首先，磁盘配额是区域性的，我们可以决定哪块分区进行磁盘配额，哪块分区不用（自然也就不用配置了）。一般而言，作为一台web虚拟主机服务器，<code>/home</code>和<code>/www</code>（或者类似的）是供用户存放资源的分区，所以可以对这两个分区进行磁盘配额。假定我们需要对<code>/home</code>分区实现用户级的限制，而对<code>/www</code>进行每个组的用户配额。
+</p>
+<p>
+	第一步：
+</p>
+<pre>
+vi /etc/fstab</pre>
+<p>
+	找到对应于<code>/home</code>和<code>/www</code>的行，例如：
+</p>
+<pre>
+/dev/sda5 /home ext2 defaults 1 2
+/dev/sda7 /www ext2 defaults 1 2</pre>
+<p>
+	在<code>/home</code>里实现用户级的磁盘配额，所以对sda5行的挂装选项域做如下修改：
+</p>
+<pre>
+/dev/sda5 /home ext2 defaults，usrquota 1 2</pre>
+<p>
+	注意，是usrquota哦。类似的，我们可以如下修改<code>/www</code>行：
+</p>
+<pre>
+/dev/sda7 /www ext2 defaults，grpquota 1 2</pre>
+<p>
+	如编辑根用户
+</p>
+<p>
+	改<code>/etc/fstab</code>文件中
+</p>
+<pre>
+LABEL=/ / ext2 defaults,usrquota,grpquota 1 1</pre>
+<p>
+	说明：<code>/etc/fstab</code>文件的每一行由六个字段组成：
+</p>
+<ul>
+<li>
+		第一个字段：文件系统（分区）的注释（类似卷标）；
+	</li>
+<li>
+		第二个字段：文件系统的装载点；
+	</li>
+<li>
+		第三个字段：文件系统类型（磁盘配额只能在ext2文件系统上实现）；
+	</li>
+<li>
+		第四个字段：装载文件系统是使用的选项，如果只想实现基于用户的磁盘配额，就加入usrquota关键字，只想实现基于组的磁盘配额，就加入grpqouta关键字，如果两者都需要，就全写入，中间可以用逗号分隔。
+	</li>
+<li>
+		第五个字段：表明该文件系统（分区）是否为只读，如果是0就表示只读，1表示可以读写。
+	</li>
+<li>
+		第六个字段：表示系统启动执行<span class='wp_keywordlink'><a href="http://man.linuxde.net/fsck" title="fsck命令" target="_blank">fsck</a></span>时检查的顺序。
+	</li>
+</ul>
+<p>
+	注意：请特别注意这里的拼写，是usrquota和grpquota，不要写成userquota和groupquota。
+</p>
+<p>
+	进入单用户模式，用<span class='wp_keywordlink'><a href="http://man.linuxde.net/quotacheck" title="quotacheck命令" target="_blank">quotacheck</a></span>生成.user或.group文件
+</p>
+<p>
+	quotacheck 你的目录
+</p>
+<pre>
+example:quotacheck / ; quotacheck /home</pre>
+<p>
+	如果单用户模式报错的话<span class='wp_keywordlink'><a href="http://man.linuxde.net/umount" title="umount命令" target="_blank">umount</a></span>你的设备<code>/dev/hda*</code>
+</p>
+<p>
+	再执行就ok了，重启动系统，如果一切正常的话，quota将开始正常工作。
+</p>
+<p>
+	<strong>设置用户和组配额的分配量</strong>
+</p>
+<p>
+	对磁盘配额的限制一般是从一个用户占用磁盘大小和所有文件的数量两个方面来进行的。在具体操作之前，我们先了解一下磁盘配额的两个基本概念：软限制和硬限制。
+</p>
+<ul>
+<li>
+		软限制：一个用户在文件系统可拥有的最大磁盘空间和最多文件数量，在某个宽限期内可以暂时超过这个限制。
+	</li>
+<li>
+		硬限制：一个用户可拥有的磁盘空间或文件的绝对数量，绝对不允许超过这个限制。
+	</li>
+</ul>
+<p>
+	<strong>通过edquota直接编辑数据文件：</strong>
+</p>
+<p>
+	使用编辑配额命令edquota为用户配置定额，在重新启动系统之后，我们假设lanf是需要定额的系统帐户，可以使用如下命令来为用户分配磁盘配额：
+</p>
+<pre>
+edquota -u lanf</pre>
+<p>
+	这个命令将启动默认文本编辑器（如vi或其他由$EDITOR 环境变量指定的编辑器），其内容如下所示：
+</p>
+<pre>
+Quotas for user lanf:
+/dev/sda5:blocks in use:0,limits(soft = 0,hard = 0)
+inodes in use:0,limits(soft = 0,hard = 0)</pre>
+<p>
+	这表示lanf用户在<code>/dev/sda5</code>分区（该分区已经在usrquota的控制之下）中迄今使用了0个数据块（以K为单位），并且没有设限制（包括软限制soft和硬限制hard），同样，lanf在这个分区也没有任何文件和目录，并且也没有任何软硬限制。如果，我们想对用户进行磁盘容量的限制的话，只需要修改blocks行的limits部分就可以了，注意单位使用的是K。例如要为lanf分配100M磁盘的软限制，400M硬限制，可以使用如下的设置：
+</p>
+<pre>
+Quotas for user lanf:
+/dev/sda5:blocks in use:0,limits(soft = 102400,hard = 409800)
+inodes in use:0,limits(soft = 0,hard = 0)</pre>
+<p>
+	同样的，要对文件目录的数量限制可以相应的修改inodes行。我们也可以同时对这两项都作出限制。只需要如下的修改Quotas for user lanf：
+</p>
+<pre>
+/dev/sda5:blocks in use:0,limits(soft = 102400,hard = 409800)
+inodes in use:0,limits(soft = 12800,hard = 51200)</pre>
+<p>
+	这表示除了相应的容量的限制外，还对文件/目录的数量做了12800个的软限制和51200个的硬限制。在保存了新的配置后，该用户的磁盘使用就不能超过硬限制。如果用户试图超过这个限制，该操作将被取消，然后得到一个错误信息。但是，如果每个用户都要这么麻烦的设置的话，那这种重复的体力劳动实在有点令人不寒而栗，而且也太浪费时间了。幸好edquota还有个-p参数（prototype）可以对已有的用户设置进行拷贝。例如，我们想对Jack、Tom、Chen三个用户使用和lanf一样的限额配置，可以使用如下的命令：
+</p>
+<pre>
+edquota -p lanf -u Jack Tom Chen</pre>
+<p>
+	这样一来，这三个用户就被赋予了和lanf一样的磁盘配额。
+</p>
+<p>
+	对组的配额，除了edquota命令中对应<code>-u</code>选项的改为<code>-g</code>选项，例如下面对webterm1组的操作：
+</p>
+<pre>
+edquota -g webterm1</pre>
+<p>
+	实际上，以上的限制只是对用户设定的硬限制在起作用。如果需要使软限制也起作用的话，还需要对用户的软限制设定宽限期，缺省的软限制的宽限期是无穷，这可以使用edquota命令的<code>-t</code>选项来实现。运行下面的命令：
+</p>
+<pre>
+edquota -t</pre>
+<p>
+	edquota将打开缺省编辑器显示如下内容：
+</p>
+<pre>
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/time" title="time命令" target="_blank">time</a></span> units may be:days,hours,minutes,or seconds
+Grace period before enforcing soft limits for <span class='wp_keywordlink'><a href="http://man.linuxde.net/users" title="users命令" target="_blank">users</a></span>:
+/dev/sda5:block grace period:0 days,<span class='wp_keywordlink'><a href="http://man.linuxde.net/file" title="file命令" target="_blank">file</a></span> grace period:0 days</pre>
+<p>
+	可以使用天、小时、分、秒为单位来设定宽限期。例如，在下面这个例子中，磁盘空间限制的宽限期为两天，而文件数量限制的宽限期只有6个小时。
+</p>
+<pre>
+Time units may be:days,hours,minutes,or seconds
+Grace period before enforcing soft limits for users:
+/dev/sda5:block grace period:2 days,file grace period:6 hours</pre>
+<p>
+	<strong>通过setquota工具加入：</strong>
+</p>
+<p>
+	比如加入用户bye2000的磁盘配额，执行以下命令：
+</p>
+<pre>
+setquota &ndash;u / 2000 2500 100 110 bye2000</pre>
+<p>
+	以下是setquota命令用法的简单描述：
+</p>
+<pre>
+setquota [ -u|-g ] 装载点 软块数 硬块数 软文件数 硬文件数 用户名/组名</pre>
+<p>
+	<strong>查看用户磁盘使用情况</strong>
+</p>
+<p>
+	要查明某一个用户使用了多少磁盘空间，例如lanf，可以使用如下的命令：
+</p>
+<pre>
+quota -u lanf</pre>
+<p>
+	显示：
+</p>
+<pre>
+Disk quotas for user lanf(uid 503):
+Filesystem blocks quota limit grace file quota limit grace
+/dev/sda5 3 102400 409800 1 12800 51200</pre>
+<p>
+	同样，可以使用<code>quota -g groupname</code>命令来参看某个组的磁盘使用情况。
+</p>
+<p>
+	注意：
+</p>
+<ol>
+<li>
+		如果该用户没有配置磁盘限额的话，输出显示<code>Disk quotas for user hujm (uid 503): none</code>
+	</li>
+<li>
+		如果不带任何参数运行quota的话，查看的是你自己的配额使用情况。
+	</li>
+</ol>
+        </div>
+        <div class="post_ft">
+            <div class="title">最近更新的命令</div>
+            <ul>
+                <li><a href="http://man.linuxde.net/cut" title="cut">cut</a></li><li><a href="http://man.linuxde.net/sh" title="sh">sh</a></li><li><a href="http://man.linuxde.net/seq" title="seq">seq</a></li><li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li><li><a href="http://man.linuxde.net/syslog" title="syslog">syslog</a></li><li><a href="http://man.linuxde.net/inotifywait" title="inotifywait">inotifywait</a></li><li><a href="http://man.linuxde.net/dd" title="dd">dd</a></li><li><a href="http://man.linuxde.net/read" title="read">read</a></li><li><a href="http://man.linuxde.net/uname" title="uname">uname</a></li><li><a href="http://man.linuxde.net/pssh" title="pssh">pssh</a></li><li><a href="http://man.linuxde.net/tar" title="tar">tar</a></li><li><a href="http://man.linuxde.net/axel" title="axel">axel</a></li><li><a href="http://man.linuxde.net/losetup" title="losetup">losetup</a></li><li><a href="http://man.linuxde.net/lsb_release" title="lsb_release">lsb_release</a></li><li><a href="http://man.linuxde.net/tcpreplay" title="tcpreplay">tcpreplay</a></li><li><a href="http://man.linuxde.net/strings" title="strings">strings</a></li><li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li><li><a href="http://man.linuxde.net/speedtest-cli" title="speedtest-cli">speedtest-cli</a></li><li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li><li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li><li><a href="http://man.linuxde.net/dnf" title="dnf">dnf</a></li><li><a href="http://man.linuxde.net/nethogs" title="nethogs">nethogs</a></li><li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li><li><a href="http://man.linuxde.net/trap" title="trap">trap</a></li><li><a href="http://man.linuxde.net/let" title="let">let</a></li><li><a href="http://man.linuxde.net/ifstat" title="ifstat">ifstat</a></li><li><a href="http://man.linuxde.net/blkid" title="blkid">blkid</a></li><li><a href="http://man.linuxde.net/ipcrm" title="ipcrm">ipcrm</a></li><li><a href="http://man.linuxde.net/openssl" title="openssl">openssl</a></li><li><a href="http://man.linuxde.net/chage" title="chage">chage</a></li>            </ul>
+        </div>
+        <div id="comments">
+            <!-- You can start editing here. -->
+        </div>
+    </div>
+    
+<div class="sidebar">
+    <div class="widget related">
+        <div class="hd">
+            <h3>相关命令</h3>
+        </div>
+        <div class="bd">
+            <ul>
+                            <li><a href="http://man.linuxde.net/resize2fs" title="resize2fs">resize2fs</a></li>
+                <li><a href="http://man.linuxde.net/e2fsck" title="e2fsck">e2fsck</a></li>
+                <li><a href="http://man.linuxde.net/dumpe2fs" title="dumpe2fs">dumpe2fs</a></li>
+                <li><a href="http://man.linuxde.net/quotacheck" title="quotacheck">quotacheck</a></li>
+                <li><a href="http://man.linuxde.net/quotaoff" title="quotaoff">quotaoff</a></li>
+                <li><a href="http://man.linuxde.net/mke2fs" title="mke2fs">mke2fs</a></li>
+                <li><a href="http://man.linuxde.net/e2label" title="e2label">e2label</a></li>
+                <li><a href="http://man.linuxde.net/umount" title="umount">umount</a></li>
+                <li><a href="http://man.linuxde.net/tune2fs" title="tune2fs">tune2fs</a></li>
+                <li><a href="http://man.linuxde.net/mount" title="mount">mount</a></li>
+                <li><a href="http://man.linuxde.net/sync" title="sync">sync</a></li>
+                <li><a href="http://man.linuxde.net/swapoff" title="swapoff">swapoff</a></li>
+                <li><a href="http://man.linuxde.net/fsck" title="fsck">fsck</a></li>
+                <li><a href="http://man.linuxde.net/swapon" title="swapon">swapon</a></li>
+                <li><a href="http://man.linuxde.net/mountpoint" title="mountpoint">mountpoint</a></li>
+                <li><a href="http://man.linuxde.net/mkfs" title="mkfs">mkfs</a></li>
+                <li><a href="http://man.linuxde.net/quotaon" title="quotaon">quotaon</a></li>
+                <li><a href="http://man.linuxde.net/repquota" title="repquota">repquota</a></li>
+                <li><a href="http://man.linuxde.net/quotastats" title="quotastats">quotastats</a></li>
+                <li><a href="http://man.linuxde.net/quota" title="quota">quota</a></li>
+                </ul>
+        </div>
+    </div>
+    <div id="fixedBox">
+        <div id="float" class="dbox">
+            <div class="sidebar_search_box">
+                <form action="http://man.linuxde.net/">
+                    <input type="text" name="s" id="sidebar_search" value="命令搜索" onFocus="if (value =='命令搜索'){value =''}" onBlur="if (value ==''){value='命令搜索'}" />
+                </form>
+                <form action="http://man.linuxde.net/" method="post">
+                    <input type="text" name="ss" id="sidebar_search" value="命令直达" onFocus="if (value =='命令直达'){value =''}" onBlur="if (value ==''){value='命令直达'}" />
+                </form>
+            </div>
+            <div class="widget ad"> 
+				<!--
+				<script type="text/javascript">
+					document.write('<a style="display:none!important" id="tanx-a-mm_22964816_6616438_33736229"></a>');
+					tanx_s = document.createElement("script");
+					tanx_s.type = "text/javascript";
+					tanx_s.charset = "gbk";
+					tanx_s.id = "tanx-s-mm_22964816_6616438_33736229";
+					tanx_s.async = true;
+					tanx_s.src = "http://p.tanx.com/ex?i=mm_22964816_6616438_33736229";
+					tanx_h = document.getElementsByTagName("head")[0];
+					if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+				</script>
+				-->
+				<a title="linux马克杯" href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DbWlkMAz37zAcQipKwQzePDAVflQIoZepLKpWJ%2Bin0XJRAdhuF14FMdl7wKby%2Bc%2FExq3IhSJN6GSAAkUL03DNGUpamuccnq1qrmvEga4qAXJgE5NxN1hjMoxodiO%2Bbyu%2BIYULNg46oBA%3D" target="_blank"><img src="http://112.124.15.130/res/linuxde_man/images/s-ad.jpg" alt="linux马克杯"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="layout layout_ft">
+    <div class="footer">
+        <div class="copyright">
+            <a href="http://man.linuxde.net/" title="Linux命令大全">Linux命令大全</a>
+            <em class="sx"></em>
+            <a href="http://man.linuxde.net/about_us" title="关于">关于</a>
+            <em class="sx"></em>
+			收藏本站请使用Ctrl+D
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/shell-script" target="_blank">Shell脚本攻略</a>
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/docs/shell_regex.html" target="_blank">Shell正则表达式</a>
+			<em class="sx"></em>
+			共收录528条Linux系统指令
+        </div>
+        <div class="des">在Linux命令大全（man.linuxde.net）可以查询您所需要的Linux命令教程和相关实例。如果您觉得本站内容对您有所帮助，请推荐给更多需要帮助的人。</div>
+        <div class="info">
+		赞助商链接：<a href="http://www.1987.name/" target="_blank">组装电脑配置清单2017</a>,　运行在<a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DvTDIoAjlYzMcQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAhYdwmcpX19FpcfgoZBkhQKMhxXrDnK9L8ge8W1gUmbKFOH2PYQYfJNjOghCi4TzwOdn1BbglxZYxUhy8exlzcq9AmARIwX9K2Zg%2BdzdQFOwfMRvoxSVDSdLyrb2g0H2G5JcxXijM%2BwneEHpPTskRHknGN7svee8j7S4un6ZpbmpIYULNg46oBA%3D" target="_blank">阿里云服务器</a>！
+		</div>
+    </div>
+</div>
+</div>
+<!--js-->
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/sitejs.js"></script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div style="display:none"><script src="http://s17.cnzz.com/stat.php?id=5762282&web_id=5762282" language="JavaScript"></script></div>
+
+<!--活动推广
+<script type="text/javascript" src="http://112.124.15.130/res/ad/ad.js"></script>
+<style type="text/css">
+.ad-box{width:240px;height:277px;background:#CCC;position:fixed;right:-240px;bottom:10px;}
+.ad-img{position:relative;overflow:hidden;}
+.ad-close{width:30px;height:22px;line-height:22px;display:block;top:10px;right:10px;position:absolute;}
+</style>
+<div class="ad-box">
+    <div class="ad-img">
+        <a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DuGXlvKu7Iv4cQipKwQzePCperVdZeJviK7Vc7tFgwiFRAdhuF14FMZQUNi%2Bb4SgsMMgx22UI05aAAkUL03DNGT6XZIOJR7dCTAHi9HSRVmdzguIHwwNmQ6UuZxIcp9pfUIgVEmFmgnbDX0%2BHH2IEVaX4VWt66S4EJPwiig1bxLP9BvYCQR6XAr%2BKQ71wHNCAqP8YyUoZZlq4cXg3ii9waXPs9Sj9Qli1np4c65at3FeX3cwyLTlAhj2l4PysJx%2FP" target="_blank"><img src="http://112.124.15.130/res/ad/1111.jpg"></a>
+        <a href="javascript:" class="ad-close">关闭</a>
+    </div>
+</div>
+<!--推广结束-->
+
+</body></html>

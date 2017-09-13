@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="renderer" content="webkit">
+<title>
+ngrep命令_Linux ngrep 命令用法详解：方便的数据包匹配和显示工具</title>
+<link rel="shortcut icon" href="http://man.linuxde.net/favicon.ico" type="image/x-icon" />
+<link rel="pingback" href="http://man.linuxde.net/xmlrpc.php" />
+<link href="http://112.124.15.130/res/linuxde_man/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/jquery-1.8.3.min.js"></script>
+<!--[if IE 6]>
+<script src="http://112.124.15.130/res/linuxde_man/js/belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('*');</script>
+<script src="http://letskillie6.googlecode.com/svn/trunk/letskillie6.zh_CN.pack.js"></script>
+<![endif]-->
+<link rel='canonical' href='http://man.linuxde.net/ngrep' />
+</head>
+<body>
+<noscript>
+<p class="nojs">您的浏览器已经禁用了脚本，这会严重影响您正常使用本站的功能，请开启！</p>
+</noscript>
+<div class="man_linuxde_net_page">
+<div class="layout_hd">
+    <div class="logo l">
+        <h2><a title="Linux命令大全" href="http://man.linuxde.net/">
+            Linux命令大全            </a></h2>
+    </div>
+    <div class="nav r"><ul id="menu-%e8%8f%9c%e5%8d%951" class="menu"><li id="menu-item-4" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-4"><a href="http://man.linuxde.net/">首页搜索</a></li>
+<li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-6"><a href="http://man.linuxde.net/par/2">系统管理</a></li>
+<li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7"><a href="http://man.linuxde.net/par/5">网络管理</a></li>
+<li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-8"><a href="http://man.linuxde.net/par/4">软件·打印·开发·工具</a></li>
+<li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9"><a href="http://man.linuxde.net/par/1">文件和目录管理</a></li>
+<li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://man.linuxde.net/par/3">硬件·内核·Shell·监测</a></li>
+<li id="menu-item-2096" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2096"><a target="_blank" href="http://www.linuxde.net">Linux Today</a></li>
+</ul></div>    <div class="c"></div>
+</div>
+<div class="layout layout_bd">
+<script type='text/javascript'>
+function addLink() {
+    var body_element = document.getElementsByTagName('body')[0];
+    var selection;
+    selection = window.getSelection();
+    var pagelink = "<br /><br /> 来自: <a href='"+document.location.href+"'>"+document.location.href+"</a>"; 
+    var copy_text = selection + pagelink;
+    var new_div = document.createElement('div');
+    new_div.style.left='-99999px';
+    new_div.style.position='absolute';
+    body_element.appendChild(new_div );
+    new_div.innerHTML = copy_text ;
+    selection.selectAllChildren(new_div );
+    window.setTimeout(function() {
+        body_element.removeChild(new_div );
+    },0);
+}
+document.oncopy = addLink;
+</script>
+<div class="single_default">
+        <div class="main">
+        <div class="breadcrumb">当前位置：<a href="http://man.linuxde.net">首页</a> &raquo; <a href="http://man.linuxde.net/par/4" rel="category tag">软件·打印·开发·工具</a> &raquo; ngrep</div>
+        <div class="post_hd clearfix">
+            <h1 class="l">ngrep命令</h1>
+            <div class="tag f_yh r">
+                <a href="http://man.linuxde.net/sub/%e5%b8%b8%e7%94%a8%e5%b7%a5%e5%85%b7%e5%91%bd%e4%bb%a4" rel="tag">常用工具命令</a>            </div>
+        </div>
+        <div class="post_bd post">
+            <p>
+	<strong>ngrep命令</strong>是<span class='wp_keywordlink'><a href="http://man.linuxde.net/grep" title="grep命令" target="_blank">grep</a></span>命令的网络版，他力求更多的grep特征，用于搜寻指定的数据包。正由于安装ngrep需用到libpcap库， 所以支持大量的操作系统和网络协议。能识别TCP、UDP和ICMP包，理解bpf的过滤机制。
+</p>
+<h3>
+	安装<br />
+</h3>
+<p>
+	ngrep命令的下载地址：http://ngrep.sourceforge.net/，libpcap下载地址：http://www.<span class='wp_keywordlink'><a href="http://man.linuxde.net/tcpdump" title="tcpdump命令" target="_blank">tcpdump</a></span>.org/。先用<code><span class='wp_keywordlink'><a href="http://man.linuxde.net/yum" title="yum命令" target="_blank">yum</a></span> <span class='wp_keywordlink'><a href="http://man.linuxde.net/install" title="install命令" target="_blank">install</a></span> libpcap</code>完全安装libpcap，注意有时候用libpcap安装包安装的不完整会影响ngrep的使用。
+</p>
+<p>
+	如果yum无法安装就用以下步骤安装libpcap：
+</p>
+<pre>
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/wget" title="wget命令" target="_blank">wget</a></span> http://www.tcpdump.org/release/libpcap-1.3.0.<span class='wp_keywordlink'><a href="http://man.linuxde.net/tar" title="tar命令" target="_blank">tar</a></span>.gz
+tar -zxf libpcap-1.3.0.tar.gz
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/cd" title="cd命令" target="_blank">cd</a></span> libpcap-1.3.0
+./configure
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/make" title="make命令" target="_blank">make</a></span> &amp;&amp; make install</pre>
+<p>
+	ngrep的安装就是 configure/make/make install 三部曲。
+</p>
+<p>
+	注：configure时是遇到 please wipe out all unused pcap installations，添加以下选项：
+</p>
+<pre>
+./configure --with-pcap-includes=/usr/local/include/pcap</pre>
+<p>
+	在安装后输入ngrep来验证下安装是否成功。
+</p>
+<h3>
+	语法<br />
+</h3>
+<pre>
+ngrep &lt;-LhNXViwqpevxlDtTRM&gt; &lt;-IO pcap_dump&gt; &lt;-n num&gt; &lt;-d dev&gt; &lt;-A num&gt;
+&lt;-s snaplen&gt; &lt;-S limitlen&gt; &lt;-<span class='wp_keywordlink'><a href="http://man.linuxde.net/w" title="w命令" target="_blank">w</a></span> normal|byline|single|none&gt; &lt;-c cols&gt;
+&lt;-P char&gt; &lt;-F <span class='wp_keywordlink'><a href="http://man.linuxde.net/file" title="file命令" target="_blank">file</a></span>&gt; &lt;match expression&gt; &lt;bpf filter&gt;</pre>
+<h3>
+	选项<br />
+</h3>
+<pre>
+-e ：显示空数据包
+-i ：忽略大小写
+-v ：反转匹配
+-R ：don&#39;t do privilege revocation logic
+-x ：以16进制格式显示
+-X ：以16进制格式匹配
+-w ：整字匹配
+-p ：不使用混杂模式
+-l ：make stdout line buffered
+-D ：replay pcap_dumps with their recorded <span class='wp_keywordlink'><a href="http://man.linuxde.net/time" title="time命令" target="_blank">time</a></span> intervals
+-t ：在每个匹配的包之前显示时间戳
+-T ：显示上一个匹配的数据包之间的时间间隔
+-M ：仅进行单行匹配
+-I ：从文件中读取数据进行匹配
+-O ：将匹配的数据保存到文件
+-n ：仅捕获指定数目的数据包进行查看
+-A ：匹配到数据包后<span class='wp_keywordlink'><a href="http://man.linuxde.net/dump" title="dump命令" target="_blank">dump</a></span>随后的指定数目的数据包
+-s ：<span class='wp_keywordlink'><a href="http://man.linuxde.net/set" title="set命令" target="_blank">set</a></span> the bpf caplen
+-S ：set the limitlen on matched packets
+-W ：设置显示格式byline将解析包中的换行符
+-c ：强制显示列的宽度
+-P ：set the non-printable display char to what is specified
+-F ：使用文件中定义的bpf(Berkeley Packet Filter)
+-N ：显示由IANA定义的子协议号
+-d ：使用哪个网卡，可以用-L选项查询
+-L ：查询网卡接口</pre>
+<h3>
+	实例<br />
+</h3>
+<p>
+	捕捉cloudian：18080端口的request和response，<code>-W byline</code>用来解析包中的换行符，否则包里的所有数据都是连续的，可读性差。<code>-d lo</code>是监听本地网卡：
+</p>
+<pre>
+ngrep -W byline -d lo port 18080</pre>
+<p>
+	捕捉amazon：80端口的request和response。<code>-d eth0是</code>用来监听对外的网卡：
+</p>
+<pre>
+ngrep -W byline -d eth0 port 80</pre>
+<p>
+	可以用<code>-d any</code>来捕捉所有的包：
+</p>
+<pre>
+ngrep &#39;[a-zA-Z]&#39; -t -W byline -d any tcp port 18080</pre>
+<p>
+	捕获字符串<code>.flv</code>，比如要查看在Web Flash 视频中的.flv文件的下载地址：
+</p>
+<pre>
+<span style="color:#FF0000;">ngrep -d3 -N -q \.flv</span>
+interface: \Device\TNT_40_1_{670F6B50-0A13-4BAB-9D9E-994A833F5BA9} (10.132.0.0/2
+55.255.192.0)
+match: \.flv</pre>
+<p>
+	打开一个视频页面：
+</p>
+<pre>
+T(6) 10.132.34.23:24860 -&gt; 61.142.208.154:80 [AP]
+GET /f59.c31.56.com/flvdownload/12/19/ggyg7741@56.com_56flv_zhajm_119556973
+97.flv HTTP/1.1..<span class='wp_keywordlink'><a href="http://man.linuxde.net/accept" title="accept命令" target="_blank">accept</a></span>: */*..Referer: http://www.56.com/flashApp/v_player_
+site.swf..x-flash-version: 9,0,45,0..UA-CPU: x86..Accept-Encoding: <span class='wp_keywordlink'><a href="http://man.linuxde.net/gzip" title="gzip命令" target="_blank">gzip</a></span>, de
+flate..User-Agent: Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET
+CLR 2.0.50727; .NET CLR 3.0.04506.30)..<span class='wp_keywordlink'><a href="http://man.linuxde.net/host" title="host命令" target="_blank">host</a></span>: f59.r.56.com..Connection: Keep
+-Alive..Cookie: whistoryview=23423759-23635627-23423344-23171935-23058374-2
+3081156-23207350-22395727-; geoip=............; wl_all_s=y....</pre>
+<p>
+	OK。地址已经找到了,就是http://f59.c31.56.com/flvdownload/12/19/ggyg7741@56.com_56flv_zhajm_11955697397.flv
+</p>
+<p>
+	加个<code>-W byline</code>参数后,将解析包中的换行符：
+</p>
+<pre>
+T(6) 2007/11/25 15:56:12.192619 10.132.34.23:26365 -&gt; 59.151.21.101:80 [AP]
+GET /aa.flv HTTP/1.1.
+Accept: */*.
+Accept-Language: zh-cn.
+UA-CPU: x86.
+Accept-Encoding: gzip, deflate.
+User-Agent: Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET CLR 2.0.5072
+7; .NET CLR 3.0.04506.30).
+Host: www.google.cn.
+Connection: Keep-Alive.
+Cookie: PREF=<span class='wp_keywordlink'><a href="http://man.linuxde.net/id" title="id命令" target="_blank">id</a></span>=a0b2932c336477e9:TB=4:NW=1:TM=1187877372:LM=1187956074:S=Y1Fzndp
+rT3vFo7ac; SID=DQAAAHcAAABJCEXeOVLHu2rIfb5BfKP3GG9PbhJDEkXsLTV8y0f_lvSd2Y46Q0FPt
+83CnEs9rxA1xBDM9mLR8-ckWeScyOQA8PyYnX5u5OjFvjfRbDg_FDZfwxhRzqS9KPZv26pjnsUxs0FDM
+1xpJ5AgDn38pXtlCdkksJ0-cbiIWoA61oHWMg; NID=7=AvJxn5B6YOLLxoYz4LLzhIbNsQUQiulRS6U
+JGxdBniQBmXm99y7L-NBNORN82N3unmZSGHFPfePVHnLK2MjYjglyXZhU9x7ETXNBnY3NurNijHDhJ7K
+yi7E53UBOcv4V.</pre>
+        </div>
+        <div class="post_ft">
+            <div class="title">最近更新的命令</div>
+            <ul>
+                <li><a href="http://man.linuxde.net/cut" title="cut">cut</a></li><li><a href="http://man.linuxde.net/sh" title="sh">sh</a></li><li><a href="http://man.linuxde.net/seq" title="seq">seq</a></li><li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li><li><a href="http://man.linuxde.net/syslog" title="syslog">syslog</a></li><li><a href="http://man.linuxde.net/inotifywait" title="inotifywait">inotifywait</a></li><li><a href="http://man.linuxde.net/dd" title="dd">dd</a></li><li><a href="http://man.linuxde.net/read" title="read">read</a></li><li><a href="http://man.linuxde.net/uname" title="uname">uname</a></li><li><a href="http://man.linuxde.net/pssh" title="pssh">pssh</a></li><li><a href="http://man.linuxde.net/tar" title="tar">tar</a></li><li><a href="http://man.linuxde.net/axel" title="axel">axel</a></li><li><a href="http://man.linuxde.net/losetup" title="losetup">losetup</a></li><li><a href="http://man.linuxde.net/lsb_release" title="lsb_release">lsb_release</a></li><li><a href="http://man.linuxde.net/tcpreplay" title="tcpreplay">tcpreplay</a></li><li><a href="http://man.linuxde.net/strings" title="strings">strings</a></li><li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li><li><a href="http://man.linuxde.net/speedtest-cli" title="speedtest-cli">speedtest-cli</a></li><li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li><li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li><li><a href="http://man.linuxde.net/dnf" title="dnf">dnf</a></li><li><a href="http://man.linuxde.net/nethogs" title="nethogs">nethogs</a></li><li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li><li><a href="http://man.linuxde.net/trap" title="trap">trap</a></li><li><a href="http://man.linuxde.net/let" title="let">let</a></li><li><a href="http://man.linuxde.net/ifstat" title="ifstat">ifstat</a></li><li><a href="http://man.linuxde.net/blkid" title="blkid">blkid</a></li><li><a href="http://man.linuxde.net/ipcrm" title="ipcrm">ipcrm</a></li><li><a href="http://man.linuxde.net/openssl" title="openssl">openssl</a></li><li><a href="http://man.linuxde.net/chage" title="chage">chage</a></li>            </ul>
+        </div>
+        <div id="comments">
+            <!-- You can start editing here. -->
+        </div>
+    </div>
+    
+<div class="sidebar">
+    <div class="widget related">
+        <div class="hd">
+            <h3>相关命令</h3>
+        </div>
+        <div class="bd">
+            <ul>
+                            <li><a href="http://man.linuxde.net/info" title="info">info</a></li>
+                <li><a href="http://man.linuxde.net/speedtest-cli" title="speedtest-cli">speedtest-cli</a></li>
+                <li><a href="http://man.linuxde.net/yes" title="yes">yes</a></li>
+                <li><a href="http://man.linuxde.net/md5sum" title="md5sum">md5sum</a></li>
+                <li><a href="http://man.linuxde.net/bc" title="bc">bc</a></li>
+                <li><a href="http://man.linuxde.net/cal" title="cal">cal</a></li>
+                <li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li>
+                <li><a href="http://man.linuxde.net/clear" title="clear">clear</a></li>
+                <li><a href="http://man.linuxde.net/stty" title="stty">stty</a></li>
+                <li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li>
+                <li><a href="http://man.linuxde.net/xargs" title="xargs">xargs</a></li>
+                <li><a href="http://man.linuxde.net/sum" title="sum">sum</a></li>
+                <li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li>
+                <li><a href="http://man.linuxde.net/users" title="users">users</a></li>
+                <li><a href="http://man.linuxde.net/date" title="date">date</a></li>
+                <li><a href="http://man.linuxde.net/cksum" title="cksum">cksum</a></li>
+                <li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li>
+                <li><a href="http://man.linuxde.net/whatis" title="whatis">whatis</a></li>
+                <li><a href="http://man.linuxde.net/mesg" title="mesg">mesg</a></li>
+                <li><a href="http://man.linuxde.net/hostid" title="hostid">hostid</a></li>
+                </ul>
+        </div>
+    </div>
+    <div id="fixedBox">
+        <div id="float" class="dbox">
+            <div class="sidebar_search_box">
+                <form action="http://man.linuxde.net/">
+                    <input type="text" name="s" id="sidebar_search" value="命令搜索" onFocus="if (value =='命令搜索'){value =''}" onBlur="if (value ==''){value='命令搜索'}" />
+                </form>
+                <form action="http://man.linuxde.net/" method="post">
+                    <input type="text" name="ss" id="sidebar_search" value="命令直达" onFocus="if (value =='命令直达'){value =''}" onBlur="if (value ==''){value='命令直达'}" />
+                </form>
+            </div>
+            <div class="widget ad"> 
+				<!--
+				<script type="text/javascript">
+					document.write('<a style="display:none!important" id="tanx-a-mm_22964816_6616438_33736229"></a>');
+					tanx_s = document.createElement("script");
+					tanx_s.type = "text/javascript";
+					tanx_s.charset = "gbk";
+					tanx_s.id = "tanx-s-mm_22964816_6616438_33736229";
+					tanx_s.async = true;
+					tanx_s.src = "http://p.tanx.com/ex?i=mm_22964816_6616438_33736229";
+					tanx_h = document.getElementsByTagName("head")[0];
+					if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+				</script>
+				-->
+				<a title="linux马克杯" href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DbWlkMAz37zAcQipKwQzePDAVflQIoZepLKpWJ%2Bin0XJRAdhuF14FMdl7wKby%2Bc%2FExq3IhSJN6GSAAkUL03DNGUpamuccnq1qrmvEga4qAXJgE5NxN1hjMoxodiO%2Bbyu%2BIYULNg46oBA%3D" target="_blank"><img src="http://112.124.15.130/res/linuxde_man/images/s-ad.jpg" alt="linux马克杯"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="layout layout_ft">
+    <div class="footer">
+        <div class="copyright">
+            <a href="http://man.linuxde.net/" title="Linux命令大全">Linux命令大全</a>
+            <em class="sx"></em>
+            <a href="http://man.linuxde.net/about_us" title="关于">关于</a>
+            <em class="sx"></em>
+			收藏本站请使用Ctrl+D
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/shell-script" target="_blank">Shell脚本攻略</a>
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/docs/shell_regex.html" target="_blank">Shell正则表达式</a>
+			<em class="sx"></em>
+			共收录528条Linux系统指令
+        </div>
+        <div class="des">在Linux命令大全（man.linuxde.net）可以查询您所需要的Linux命令教程和相关实例。如果您觉得本站内容对您有所帮助，请推荐给更多需要帮助的人。</div>
+        <div class="info">
+		赞助商链接：<a href="http://www.1987.name/" target="_blank">组装电脑配置清单2017</a>,　运行在<a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DvTDIoAjlYzMcQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAhYdwmcpX19FpcfgoZBkhQKMhxXrDnK9L8ge8W1gUmbKFOH2PYQYfJNjOghCi4TzwOdn1BbglxZYxUhy8exlzcq9AmARIwX9K2Zg%2BdzdQFOwfMRvoxSVDSdLyrb2g0H2G5JcxXijM%2BwneEHpPTskRHknGN7svee8j7S4un6ZpbmpIYULNg46oBA%3D" target="_blank">阿里云服务器</a>！
+		</div>
+    </div>
+</div>
+</div>
+<!--js-->
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/sitejs.js"></script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div style="display:none"><script src="http://s17.cnzz.com/stat.php?id=5762282&web_id=5762282" language="JavaScript"></script></div>
+
+<!--活动推广
+<script type="text/javascript" src="http://112.124.15.130/res/ad/ad.js"></script>
+<style type="text/css">
+.ad-box{width:240px;height:277px;background:#CCC;position:fixed;right:-240px;bottom:10px;}
+.ad-img{position:relative;overflow:hidden;}
+.ad-close{width:30px;height:22px;line-height:22px;display:block;top:10px;right:10px;position:absolute;}
+</style>
+<div class="ad-box">
+    <div class="ad-img">
+        <a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DuGXlvKu7Iv4cQipKwQzePCperVdZeJviK7Vc7tFgwiFRAdhuF14FMZQUNi%2Bb4SgsMMgx22UI05aAAkUL03DNGT6XZIOJR7dCTAHi9HSRVmdzguIHwwNmQ6UuZxIcp9pfUIgVEmFmgnbDX0%2BHH2IEVaX4VWt66S4EJPwiig1bxLP9BvYCQR6XAr%2BKQ71wHNCAqP8YyUoZZlq4cXg3ii9waXPs9Sj9Qli1np4c65at3FeX3cwyLTlAhj2l4PysJx%2FP" target="_blank"><img src="http://112.124.15.130/res/ad/1111.jpg"></a>
+        <a href="javascript:" class="ad-close">关闭</a>
+    </div>
+</div>
+<!--推广结束-->
+
+</body></html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="renderer" content="webkit">
+<title>
+tcpdump命令_Linux tcpdump 命令用法详解：一款sniffer工具</title>
+<link rel="shortcut icon" href="http://man.linuxde.net/favicon.ico" type="image/x-icon" />
+<link rel="pingback" href="http://man.linuxde.net/xmlrpc.php" />
+<link href="http://112.124.15.130/res/linuxde_man/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/jquery-1.8.3.min.js"></script>
+<!--[if IE 6]>
+<script src="http://112.124.15.130/res/linuxde_man/js/belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('*');</script>
+<script src="http://letskillie6.googlecode.com/svn/trunk/letskillie6.zh_CN.pack.js"></script>
+<![endif]-->
+<link rel='canonical' href='http://man.linuxde.net/tcpdump' />
+</head>
+<body>
+<noscript>
+<p class="nojs">您的浏览器已经禁用了脚本，这会严重影响您正常使用本站的功能，请开启！</p>
+</noscript>
+<div class="man_linuxde_net_page">
+<div class="layout_hd">
+    <div class="logo l">
+        <h2><a title="Linux命令大全" href="http://man.linuxde.net/">
+            Linux命令大全            </a></h2>
+    </div>
+    <div class="nav r"><ul id="menu-%e8%8f%9c%e5%8d%951" class="menu"><li id="menu-item-4" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-4"><a href="http://man.linuxde.net/">首页搜索</a></li>
+<li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-6"><a href="http://man.linuxde.net/par/2">系统管理</a></li>
+<li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-7"><a href="http://man.linuxde.net/par/5">网络管理</a></li>
+<li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8"><a href="http://man.linuxde.net/par/4">软件·打印·开发·工具</a></li>
+<li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9"><a href="http://man.linuxde.net/par/1">文件和目录管理</a></li>
+<li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://man.linuxde.net/par/3">硬件·内核·Shell·监测</a></li>
+<li id="menu-item-2096" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2096"><a target="_blank" href="http://www.linuxde.net">Linux Today</a></li>
+</ul></div>    <div class="c"></div>
+</div>
+<div class="layout layout_bd">
+<script type='text/javascript'>
+function addLink() {
+    var body_element = document.getElementsByTagName('body')[0];
+    var selection;
+    selection = window.getSelection();
+    var pagelink = "<br /><br /> 来自: <a href='"+document.location.href+"'>"+document.location.href+"</a>"; 
+    var copy_text = selection + pagelink;
+    var new_div = document.createElement('div');
+    new_div.style.left='-99999px';
+    new_div.style.position='absolute';
+    body_element.appendChild(new_div );
+    new_div.innerHTML = copy_text ;
+    selection.selectAllChildren(new_div );
+    window.setTimeout(function() {
+        body_element.removeChild(new_div );
+    },0);
+}
+document.oncopy = addLink;
+</script>
+<div class="single_default">
+        <div class="main">
+        <div class="breadcrumb">当前位置：<a href="http://man.linuxde.net">首页</a> &raquo; <a href="http://man.linuxde.net/par/5" rel="category tag">网络管理</a> &raquo; tcpdump</div>
+        <div class="post_hd clearfix">
+            <h1 class="l">tcpdump命令</h1>
+            <div class="tag f_yh r">
+                <a href="http://man.linuxde.net/sub/%e9%ab%98%e7%ba%a7%e7%bd%91%e7%bb%9c" rel="tag">高级网络</a>            </div>
+        </div>
+        <div class="post_bd post">
+            <p>
+	<strong>tcpdump命令</strong>是一款sniffer工具，它可以打印所有经过网络接口的数据包的头信息，也可以使用<code>-<span class='wp_keywordlink'><a href="http://man.linuxde.net/w" title="w命令" target="_blank">w</a></span></code>选项将数据包保存到文件中，方便以后分析。
+</p>
+<h3>
+	语法<br />
+</h3>
+<pre>
+tcpdump(选项)</pre>
+<h3>
+	选项<br />
+</h3>
+<pre>
+-a：尝试将网络和广播地址转换成名称；
+-c&lt;数据包数目&gt;：收到指定的数据包数目后，就停止进行倾倒操作；
+-d：把编译过的数据包编码转换成可阅读的格式，并倾倒到标准输出；
+-<span class='wp_keywordlink'><a href="http://man.linuxde.net/dd" title="dd命令" target="_blank">dd</a></span>：把编译过的数据包编码转换成C语言的格式，并倾倒到标准输出；
+-ddd：把编译过的数据包编码转换成十进制数字的格式，并倾倒到标准输出；
+-e：在每列倾倒资料上显示连接层级的文件头；
+-f：用数字显示网际网络地址；
+-F&lt;表达文件&gt;：指定内含表达方式的文件；
+-i&lt;网络界面&gt;：使用指定的网络截面送出数据包；
+-l：使用标准输出列的缓冲区；
+-n：不把主机的网络地址转换成名字；
+-N：不列出域名；
+-O：不将数据包编码最佳化；
+-p：不让网络界面进入混杂模式；
+-q ：快速输出，仅列出少数的传输协议信息；
+-r&lt;数据包文件&gt;：从指定的文件读取数据包数据；
+-s&lt;数据包大小&gt;：设置每个数据包的大小；
+-S：用绝对而非相对数值列出TCP关联数；
+-t：在每列倾倒资料上不显示时间戳记；
+-tt： 在每列倾倒资料上显示未经格式化的时间戳记；
+-T&lt;数据包类型&gt;：强制将表达方式所指定的数据包转译成设置的数据包类型；
+-v：详细显示指令执行过程；
+-vv：更详细显示指令执行过程；
+-x：用十六进制字码列出数据包资料；
+-w&lt;数据包文件&gt;：把数据包数据写入指定的文件。</pre>
+<h3>
+	实例<br />
+</h3>
+<p>
+	<strong>直接启动tcpdump将监视第一个网络接口上所有流过的数据包</strong>
+</p>
+<pre>
+tcpdump</pre>
+<p>
+	<strong>监视指定网络接口的数据包</strong>
+</p>
+<pre>
+tcpdump -i eth1</pre>
+<p>
+	如果不指定网卡，默认tcpdump只会监视第一个网络接口，一般是eth0，下面的例子都没有指定网络接口。
+</p>
+<p>
+	<strong>监视指定主机的数据包</strong>
+</p>
+<p>
+	打印所有进入或离开sundown的数据包。
+</p>
+<pre>
+tcpdump <span class='wp_keywordlink'><a href="http://man.linuxde.net/host" title="host命令" target="_blank">host</a></span> sundown</pre>
+<p>
+	也可以指定<span class='wp_keywordlink'><a href="http://man.linuxde.net/ip" title="ip命令" target="_blank">ip</a></span>,例如截获所有210.27.48.1 的主机收到的和发出的所有的数据包
+</p>
+<pre>
+tcpdump host 210.27.48.1</pre>
+<p>
+	打印helios 与 hot 或者与 ace 之间通信的数据包
+</p>
+<pre>
+tcpdump host helios and \( hot or ace \)</pre>
+<p>
+	截获主机210.27.48.1 和主机210.27.48.2 或210.27.48.3的通信
+</p>
+<pre>
+tcpdump host 210.27.48.1 and \ (210.27.48.2 or 210.27.48.3 \)</pre>
+<p>
+	打印ace与任何其他主机之间通信的IP 数据包, 但不包括与helios之间的数据包.
+</p>
+<pre>
+tcpdump ip host ace and not helios</pre>
+<p>
+	如果想要获取主机210.27.48.1除了和主机210.27.48.2之外所有主机通信的ip包，使用命令：
+</p>
+<pre>
+tcpdump ip host 210.27.48.1 and ! 210.27.48.2</pre>
+<p>
+	截获主机<span class='wp_keywordlink'><a href="http://man.linuxde.net/hostname" title="hostname命令" target="_blank">hostname</a></span>发送的所有数据
+</p>
+<pre>
+tcpdump -i eth0 src host hostname</pre>
+<p>
+	监视所有送到主机hostname的数据包
+</p>
+<pre>
+tcpdump -i eth0 dst host hostname</pre>
+<p>
+	<strong>监视指定主机和端口的数据包</strong>
+</p>
+<p>
+	如果想要获取主机210.27.48.1接收或发出的<span class='wp_keywordlink'><a href="http://man.linuxde.net/telnet" title="telnet命令" target="_blank">telnet</a></span>包，使用如下命令
+</p>
+<pre>
+tcpdump tcp port 23 host 210.27.48.1</pre>
+<p>
+	对本机的udp 123 端口进行监视 123 为ntp的服务端口
+</p>
+<pre>
+tcpdump udp port 123</pre>
+<p>
+	<strong>监视指定网络的数据包</strong>
+</p>
+<p>
+	打印本地主机与Berkeley网络上的主机之间的所有通信数据包
+</p>
+<pre>
+tcpdump net ucb-ether</pre>
+<p>
+	ucb-ether此处可理解为&ldquo;Berkeley网络&rdquo;的网络地址，此表达式最原始的含义可表达为：打印网络地址为ucb-ether的所有数据包
+</p>
+<p>
+	打印所有通过网关snup的<span class='wp_keywordlink'><a href="http://man.linuxde.net/ftp" title="ftp命令" target="_blank">ftp</a></span>数据包
+</p>
+<pre>
+tcpdump &#39;gateway snup and (port ftp or ftp-data)&#39;</pre>
+<p>
+	注意：表达式被单引号括起来了，这可以防止shell对其中的括号进行错误解析
+</p>
+<p>
+	打印所有源地址或目标地址是本地主机的IP数据包
+</p>
+<pre>
+tcpdump ip and not net localnet</pre>
+<p>
+	如果本地网络通过网关连到了另一网络，则另一网络并不能算作本地网络。</p>
+        </div>
+        <div class="post_ft">
+            <div class="title">最近更新的命令</div>
+            <ul>
+                <li><a href="http://man.linuxde.net/cut" title="cut">cut</a></li><li><a href="http://man.linuxde.net/sh" title="sh">sh</a></li><li><a href="http://man.linuxde.net/seq" title="seq">seq</a></li><li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li><li><a href="http://man.linuxde.net/syslog" title="syslog">syslog</a></li><li><a href="http://man.linuxde.net/inotifywait" title="inotifywait">inotifywait</a></li><li><a href="http://man.linuxde.net/dd" title="dd">dd</a></li><li><a href="http://man.linuxde.net/read" title="read">read</a></li><li><a href="http://man.linuxde.net/uname" title="uname">uname</a></li><li><a href="http://man.linuxde.net/pssh" title="pssh">pssh</a></li><li><a href="http://man.linuxde.net/tar" title="tar">tar</a></li><li><a href="http://man.linuxde.net/axel" title="axel">axel</a></li><li><a href="http://man.linuxde.net/losetup" title="losetup">losetup</a></li><li><a href="http://man.linuxde.net/lsb_release" title="lsb_release">lsb_release</a></li><li><a href="http://man.linuxde.net/tcpreplay" title="tcpreplay">tcpreplay</a></li><li><a href="http://man.linuxde.net/strings" title="strings">strings</a></li><li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li><li><a href="http://man.linuxde.net/speedtest-cli" title="speedtest-cli">speedtest-cli</a></li><li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li><li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li><li><a href="http://man.linuxde.net/dnf" title="dnf">dnf</a></li><li><a href="http://man.linuxde.net/nethogs" title="nethogs">nethogs</a></li><li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li><li><a href="http://man.linuxde.net/trap" title="trap">trap</a></li><li><a href="http://man.linuxde.net/let" title="let">let</a></li><li><a href="http://man.linuxde.net/ifstat" title="ifstat">ifstat</a></li><li><a href="http://man.linuxde.net/blkid" title="blkid">blkid</a></li><li><a href="http://man.linuxde.net/ipcrm" title="ipcrm">ipcrm</a></li><li><a href="http://man.linuxde.net/openssl" title="openssl">openssl</a></li><li><a href="http://man.linuxde.net/chage" title="chage">chage</a></li>            </ul>
+        </div>
+        <div id="comments">
+            <!-- You can start editing here. -->
+        </div>
+    </div>
+    
+<div class="sidebar">
+    <div class="widget related">
+        <div class="hd">
+            <h3>相关命令</h3>
+        </div>
+        <div class="bd">
+            <ul>
+                            <li><a href="http://man.linuxde.net/ip6tables" title="ip6tables">ip6tables</a></li>
+                <li><a href="http://man.linuxde.net/iptables-save" title="iptables-save">iptables-save</a></li>
+                <li><a href="http://man.linuxde.net/ip6tables-restore" title="ip6tables-restore">ip6tables-restore</a></li>
+                <li><a href="http://man.linuxde.net/ss" title="ss">ss</a></li>
+                <li><a href="http://man.linuxde.net/iptraf" title="iptraf">iptraf</a></li>
+                <li><a href="http://man.linuxde.net/tcpreplay" title="tcpreplay">tcpreplay</a></li>
+                <li><a href="http://man.linuxde.net/ip6tables-save" title="ip6tables-save">ip6tables-save</a></li>
+                <li><a href="http://man.linuxde.net/lnstat" title="lnstat">lnstat</a></li>
+                <li><a href="http://man.linuxde.net/arptables" title="arptables">arptables</a></li>
+                <li><a href="http://man.linuxde.net/nstat_rtacct" title="nstat/rtacct">nstat/rtacct</a></li>
+                <li><a href="http://man.linuxde.net/pfctl" title="pfctl">pfctl</a></li>
+                <li><a href="http://man.linuxde.net/ip" title="ip">ip</a></li>
+                <li><a href="http://man.linuxde.net/iptables-restore" title="iptables-restore">iptables-restore</a></li>
+                <li><a href="http://man.linuxde.net/arpd" title="arpd">arpd</a></li>
+                <li><a href="http://man.linuxde.net/iptables" title="iptables">iptables</a></li>
+                </ul>
+        </div>
+    </div>
+    <div id="fixedBox">
+        <div id="float" class="dbox">
+            <div class="sidebar_search_box">
+                <form action="http://man.linuxde.net/">
+                    <input type="text" name="s" id="sidebar_search" value="命令搜索" onFocus="if (value =='命令搜索'){value =''}" onBlur="if (value ==''){value='命令搜索'}" />
+                </form>
+                <form action="http://man.linuxde.net/" method="post">
+                    <input type="text" name="ss" id="sidebar_search" value="命令直达" onFocus="if (value =='命令直达'){value =''}" onBlur="if (value ==''){value='命令直达'}" />
+                </form>
+            </div>
+            <div class="widget ad"> 
+				<!--
+				<script type="text/javascript">
+					document.write('<a style="display:none!important" id="tanx-a-mm_22964816_6616438_33736229"></a>');
+					tanx_s = document.createElement("script");
+					tanx_s.type = "text/javascript";
+					tanx_s.charset = "gbk";
+					tanx_s.id = "tanx-s-mm_22964816_6616438_33736229";
+					tanx_s.async = true;
+					tanx_s.src = "http://p.tanx.com/ex?i=mm_22964816_6616438_33736229";
+					tanx_h = document.getElementsByTagName("head")[0];
+					if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+				</script>
+				-->
+				<a title="linux马克杯" href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DbWlkMAz37zAcQipKwQzePDAVflQIoZepLKpWJ%2Bin0XJRAdhuF14FMdl7wKby%2Bc%2FExq3IhSJN6GSAAkUL03DNGUpamuccnq1qrmvEga4qAXJgE5NxN1hjMoxodiO%2Bbyu%2BIYULNg46oBA%3D" target="_blank"><img src="http://112.124.15.130/res/linuxde_man/images/s-ad.jpg" alt="linux马克杯"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="layout layout_ft">
+    <div class="footer">
+        <div class="copyright">
+            <a href="http://man.linuxde.net/" title="Linux命令大全">Linux命令大全</a>
+            <em class="sx"></em>
+            <a href="http://man.linuxde.net/about_us" title="关于">关于</a>
+            <em class="sx"></em>
+			收藏本站请使用Ctrl+D
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/shell-script" target="_blank">Shell脚本攻略</a>
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/docs/shell_regex.html" target="_blank">Shell正则表达式</a>
+			<em class="sx"></em>
+			共收录528条Linux系统指令
+        </div>
+        <div class="des">在Linux命令大全（man.linuxde.net）可以查询您所需要的Linux命令教程和相关实例。如果您觉得本站内容对您有所帮助，请推荐给更多需要帮助的人。</div>
+        <div class="info">
+		赞助商链接：<a href="http://www.1987.name/" target="_blank">组装电脑配置清单2017</a>,　运行在<a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DvTDIoAjlYzMcQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAhYdwmcpX19FpcfgoZBkhQKMhxXrDnK9L8ge8W1gUmbKFOH2PYQYfJNjOghCi4TzwOdn1BbglxZYxUhy8exlzcq9AmARIwX9K2Zg%2BdzdQFOwfMRvoxSVDSdLyrb2g0H2G5JcxXijM%2BwneEHpPTskRHknGN7svee8j7S4un6ZpbmpIYULNg46oBA%3D" target="_blank">阿里云服务器</a>！
+		</div>
+    </div>
+</div>
+</div>
+<!--js-->
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/sitejs.js"></script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div style="display:none"><script src="http://s17.cnzz.com/stat.php?id=5762282&web_id=5762282" language="JavaScript"></script></div>
+
+<!--活动推广
+<script type="text/javascript" src="http://112.124.15.130/res/ad/ad.js"></script>
+<style type="text/css">
+.ad-box{width:240px;height:277px;background:#CCC;position:fixed;right:-240px;bottom:10px;}
+.ad-img{position:relative;overflow:hidden;}
+.ad-close{width:30px;height:22px;line-height:22px;display:block;top:10px;right:10px;position:absolute;}
+</style>
+<div class="ad-box">
+    <div class="ad-img">
+        <a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DuGXlvKu7Iv4cQipKwQzePCperVdZeJviK7Vc7tFgwiFRAdhuF14FMZQUNi%2Bb4SgsMMgx22UI05aAAkUL03DNGT6XZIOJR7dCTAHi9HSRVmdzguIHwwNmQ6UuZxIcp9pfUIgVEmFmgnbDX0%2BHH2IEVaX4VWt66S4EJPwiig1bxLP9BvYCQR6XAr%2BKQ71wHNCAqP8YyUoZZlq4cXg3ii9waXPs9Sj9Qli1np4c65at3FeX3cwyLTlAhj2l4PysJx%2FP" target="_blank"><img src="http://112.124.15.130/res/ad/1111.jpg"></a>
+        <a href="javascript:" class="ad-close">关闭</a>
+    </div>
+</div>
+<!--推广结束-->
+
+</body></html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="renderer" content="webkit">
+<title>
+rpm命令_Linux rpm 命令用法详解：RPM软件包的管理工具</title>
+<link rel="shortcut icon" href="http://man.linuxde.net/favicon.ico" type="image/x-icon" />
+<link rel="pingback" href="http://man.linuxde.net/xmlrpc.php" />
+<link href="http://112.124.15.130/res/linuxde_man/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/jquery-1.8.3.min.js"></script>
+<!--[if IE 6]>
+<script src="http://112.124.15.130/res/linuxde_man/js/belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('*');</script>
+<script src="http://letskillie6.googlecode.com/svn/trunk/letskillie6.zh_CN.pack.js"></script>
+<![endif]-->
+<link rel='canonical' href='http://man.linuxde.net/rpm' />
+</head>
+<body>
+<noscript>
+<p class="nojs">您的浏览器已经禁用了脚本，这会严重影响您正常使用本站的功能，请开启！</p>
+</noscript>
+<div class="man_linuxde_net_page">
+<div class="layout_hd">
+    <div class="logo l">
+        <h2><a title="Linux命令大全" href="http://man.linuxde.net/">
+            Linux命令大全            </a></h2>
+    </div>
+    <div class="nav r"><ul id="menu-%e8%8f%9c%e5%8d%951" class="menu"><li id="menu-item-4" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-4"><a href="http://man.linuxde.net/">首页搜索</a></li>
+<li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-6"><a href="http://man.linuxde.net/par/2">系统管理</a></li>
+<li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7"><a href="http://man.linuxde.net/par/5">网络管理</a></li>
+<li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-8"><a href="http://man.linuxde.net/par/4">软件·打印·开发·工具</a></li>
+<li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9"><a href="http://man.linuxde.net/par/1">文件和目录管理</a></li>
+<li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://man.linuxde.net/par/3">硬件·内核·Shell·监测</a></li>
+<li id="menu-item-2096" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2096"><a target="_blank" href="http://www.linuxde.net">Linux Today</a></li>
+</ul></div>    <div class="c"></div>
+</div>
+<div class="layout layout_bd">
+<script type='text/javascript'>
+function addLink() {
+    var body_element = document.getElementsByTagName('body')[0];
+    var selection;
+    selection = window.getSelection();
+    var pagelink = "<br /><br /> 来自: <a href='"+document.location.href+"'>"+document.location.href+"</a>"; 
+    var copy_text = selection + pagelink;
+    var new_div = document.createElement('div');
+    new_div.style.left='-99999px';
+    new_div.style.position='absolute';
+    body_element.appendChild(new_div );
+    new_div.innerHTML = copy_text ;
+    selection.selectAllChildren(new_div );
+    window.setTimeout(function() {
+        body_element.removeChild(new_div );
+    },0);
+}
+document.oncopy = addLink;
+</script>
+<div class="single_default">
+        <div class="main">
+        <div class="breadcrumb">当前位置：<a href="http://man.linuxde.net">首页</a> &raquo; <a href="http://man.linuxde.net/par/4" rel="category tag">软件·打印·开发·工具</a> &raquo; rpm</div>
+        <div class="post_hd clearfix">
+            <h1 class="l">rpm命令</h1>
+            <div class="tag f_yh r">
+                <a href="http://man.linuxde.net/sub/%e8%bd%af%e4%bb%b6%e5%8c%85%e7%ae%a1%e7%90%86" rel="tag">软件包管理</a>            </div>
+        </div>
+        <div class="post_bd post">
+            <p>
+	<strong>rpm命令</strong>是RPM软件包的管理工具。rpm原本是Red&nbsp;Hat&nbsp;Linux发行版专门用来管理Linux各项套件的程序，由于它遵循GPL规则且功能强大方便，因而广受欢迎。逐渐受到其他发行版的采用。RPM套件管理方式的出现，让Linux易于安装，升级，间接提升了Linux的适用度。
+</p>
+<h3>
+	语法<br />
+</h3>
+<pre>
+rpm(选项)(参数)</pre>
+<h3>
+	选项<br />
+</h3>
+<pre>
+-a：查询所有套件；
+-b&lt;完成阶段&gt;&lt;套件档&gt;+或-t &lt;完成阶段&gt;&lt;套件档&gt;+：设置包装套件的完成阶段，并指定套件档的文件名称；
+-c：只列出组态配置文件，本参数需配合&quot;-l&quot;参数使用；
+-d：只列出文本文件，本参数需配合&quot;-l&quot;参数使用；
+-e&lt;套件档&gt;或--erase&lt;套件档&gt;：删除指定的套件；
+-f&lt;文件&gt;+：查询拥有指定文件的套件；
+-h或--hash：套件安装时列出标记；
+-i：显示套件的相关信息；
+-i&lt;套件档&gt;或--<span class='wp_keywordlink'><a href="http://man.linuxde.net/install" title="install命令" target="_blank">install</a></span>&lt;套件档&gt;：安装指定的套件档；
+-l：显示套件的文件列表；
+-p&lt;套件档&gt;+：查询指定的RPM套件档；
+-q：使用询问模式，当遇到任何问题时，rpm指令会先询问用户；
+-R：显示套件的关联性信息；
+-s：显示文件状态，本参数需配合&quot;-l&quot;参数使用；
+-U&lt;套件档&gt;或--upgrade&lt;套件档&gt;：升级指定的套件档；
+-v：显示指令执行过程；
+-vv：详细显示指令执行过程，便于排错。</pre>
+<h3>
+	参数<br />
+</h3>
+<p>
+	软件包：指定要操纵的rpm软件包。
+</p>
+<h3>
+	实例<br />
+</h3>
+<p>
+	<strong>如何安装rpm软件包</strong>
+</p>
+<p>
+	rpm软件包的安装可以使用程序rpm来完成。执行下面的命令：
+</p>
+<pre>
+rpm -ivh your-package.rpm</pre>
+<p>
+	其中your-package.rpm是你要安装的rpm包的文件名，一般置于当前目录下。
+</p>
+<p>
+	安装过程中可能出现下面的警告或者提示：
+</p>
+<pre>
+... conflict with ...</pre>
+<p>
+	可能是要安装的包里有一些文件可能会覆盖现有的文件，缺省时这样的情况下是无法正确安装的可以用<code>rpm --force -i</code>强制安装即可
+</p>
+<pre>
+... is needed by ...
+... is not installed ...</pre>
+<p>
+	此包需要的一些软件你没有安装可以用<code>rpm --nodeps -i</code>来忽略此信息，也就是说<code>rpm -i --force --nodeps</code>可以忽略所有依赖关系和文件问题，什么包都能安装上，但这种强制安装的软件包不能保证完全发挥功能。
+</p>
+<p>
+	<strong>如何安装.src.rpm软件包</strong>
+</p>
+<p>
+	有些软件包是以.src.rpm结尾的，这类软件包是包含了源代码的rpm包，在安装时需要进行编译。这类软件包有两种安装方法：
+</p>
+<p>
+	方法一：
+</p>
+<pre>
+rpm -i your-package.src.rpm
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/cd" title="cd命令" target="_blank">cd</a></span> /usr/src/redhat/SPECS
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/rpmbuild" title="rpmbuild命令" target="_blank">rpmbuild</a></span> -bp your-package.specs            <span style="color:#808080;"> #一个和你的软件包同名的specs文件</span>
+cd /usr/src/redhat/BUILD/your-package/      <span style="color:#808080;">#一个和你的软件包同名的目录</span>
+./configure                                 <span style="color:#808080;">#这一步和编译普通的源码软件一样，可以加上参数</span>
+<span class='wp_keywordlink'><a href="http://man.linuxde.net/make" title="make命令" target="_blank">make</a></span>
+make install</pre>
+<p>
+	方法二：
+</p>
+<pre>
+rpm -i you-package.src.rpm
+cd /usr/src/redhat/SPECS</pre>
+<p>
+	前两步和方法一相同
+</p>
+<pre>
+rpmbuild -bb your-package.specs       #一个和你的软件包同名的specs文件</pre>
+<p>
+	这时在<code>/usr/src/redhat/RPM/i386/</code>（根据具体包的不同，也可能是i686,noarch等等）在这个目录下，有一个新的rpm包，这个是编译好的二进制文件。
+</p>
+<p>
+	执行<code>rpm -i new-package.rpm</code>即可安装完成。
+</p>
+<p>
+	<strong>如何卸载rpm软件包</strong>
+</p>
+<p>
+	使用命令<code>rpm -e</code>包名，包名可以包含版本号等信息，但是不可以有后缀.rpm，比如卸载软件包proftpd-1.2.8-1，可以使用下列格式：
+</p>
+<pre>
+rpm -e proftpd-1.2.8-1
+rpm -e proftpd-1.2.8
+rpm -e proftpd-
+rpm -e proftpd</pre>
+<p>
+	不可以是下列格式：
+</p>
+<pre>
+rpm -e proftpd-1.2.8-1.i386.rpm
+rpm -e proftpd-1.2.8-1.i386
+rpm -e proftpd-1.2
+rpm -e proftpd-1</pre>
+<p>
+	有时会出现一些错误或者警告：
+</p>
+<pre>
+... is needed by ...</pre>
+<p>
+	这说明这个软件被其他软件需要，不能随便卸载，可以用rpm -e --nodeps强制卸载
+</p>
+<p>
+	<strong>如何不安装但是获取rpm包中的文件</strong>
+</p>
+<p>
+	使用工具<span class='wp_keywordlink'><a href="http://man.linuxde.net/rpm2cpio" title="rpm2cpio命令" target="_blank">rpm2cpio</a></span>和<span class='wp_keywordlink'><a href="http://man.linuxde.net/cpio" title="cpio命令" target="_blank">cpio</a></span>
+</p>
+<pre>
+rpm2cpio xxx.rpm | cpio -<span class='wp_keywordlink'><a href="http://man.linuxde.net/vi" title="vi命令" target="_blank">vi</a></span>
+rpm2cpio xxx.rpm | cpio -idmv
+rpm2cpio xxx.rpm | cpio --extract --make-directories</pre>
+<p>
+	参数i和extract相同，表示提取文件。v表示指示执行进程，d和make-directory相同，表示根据包中文件原来的路径建立目录，m表示保持文件的更新时间。
+</p>
+<p>
+	<strong>如何查看与rpm包相关的文件和其他信息</strong>
+</p>
+<p>
+	下面所有的例子都假设使用软件包<span class='wp_keywordlink'><a href="http://man.linuxde.net/mysql" title="mysql命令" target="_blank">mysql</a></span>-3.23.54a-11
+</p>
+<p>
+	1、我的系统中安装了那些rpm软件包。
+</p>
+<pre>
+rpm -qa 讲列出所有安装过的包</pre>
+<p>
+	如果要查找所有安装过的包含某个字符串sql的软件包
+</p>
+<pre>
+rpm -qa | <span class='wp_keywordlink'><a href="http://man.linuxde.net/grep" title="grep命令" target="_blank">grep</a></span> sql</pre>
+<p>
+	2、如何获得某个软件包的文件全名。
+</p>
+<pre>
+rpm -q mysql</pre>
+<p>
+	可以获得系统中安装的mysql软件包全名，从中可以获得当前软件包的版本等信息。这个例子中可以得到信息mysql-3.23.54a-11
+</p>
+<p>
+	3、一个rpm包中的文件安装到那里去了？
+</p>
+<pre>
+rpm -ql 包名</pre>
+<p>
+	注意这里的是不包括.rpm后缀的软件包的名称，也就是说只能用mysql或者mysql-3.23.54a-11而不是mysql-3.23.54a-11.rpm。如果只是想知道可执行程序放到那里去了，也可以用<span class='wp_keywordlink'><a href="http://man.linuxde.net/which" title="which命令" target="_blank">which</a></span>，比如：
+</p>
+<pre>
+which mysql</pre>
+<p>
+	4、一个rpm包中包含那些文件。
+</p>
+<ul>
+<li>
+		一个没有安装过的软件包，使用<code>rpm -qlp ****.rpm</code>
+	</li>
+<li>
+		一个已经安装过的软件包，还可以使用<code>rpm -ql ****.rpm</code>
+	</li>
+</ul>
+<p>
+	5、如何获取关于一个软件包的版本，用途等相关信息？
+</p>
+<ul>
+<li>
+		一个没有安装过的软件包，使用<code>rpm -qip ****.rpm</code>
+	</li>
+<li>
+		一个已经安装过的软件包，还可以使用<code>rpm -qi ****.rpm</code>
+	</li>
+</ul>
+<p>
+	6、某个程序是哪个软件包安装的，或者哪个软件包包含这个程序。
+</p>
+<pre>
+rpm -qf `which 程序名`    <span style="color:#808080;">#返回软件包的全名</span>
+rpm -qif `which 程序名`   <span style="color:#808080;">#返回软件包的有关信息</span>
+rpm -qlf `which 程序名`   <span style="color:#808080;">#返回软件包的文件列表</span></pre>
+<p>
+	注意，这里不是引号，而是`，就是键盘左上角的那个键。也可以使用<code>rpm -qilf</code>，同时输出软件包信息和文件列表。
+</p>
+<p>
+	7、某个文件是哪个软件包安装的，或者哪个软件包包含这个文件。
+</p>
+<p>
+	注意，前一个问题中的方法，只适用与可执行的程序，而下面的方法，不仅可以用于可执行程序，也可以用于普通的任何文件。前提是知道这个文件名。首先获得这个程序的完整路径，可以用<span class='wp_keywordlink'><a href="http://man.linuxde.net/whereis" title="whereis命令" target="_blank">whereis</a></span>或者which，然后使用<code>rpm -qf</code>例如：
+</p>
+<pre>
+<span style="color:#FF0000;">whereis <span class='wp_keywordlink'><a href="http://man.linuxde.net/ftptop" title="ftptop命令" target="_blank">ftptop</a></span></span>
+ftptop: /usr/bin/ftptop /usr/share/<span class='wp_keywordlink'><a href="http://man.linuxde.net/man" title="man命令" target="_blank">man</a></span>/man1/ftptop.1.gz
+
+<span style="color:#FF0000;">rpm -qf /usr/bin/ftptop</span>
+proftpd-1.2.8-1
+
+<span style="color:#FF0000;">rpm -qf /usr/share/doc/proftpd-1.2.8/rfc/rfc0959.txt</span>
+proftpd-1.2.8-1</pre>
+        </div>
+        <div class="post_ft">
+            <div class="title">最近更新的命令</div>
+            <ul>
+                <li><a href="http://man.linuxde.net/cut" title="cut">cut</a></li><li><a href="http://man.linuxde.net/sh" title="sh">sh</a></li><li><a href="http://man.linuxde.net/seq" title="seq">seq</a></li><li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li><li><a href="http://man.linuxde.net/syslog" title="syslog">syslog</a></li><li><a href="http://man.linuxde.net/inotifywait" title="inotifywait">inotifywait</a></li><li><a href="http://man.linuxde.net/dd" title="dd">dd</a></li><li><a href="http://man.linuxde.net/read" title="read">read</a></li><li><a href="http://man.linuxde.net/uname" title="uname">uname</a></li><li><a href="http://man.linuxde.net/pssh" title="pssh">pssh</a></li><li><a href="http://man.linuxde.net/tar" title="tar">tar</a></li><li><a href="http://man.linuxde.net/axel" title="axel">axel</a></li><li><a href="http://man.linuxde.net/losetup" title="losetup">losetup</a></li><li><a href="http://man.linuxde.net/lsb_release" title="lsb_release">lsb_release</a></li><li><a href="http://man.linuxde.net/tcpreplay" title="tcpreplay">tcpreplay</a></li><li><a href="http://man.linuxde.net/strings" title="strings">strings</a></li><li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li><li><a href="http://man.linuxde.net/speedtest-cli" title="speedtest-cli">speedtest-cli</a></li><li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li><li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li><li><a href="http://man.linuxde.net/dnf" title="dnf">dnf</a></li><li><a href="http://man.linuxde.net/nethogs" title="nethogs">nethogs</a></li><li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li><li><a href="http://man.linuxde.net/trap" title="trap">trap</a></li><li><a href="http://man.linuxde.net/let" title="let">let</a></li><li><a href="http://man.linuxde.net/ifstat" title="ifstat">ifstat</a></li><li><a href="http://man.linuxde.net/blkid" title="blkid">blkid</a></li><li><a href="http://man.linuxde.net/ipcrm" title="ipcrm">ipcrm</a></li><li><a href="http://man.linuxde.net/openssl" title="openssl">openssl</a></li><li><a href="http://man.linuxde.net/chage" title="chage">chage</a></li>            </ul>
+        </div>
+        <div id="comments">
+            <!-- You can start editing here. -->
+        </div>
+    </div>
+    
+<div class="sidebar">
+    <div class="widget related">
+        <div class="hd">
+            <h3>相关命令</h3>
+        </div>
+        <div class="bd">
+            <ul>
+                            <li><a href="http://man.linuxde.net/dpkg-statoverride" title="dpkg-statoverride">dpkg-statoverride</a></li>
+                <li><a href="http://man.linuxde.net/ntsysv" title="ntsysv">ntsysv</a></li>
+                <li><a href="http://man.linuxde.net/rpmquery" title="rpmquery">rpmquery</a></li>
+                <li><a href="http://man.linuxde.net/dpkg-reconfigure" title="dpkg-reconfigure">dpkg-reconfigure</a></li>
+                <li><a href="http://man.linuxde.net/apt-get" title="apt-get">apt-get</a></li>
+                <li><a href="http://man.linuxde.net/apt-sortpkgs" title="apt-sortpkgs">apt-sortpkgs</a></li>
+                <li><a href="http://man.linuxde.net/rpmsign" title="rpmsign">rpmsign</a></li>
+                <li><a href="http://man.linuxde.net/apt-key" title="apt-key">apt-key</a></li>
+                <li><a href="http://man.linuxde.net/aptitude" title="aptitude">aptitude</a></li>
+                <li><a href="http://man.linuxde.net/rpmbuild" title="rpmbuild">rpmbuild</a></li>
+                <li><a href="http://man.linuxde.net/rpmdb" title="rpmdb">rpmdb</a></li>
+                <li><a href="http://man.linuxde.net/dpkg-divert" title="dpkg-divert">dpkg-divert</a></li>
+                <li><a href="http://man.linuxde.net/dpkg-deb" title="dpkg-deb">dpkg-deb</a></li>
+                <li><a href="http://man.linuxde.net/rcconf" title="rcconf">rcconf</a></li>
+                <li><a href="http://man.linuxde.net/dpkg-split" title="dpkg-split">dpkg-split</a></li>
+                <li><a href="http://man.linuxde.net/rpmverify" title="rpmverify">rpmverify</a></li>
+                <li><a href="http://man.linuxde.net/patch" title="patch">patch</a></li>
+                <li><a href="http://man.linuxde.net/dpkg-trigger" title="dpkg-trigger">dpkg-trigger</a></li>
+                <li><a href="http://man.linuxde.net/chkconfig" title="chkconfig">chkconfig</a></li>
+                <li><a href="http://man.linuxde.net/rpm2cpio" title="rpm2cpio">rpm2cpio</a></li>
+                </ul>
+        </div>
+    </div>
+    <div id="fixedBox">
+        <div id="float" class="dbox">
+            <div class="sidebar_search_box">
+                <form action="http://man.linuxde.net/">
+                    <input type="text" name="s" id="sidebar_search" value="命令搜索" onFocus="if (value =='命令搜索'){value =''}" onBlur="if (value ==''){value='命令搜索'}" />
+                </form>
+                <form action="http://man.linuxde.net/" method="post">
+                    <input type="text" name="ss" id="sidebar_search" value="命令直达" onFocus="if (value =='命令直达'){value =''}" onBlur="if (value ==''){value='命令直达'}" />
+                </form>
+            </div>
+            <div class="widget ad"> 
+				<!--
+				<script type="text/javascript">
+					document.write('<a style="display:none!important" id="tanx-a-mm_22964816_6616438_33736229"></a>');
+					tanx_s = document.createElement("script");
+					tanx_s.type = "text/javascript";
+					tanx_s.charset = "gbk";
+					tanx_s.id = "tanx-s-mm_22964816_6616438_33736229";
+					tanx_s.async = true;
+					tanx_s.src = "http://p.tanx.com/ex?i=mm_22964816_6616438_33736229";
+					tanx_h = document.getElementsByTagName("head")[0];
+					if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+				</script>
+				-->
+				<a title="linux马克杯" href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DbWlkMAz37zAcQipKwQzePDAVflQIoZepLKpWJ%2Bin0XJRAdhuF14FMdl7wKby%2Bc%2FExq3IhSJN6GSAAkUL03DNGUpamuccnq1qrmvEga4qAXJgE5NxN1hjMoxodiO%2Bbyu%2BIYULNg46oBA%3D" target="_blank"><img src="http://112.124.15.130/res/linuxde_man/images/s-ad.jpg" alt="linux马克杯"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="layout layout_ft">
+    <div class="footer">
+        <div class="copyright">
+            <a href="http://man.linuxde.net/" title="Linux命令大全">Linux命令大全</a>
+            <em class="sx"></em>
+            <a href="http://man.linuxde.net/about_us" title="关于">关于</a>
+            <em class="sx"></em>
+			收藏本站请使用Ctrl+D
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/shell-script" target="_blank">Shell脚本攻略</a>
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/docs/shell_regex.html" target="_blank">Shell正则表达式</a>
+			<em class="sx"></em>
+			共收录528条Linux系统指令
+        </div>
+        <div class="des">在Linux命令大全（man.linuxde.net）可以查询您所需要的Linux命令教程和相关实例。如果您觉得本站内容对您有所帮助，请推荐给更多需要帮助的人。</div>
+        <div class="info">
+		赞助商链接：<a href="http://www.1987.name/" target="_blank">组装电脑配置清单2017</a>,　运行在<a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DvTDIoAjlYzMcQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAhYdwmcpX19FpcfgoZBkhQKMhxXrDnK9L8ge8W1gUmbKFOH2PYQYfJNjOghCi4TzwOdn1BbglxZYxUhy8exlzcq9AmARIwX9K2Zg%2BdzdQFOwfMRvoxSVDSdLyrb2g0H2G5JcxXijM%2BwneEHpPTskRHknGN7svee8j7S4un6ZpbmpIYULNg46oBA%3D" target="_blank">阿里云服务器</a>！
+		</div>
+    </div>
+</div>
+</div>
+<!--js-->
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/sitejs.js"></script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div style="display:none"><script src="http://s17.cnzz.com/stat.php?id=5762282&web_id=5762282" language="JavaScript"></script></div>
+
+<!--活动推广
+<script type="text/javascript" src="http://112.124.15.130/res/ad/ad.js"></script>
+<style type="text/css">
+.ad-box{width:240px;height:277px;background:#CCC;position:fixed;right:-240px;bottom:10px;}
+.ad-img{position:relative;overflow:hidden;}
+.ad-close{width:30px;height:22px;line-height:22px;display:block;top:10px;right:10px;position:absolute;}
+</style>
+<div class="ad-box">
+    <div class="ad-img">
+        <a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DuGXlvKu7Iv4cQipKwQzePCperVdZeJviK7Vc7tFgwiFRAdhuF14FMZQUNi%2Bb4SgsMMgx22UI05aAAkUL03DNGT6XZIOJR7dCTAHi9HSRVmdzguIHwwNmQ6UuZxIcp9pfUIgVEmFmgnbDX0%2BHH2IEVaX4VWt66S4EJPwiig1bxLP9BvYCQR6XAr%2BKQ71wHNCAqP8YyUoZZlq4cXg3ii9waXPs9Sj9Qli1np4c65at3FeX3cwyLTlAhj2l4PysJx%2FP" target="_blank"><img src="http://112.124.15.130/res/ad/1111.jpg"></a>
+        <a href="javascript:" class="ad-close">关闭</a>
+    </div>
+</div>
+<!--推广结束-->
+
+</body></html>

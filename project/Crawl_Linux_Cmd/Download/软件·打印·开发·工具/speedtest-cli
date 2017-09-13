@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="renderer" content="webkit">
+<title>
+speedtest-cli命令_Linux speedtest-cli 命令用法详解：命令行下测试服务器外网速度</title>
+<link rel="shortcut icon" href="http://man.linuxde.net/favicon.ico" type="image/x-icon" />
+<link rel="pingback" href="http://man.linuxde.net/xmlrpc.php" />
+<link href="http://112.124.15.130/res/linuxde_man/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/jquery-1.8.3.min.js"></script>
+<!--[if IE 6]>
+<script src="http://112.124.15.130/res/linuxde_man/js/belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('*');</script>
+<script src="http://letskillie6.googlecode.com/svn/trunk/letskillie6.zh_CN.pack.js"></script>
+<![endif]-->
+<link rel='canonical' href='http://man.linuxde.net/speedtest-cli' />
+</head>
+<body>
+<noscript>
+<p class="nojs">您的浏览器已经禁用了脚本，这会严重影响您正常使用本站的功能，请开启！</p>
+</noscript>
+<div class="man_linuxde_net_page">
+<div class="layout_hd">
+    <div class="logo l">
+        <h2><a title="Linux命令大全" href="http://man.linuxde.net/">
+            Linux命令大全            </a></h2>
+    </div>
+    <div class="nav r"><ul id="menu-%e8%8f%9c%e5%8d%951" class="menu"><li id="menu-item-4" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-4"><a href="http://man.linuxde.net/">首页搜索</a></li>
+<li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-6"><a href="http://man.linuxde.net/par/2">系统管理</a></li>
+<li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7"><a href="http://man.linuxde.net/par/5">网络管理</a></li>
+<li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-8"><a href="http://man.linuxde.net/par/4">软件·打印·开发·工具</a></li>
+<li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9"><a href="http://man.linuxde.net/par/1">文件和目录管理</a></li>
+<li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://man.linuxde.net/par/3">硬件·内核·Shell·监测</a></li>
+<li id="menu-item-2096" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2096"><a target="_blank" href="http://www.linuxde.net">Linux Today</a></li>
+</ul></div>    <div class="c"></div>
+</div>
+<div class="layout layout_bd">
+<script type='text/javascript'>
+function addLink() {
+    var body_element = document.getElementsByTagName('body')[0];
+    var selection;
+    selection = window.getSelection();
+    var pagelink = "<br /><br /> 来自: <a href='"+document.location.href+"'>"+document.location.href+"</a>"; 
+    var copy_text = selection + pagelink;
+    var new_div = document.createElement('div');
+    new_div.style.left='-99999px';
+    new_div.style.position='absolute';
+    body_element.appendChild(new_div );
+    new_div.innerHTML = copy_text ;
+    selection.selectAllChildren(new_div );
+    window.setTimeout(function() {
+        body_element.removeChild(new_div );
+    },0);
+}
+document.oncopy = addLink;
+</script>
+<div class="single_default">
+        <div class="main">
+        <div class="breadcrumb">当前位置：<a href="http://man.linuxde.net">首页</a> &raquo; <a href="http://man.linuxde.net/par/4" rel="category tag">软件·打印·开发·工具</a> &raquo; speedtest-cli</div>
+        <div class="post_hd clearfix">
+            <h1 class="l">speedtest-cli命令</h1>
+            <div class="tag f_yh r">
+                <a href="http://man.linuxde.net/sub/%e5%b8%b8%e7%94%a8%e5%b7%a5%e5%85%b7%e5%91%bd%e4%bb%a4" rel="tag">常用工具命令</a>            </div>
+        </div>
+        <div class="post_bd post">
+            <p>
+	<strong>speedtest-cli</strong>是一个使用python编写的命令行脚本，通过调用speedtest.net测试上下行的接口来完成速度测试，最后我会测试运维生存时间所在服务器的外网速度。项目地址：https://github.com/sivel/speedtest-cli
+</p>
+<h3>
+	安装speedtest－cli<br />
+</h3>
+<p>
+	speedtest-cli需要在python 2.4-3.4的环境下，安装方法都很简单，自己选择以下最适合你的一种。
+</p>
+<p>
+	<strong>pip方式</strong>
+</p>
+<pre>
+＃ pip <span class='wp_keywordlink'><a href="http://man.linuxde.net/install" title="install命令" target="_blank">install</a></span> speedtest－cli</pre>
+<p>
+	<strong>easy_install方式</strong>
+</p>
+<pre>
+＃ easy_install speedtest-cli</pre>
+<p>
+	<strong>github＋pip方式</strong>
+</p>
+<pre>
+＃ pip install git+https://github.com/sivel/speedtest-cli.git</pre>
+<p>
+	或者
+</p>
+<pre>
+＃ git clone https://github.com/sivel/speedtest-cli.git
+＃ python speedtest-cli/setup.py install</pre>
+<p>
+	<strong>下载脚本方式</strong>
+</p>
+<pre>
+＃ <span class='wp_keywordlink'><a href="http://man.linuxde.net/wget" title="wget命令" target="_blank">wget</a></span> -O speedtest-cli https://raw.github.com/sivel/spe ... er/speedtest_cli.py
+＃ <span class='wp_keywordlink'><a href="http://man.linuxde.net/chmod" title="chmod命令" target="_blank">chmod</a></span> +x speedtest-cli</pre>
+<p>
+	或者
+</p>
+<pre>
+＃ <span class='wp_keywordlink'><a href="http://man.linuxde.net/curl" title="curl命令" target="_blank">curl</a></span> -o speedtest-cli https://raw.github.com/sivel/spe ... er/speedtest_cli.py
+＃ chmod +x speedtest-cli</pre>
+<p>
+	直接下载脚本，给予执行权限即可。
+</p>
+<h3>
+	用法<br />
+</h3>
+<pre>
+-h, --<span class='wp_keywordlink'><a href="http://man.linuxde.net/help" title="help命令" target="_blank">help</a></span>       show this help message and <span class='wp_keywordlink'><a href="http://man.linuxde.net/exit" title="exit命令" target="_blank">exit</a></span>
+--share          分享你的网速，该命令会在speedtest网站上生成网速测试结果的图片。
+--simple         Suppress verbose output, only show basic information
+--list           根据距离显示speedtest.net的测试服务器列表。
+--server=SERVER  指定列表中<span class='wp_keywordlink'><a href="http://man.linuxde.net/id" title="id命令" target="_blank">id</a></span>的服务器来做测试。
+--mini=MINI      URL of the Speedtest Mini server
+--source=SOURCE  Source <span class='wp_keywordlink'><a href="http://man.linuxde.net/ip" title="ip命令" target="_blank">ip</a></span> address to <span class='wp_keywordlink'><a href="http://man.linuxde.net/bind" title="bind命令" target="_blank">bind</a></span> to
+--version        Show the version number and exit</pre>
+<h3>
+	实例<br />
+</h3>
+<p>
+	列出所有在中国的测试服务器：
+</p>
+<pre>
+[root@li229-122 ~]# speedtest-cli --list | <span class='wp_keywordlink'><a href="http://man.linuxde.net/grep" title="grep命令" target="_blank">grep</a></span> China
+1185) China Unicom (Changchun, China) [10534.35 km]
+3784) China Mobile (Urumqi, China) [10581.15 km]
+2667) Beijing Normal University (Beijing, China) [11117.03 km]
+2529) Beijing Normal University (Beijing, China) [11117.03 km]
+2816) Capital Online Data <span class='wp_keywordlink'><a href="http://man.linuxde.net/service" title="service命令" target="_blank">service</a></span> (Beijing, China) [11117.03 km]
+4354) SXmobile (Taiyuan, China) [11383.17 km]
+3973) China Telecom (Lanzhou, China) [11615.43 km]
+3633) China Telecom (Shanghai, China) [11983.37 km]
+3927) China Mobile Jiangsu Co., Ltd. (Suzhou, China) [11989.27 km]
+2461) China Unicom (Chengdu, China) [12213.35 km]
+1028) Shepherd Software (Xiamen, China) [12785.57 km]
+1628) Xiamen Guangdian Xinxu (Xiamen, China) [12785.57 km]
+3891) GZinternet (Guangzhou, China) [13005.36 km]
+3871) SZWCDMA (Shenzhen, China) [13059.20 km]
+3819) SZU (Shenzhen, China) [13059.20 km]
+1536) STC (Hong Kong, China) [13088.37 km]
+1890) Telin (Hong Kong, China) [13088.37 km]</pre>
+<p>
+	<strong>结果解释</strong>
+</p>
+<pre>
+3633) China Telecom (Shanghai, China) [11983.37 km]</pre>
+<pre>
+3633: 服务器id
+china telecom：isp，这里是中国电信
+shanghai,china ：服务器所在地址
+11983.37 km：两台服务器地理位置之间距离，我这台机器在美国，和上海相距11983.37公里，很远呐.</pre>
+<p>
+	<strong>外网速度测试</strong>
+</p>
+<pre>
+[root@li229-122 ~]# speedtest-cli --server=3633 --share
+Retrieving speedtest.net configuration...
+Retrieving speedtest.net server list...
+Testing from Linode (173.255.219.122)...
+Hosted by China Telecom (Shanghai) [11983.37 km]: 23.603 ms
+Testing download speed........................................
+Download: 24.84 Mbit/s
+Testing upload speed..................................................
+Upload: 4.57 Mbit/s
+Share results: http://www.speedtest.net/result/3240988007.png</pre>
+        </div>
+        <div class="post_ft">
+            <div class="title">最近更新的命令</div>
+            <ul>
+                <li><a href="http://man.linuxde.net/cut" title="cut">cut</a></li><li><a href="http://man.linuxde.net/sh" title="sh">sh</a></li><li><a href="http://man.linuxde.net/seq" title="seq">seq</a></li><li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li><li><a href="http://man.linuxde.net/syslog" title="syslog">syslog</a></li><li><a href="http://man.linuxde.net/inotifywait" title="inotifywait">inotifywait</a></li><li><a href="http://man.linuxde.net/dd" title="dd">dd</a></li><li><a href="http://man.linuxde.net/read" title="read">read</a></li><li><a href="http://man.linuxde.net/uname" title="uname">uname</a></li><li><a href="http://man.linuxde.net/pssh" title="pssh">pssh</a></li><li><a href="http://man.linuxde.net/tar" title="tar">tar</a></li><li><a href="http://man.linuxde.net/axel" title="axel">axel</a></li><li><a href="http://man.linuxde.net/losetup" title="losetup">losetup</a></li><li><a href="http://man.linuxde.net/lsb_release" title="lsb_release">lsb_release</a></li><li><a href="http://man.linuxde.net/tcpreplay" title="tcpreplay">tcpreplay</a></li><li><a href="http://man.linuxde.net/strings" title="strings">strings</a></li><li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li><li><a href="http://man.linuxde.net/speedtest-cli" title="speedtest-cli">speedtest-cli</a></li><li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li><li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li><li><a href="http://man.linuxde.net/dnf" title="dnf">dnf</a></li><li><a href="http://man.linuxde.net/nethogs" title="nethogs">nethogs</a></li><li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li><li><a href="http://man.linuxde.net/trap" title="trap">trap</a></li><li><a href="http://man.linuxde.net/let" title="let">let</a></li><li><a href="http://man.linuxde.net/ifstat" title="ifstat">ifstat</a></li><li><a href="http://man.linuxde.net/blkid" title="blkid">blkid</a></li><li><a href="http://man.linuxde.net/ipcrm" title="ipcrm">ipcrm</a></li><li><a href="http://man.linuxde.net/openssl" title="openssl">openssl</a></li><li><a href="http://man.linuxde.net/chage" title="chage">chage</a></li>            </ul>
+        </div>
+        <div id="comments">
+            <!-- You can start editing here. -->
+        </div>
+    </div>
+    
+<div class="sidebar">
+    <div class="widget related">
+        <div class="hd">
+            <h3>相关命令</h3>
+        </div>
+        <div class="bd">
+            <ul>
+                            <li><a href="http://man.linuxde.net/tempfile" title="tempfile">tempfile</a></li>
+                <li><a href="http://man.linuxde.net/rsync" title="rsync">rsync</a></li>
+                <li><a href="http://man.linuxde.net/cksum" title="cksum">cksum</a></li>
+                <li><a href="http://man.linuxde.net/mtools" title="mtools">mtools</a></li>
+                <li><a href="http://man.linuxde.net/sum" title="sum">sum</a></li>
+                <li><a href="http://man.linuxde.net/hostid" title="hostid">hostid</a></li>
+                <li><a href="http://man.linuxde.net/users" title="users">users</a></li>
+                <li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li>
+                <li><a href="http://man.linuxde.net/write" title="write">write</a></li>
+                <li><a href="http://man.linuxde.net/pssh" title="pssh">pssh</a></li>
+                <li><a href="http://man.linuxde.net/wall" title="wall">wall</a></li>
+                <li><a href="http://man.linuxde.net/yes" title="yes">yes</a></li>
+                <li><a href="http://man.linuxde.net/xargs" title="xargs">xargs</a></li>
+                <li><a href="http://man.linuxde.net/login" title="login">login</a></li>
+                <li><a href="http://man.linuxde.net/whoami" title="whoami">whoami</a></li>
+                <li><a href="http://man.linuxde.net/date" title="date">date</a></li>
+                <li><a href="http://man.linuxde.net/cal" title="cal">cal</a></li>
+                <li><a href="http://man.linuxde.net/mesg" title="mesg">mesg</a></li>
+                <li><a href="http://man.linuxde.net/man" title="man">man</a></li>
+                <li><a href="http://man.linuxde.net/info" title="info">info</a></li>
+                </ul>
+        </div>
+    </div>
+    <div id="fixedBox">
+        <div id="float" class="dbox">
+            <div class="sidebar_search_box">
+                <form action="http://man.linuxde.net/">
+                    <input type="text" name="s" id="sidebar_search" value="命令搜索" onFocus="if (value =='命令搜索'){value =''}" onBlur="if (value ==''){value='命令搜索'}" />
+                </form>
+                <form action="http://man.linuxde.net/" method="post">
+                    <input type="text" name="ss" id="sidebar_search" value="命令直达" onFocus="if (value =='命令直达'){value =''}" onBlur="if (value ==''){value='命令直达'}" />
+                </form>
+            </div>
+            <div class="widget ad"> 
+				<!--
+				<script type="text/javascript">
+					document.write('<a style="display:none!important" id="tanx-a-mm_22964816_6616438_33736229"></a>');
+					tanx_s = document.createElement("script");
+					tanx_s.type = "text/javascript";
+					tanx_s.charset = "gbk";
+					tanx_s.id = "tanx-s-mm_22964816_6616438_33736229";
+					tanx_s.async = true;
+					tanx_s.src = "http://p.tanx.com/ex?i=mm_22964816_6616438_33736229";
+					tanx_h = document.getElementsByTagName("head")[0];
+					if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+				</script>
+				-->
+				<a title="linux马克杯" href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DbWlkMAz37zAcQipKwQzePDAVflQIoZepLKpWJ%2Bin0XJRAdhuF14FMdl7wKby%2Bc%2FExq3IhSJN6GSAAkUL03DNGUpamuccnq1qrmvEga4qAXJgE5NxN1hjMoxodiO%2Bbyu%2BIYULNg46oBA%3D" target="_blank"><img src="http://112.124.15.130/res/linuxde_man/images/s-ad.jpg" alt="linux马克杯"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="layout layout_ft">
+    <div class="footer">
+        <div class="copyright">
+            <a href="http://man.linuxde.net/" title="Linux命令大全">Linux命令大全</a>
+            <em class="sx"></em>
+            <a href="http://man.linuxde.net/about_us" title="关于">关于</a>
+            <em class="sx"></em>
+			收藏本站请使用Ctrl+D
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/shell-script" target="_blank">Shell脚本攻略</a>
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/docs/shell_regex.html" target="_blank">Shell正则表达式</a>
+			<em class="sx"></em>
+			共收录528条Linux系统指令
+        </div>
+        <div class="des">在Linux命令大全（man.linuxde.net）可以查询您所需要的Linux命令教程和相关实例。如果您觉得本站内容对您有所帮助，请推荐给更多需要帮助的人。</div>
+        <div class="info">
+		赞助商链接：<a href="http://www.1987.name/" target="_blank">组装电脑配置清单2017</a>,　运行在<a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DvTDIoAjlYzMcQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAhYdwmcpX19FpcfgoZBkhQKMhxXrDnK9L8ge8W1gUmbKFOH2PYQYfJNjOghCi4TzwOdn1BbglxZYxUhy8exlzcq9AmARIwX9K2Zg%2BdzdQFOwfMRvoxSVDSdLyrb2g0H2G5JcxXijM%2BwneEHpPTskRHknGN7svee8j7S4un6ZpbmpIYULNg46oBA%3D" target="_blank">阿里云服务器</a>！
+		</div>
+    </div>
+</div>
+</div>
+<!--js-->
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/sitejs.js"></script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div style="display:none"><script src="http://s17.cnzz.com/stat.php?id=5762282&web_id=5762282" language="JavaScript"></script></div>
+
+<!--活动推广
+<script type="text/javascript" src="http://112.124.15.130/res/ad/ad.js"></script>
+<style type="text/css">
+.ad-box{width:240px;height:277px;background:#CCC;position:fixed;right:-240px;bottom:10px;}
+.ad-img{position:relative;overflow:hidden;}
+.ad-close{width:30px;height:22px;line-height:22px;display:block;top:10px;right:10px;position:absolute;}
+</style>
+<div class="ad-box">
+    <div class="ad-img">
+        <a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DuGXlvKu7Iv4cQipKwQzePCperVdZeJviK7Vc7tFgwiFRAdhuF14FMZQUNi%2Bb4SgsMMgx22UI05aAAkUL03DNGT6XZIOJR7dCTAHi9HSRVmdzguIHwwNmQ6UuZxIcp9pfUIgVEmFmgnbDX0%2BHH2IEVaX4VWt66S4EJPwiig1bxLP9BvYCQR6XAr%2BKQ71wHNCAqP8YyUoZZlq4cXg3ii9waXPs9Sj9Qli1np4c65at3FeX3cwyLTlAhj2l4PysJx%2FP" target="_blank"><img src="http://112.124.15.130/res/ad/1111.jpg"></a>
+        <a href="javascript:" class="ad-close">关闭</a>
+    </div>
+</div>
+<!--推广结束-->
+
+</body></html>

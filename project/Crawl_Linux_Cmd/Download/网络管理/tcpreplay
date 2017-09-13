@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="renderer" content="webkit">
+<title>
+tcpreplay命令_Linux tcpreplay 命令用法详解：将PCAP包重新发送，用于性能或者功能测试</title>
+<link rel="shortcut icon" href="http://man.linuxde.net/favicon.ico" type="image/x-icon" />
+<link rel="pingback" href="http://man.linuxde.net/xmlrpc.php" />
+<link href="http://112.124.15.130/res/linuxde_man/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/jquery-1.8.3.min.js"></script>
+<!--[if IE 6]>
+<script src="http://112.124.15.130/res/linuxde_man/js/belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('*');</script>
+<script src="http://letskillie6.googlecode.com/svn/trunk/letskillie6.zh_CN.pack.js"></script>
+<![endif]-->
+<link rel='canonical' href='http://man.linuxde.net/tcpreplay' />
+</head>
+<body>
+<noscript>
+<p class="nojs">您的浏览器已经禁用了脚本，这会严重影响您正常使用本站的功能，请开启！</p>
+</noscript>
+<div class="man_linuxde_net_page">
+<div class="layout_hd">
+    <div class="logo l">
+        <h2><a title="Linux命令大全" href="http://man.linuxde.net/">
+            Linux命令大全            </a></h2>
+    </div>
+    <div class="nav r"><ul id="menu-%e8%8f%9c%e5%8d%951" class="menu"><li id="menu-item-4" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-4"><a href="http://man.linuxde.net/">首页搜索</a></li>
+<li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-6"><a href="http://man.linuxde.net/par/2">系统管理</a></li>
+<li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-7"><a href="http://man.linuxde.net/par/5">网络管理</a></li>
+<li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8"><a href="http://man.linuxde.net/par/4">软件·打印·开发·工具</a></li>
+<li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9"><a href="http://man.linuxde.net/par/1">文件和目录管理</a></li>
+<li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://man.linuxde.net/par/3">硬件·内核·Shell·监测</a></li>
+<li id="menu-item-2096" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2096"><a target="_blank" href="http://www.linuxde.net">Linux Today</a></li>
+</ul></div>    <div class="c"></div>
+</div>
+<div class="layout layout_bd">
+<script type='text/javascript'>
+function addLink() {
+    var body_element = document.getElementsByTagName('body')[0];
+    var selection;
+    selection = window.getSelection();
+    var pagelink = "<br /><br /> 来自: <a href='"+document.location.href+"'>"+document.location.href+"</a>"; 
+    var copy_text = selection + pagelink;
+    var new_div = document.createElement('div');
+    new_div.style.left='-99999px';
+    new_div.style.position='absolute';
+    body_element.appendChild(new_div );
+    new_div.innerHTML = copy_text ;
+    selection.selectAllChildren(new_div );
+    window.setTimeout(function() {
+        body_element.removeChild(new_div );
+    },0);
+}
+document.oncopy = addLink;
+</script>
+<div class="single_default">
+        <div class="main">
+        <div class="breadcrumb">当前位置：<a href="http://man.linuxde.net">首页</a> &raquo; <a href="http://man.linuxde.net/par/5" rel="category tag">网络管理</a> &raquo; tcpreplay</div>
+        <div class="post_hd clearfix">
+            <h1 class="l">tcpreplay命令</h1>
+            <div class="tag f_yh r">
+                <a href="http://man.linuxde.net/sub/%e9%ab%98%e7%ba%a7%e7%bd%91%e7%bb%9c" rel="tag">高级网络</a>            </div>
+        </div>
+        <div class="post_bd post">
+            <p>
+	简单的说，<strong>tcpreplay</strong>是一种pcap包的重放工具，它可以将用ethreal、wireshark工具抓下来的包原样或经过任意修改后重放回去。它允许你对报文做任意的修改（主要是指对2层、3层、4层报文头），指定重放报文的速度等，这样tcpreplay就可以用来复现抓包的情景以定位bug，以极快的速度重放从而实现压力测试。
+</p>
+<h3>
+	选项<br />
+</h3>
+<pre>
+-A &quot;&lt;args&gt;&quot; 在使用 <span class='wp_keywordlink'><a href="http://man.linuxde.net/tcpdump" title="tcpdump命令" target="_blank">tcpdump</a></span> 风格打印输出信息时，同时再调用tcpdump中的参数， 默认已经带有&ldquo;-n,-l&rdquo;，所以一般看到的都是<span class='wp_keywordlink'><a href="http://man.linuxde.net/ip" title="ip命令" target="_blank">ip</a></span>地址，而没有主机名的打印，注意这个是在tcpreplay使用了-v参数时才能使用，不带-v不会报错，但是没有实际意义。格式：-vA &ldquo;nnt&rdquo;表示以tcpdump风格输出报文信息，并且不打印时间戳、主机名、端口服务名称。注意不要使用-c参数来指定打印的数据报文的个数，这样发送出去的报文也会变少。
+-c &lt;cachefile&gt; 双网卡回放报文必选参数，后面紧跟cache文件名，该文件为tcpprep根据对应的pcap文件构造出来。 
+-D 把应用层的数据，使用<span class='wp_keywordlink'><a href="http://man.linuxde.net/dump" title="dump命令" target="_blank">dump</a></span> mode写入到指定文件中去，和-<span class='wp_keywordlink'><a href="http://man.linuxde.net/w" title="w命令" target="_blank">w</a></span>、-W 参数一起使用。 
+-e &lt;ip1:ip2&gt; 指定端点的ip，即把发送报文的和接收的报文的ip都修改称对应的参数值中指定的ip，但是这样发送的出的报文不会区分client和server。。 
+-f &lt;configfile&gt; 指定配置文件。
+-F 在发送报文时，自动纠正错误的校验和。对测试DUT的校验和检验。
+-h 显示帮助文件。 
+-i &lt;nic&gt; 双网卡回放报文必选参数，指定主接口。
+-I &lt;mac&gt; 重写主网卡发送出报文的目的MAC地址。 
+-j &lt;nic&gt; 双网卡回放报文必选参数，指定从接口。
+-J &lt;mac&gt; 重写从网卡发送出报文的目的MAC地址。 
+-k &lt;mac&gt; 重写主网卡发送报文的源MAC地址。 
+-K &lt;mac&gt; 重写从网卡发送报文的源MAC地址。
+-l &lt;loop&gt; 指定循环的次数。
+-L &lt;limit&gt; 指定最大的发包数量。可以在确认连接的调试时使用。 
+-m &lt;multiple&gt; 指定一个倍数值，就是必默认发送速率要快多少倍的速率发送报文。 加大发送的速率后，对于DUT可能意味着有更多的并发连接和连接数，特别是对于BT报文的重放， 因为连接的超时是固定的，如果速率增大的话， 留在session表中的连接数量增大，还可以通过修改连接的超时时间来达到该目的。
+-M 表示不发送&ldquo;火星&rdquo;的ip报文，<span class='wp_keywordlink'><a href="http://man.linuxde.net/man" title="man命令" target="_blank">man</a></span>文件中的定义是 0/8、172/8、 255/8。
+-n 在使用-S参数，不对混杂模式进行侦听。
+-N &lt;CIDR1:CIDR2,...&gt; 通过伪造的NAT，重写IP地址。这个参数应该有很重要的应用，目前没有测试使用。
+-O 没有测试使用。
+-p &lt;packetrate&gt; 指定每秒发送报文的个数，指定该参数，其它速率相关的参数被忽略，最后的打印信息不会有速率和每秒发送报文的统计。
+-P 表示在输出信息中打印PID的信息，用于单用户或单帐户模式下暂停和重启程序。
+-r &lt;rate&gt; 指定发送的速率。目前-m/-r/-p这3个参数的相互关系。
+-R 让网卡极限速度发数据包。 
+-t &lt;mtu&gt; 指定MTU，标准的10/100M网卡的默认值是1500。 
+-T Truncate packets &gt; 截去报文中MTU大于标准值的部分再发送出去，默认是不发送，skip掉。
+-v 每发送一个报文都以 tcpdump 的风格打印出对应的信息。
+-V 查看版本号。
+-w &lt;<span class='wp_keywordlink'><a href="http://man.linuxde.net/file" title="file命令" target="_blank">file</a></span>&gt; 将主网卡发送的报文写入一个文件中，参数后紧跟文件名。
+</pre>
+<h3>
+	实例<br />
+</h3>
+<p>
+	<strong>1、重放在客户端 <span class='wp_keywordlink'><a href="http://man.linuxde.net/ftp" title="ftp命令" target="_blank">ftp</a></span> 连接的报文&nbsp;</strong>
+</p>
+<p>
+	a、在客户端使用 ethereal 抓包，存为 ftp.pcap 文件。
+</p>
+<p>
+	b、 将 ftp.pcap 文件进行 tcpprep 操作，制作 cache 文件。
+</p>
+<pre>
+[root@A ~]# tcpprep -an client -i ftp.pcap -o ftp.cache &ndash;v </pre>
+<p>
+	c、 将 DUT 设备的两个接口和 PC 的两个接口使用网线连接，使用 tcpreplay 重 放报文。注意防火墙的配置为网桥（透明）模式。&nbsp;
+</p>
+<pre>
+[root@A ~]# tcpreplay -c ftp.cache -i eth0 -j eth1 ftp.pcap -R &ndash;v </pre>
+<p>
+	-R 参数表示全速发送，-v 显示打印信息。&nbsp;
+</p>
+<p>
+	<strong>2、重放在客户端 BT 连接的报文&nbsp;</strong>
+</p>
+<p>
+	a、在实验室 BT 下载一些台湾的娱乐节目和热门的大片，使用 ethereal 抓包， 存为 bt.pcap 文件。注意 pcap 文件大小的控制，对 pc 的内存要求比较高，我保 存了一个 600 多 M 的 pcap 文件用了 40 多分钟，大家有需要可以直接从实验室 copy。&nbsp;
+</p>
+<p>
+	b、将 bt.pcap 文件进行 tcpprep 操作，制作 cache 文件。
+</p>
+<pre>
+ [root@A ~]# tcpprep -an client -i bt.pcap -o bt.cache -C &quot;100M BT Packet&quot; &ndash;v</pre>
+<p>
+	制作 cache 文件，在 cache 文件中写入&ldquo;100M BT Packet&rdquo;的注释。&nbsp;
+</p>
+<p>
+	c、使用 tcpreplay 重放报文。&nbsp;
+</p>
+<pre>
+[root@A ~]# tcpreplay -c bt.cache -i eth0 -j eth1 bt.pcap -v &ndash;R </pre>
+<p>
+	<strong>3、重放 <span class='wp_keywordlink'><a href="http://man.linuxde.net/tftp" title="tftp命令" target="_blank">tftp</a></span> 服务器上抓到的报文&nbsp;</strong>
+</p>
+<p>
+	a、在 tftp 服务器上使用 ethereal 抓包，存为 tftp.pcap 文件。&nbsp;
+</p>
+<p>
+	b、将 pcap 文件进行 tcpprep 的操作，制作 cache 文件。&nbsp;
+</p>
+<pre>
+[root@A ~]# tcpprep -an server -i tftp.pcap -o tftp.cache &ndash;v </pre>
+<p>
+	注意：我在测试的时候犯了一个错误，使用 DUT 的 tftp 升级来做实验，同时穿 过 DUT 重放报文，结果在网卡发送报文的后，DUT 的 mac 地址做了的回应，导致 交互过程没有穿过 DUT，这个问题比较搞笑，上午弄了半天才发现原因，开始还 以为 udp 的连接不能重放。&nbsp;
+</p>
+<p>
+	c、使用 tcpreplay 重放报文。&nbsp;
+</p>
+<pre>
+[root@A ~]# tcpreplay -c tftp.cache -i eth0 -j eth1 tftp.pcap &ndash;v</pre>
+        </div>
+        <div class="post_ft">
+            <div class="title">最近更新的命令</div>
+            <ul>
+                <li><a href="http://man.linuxde.net/cut" title="cut">cut</a></li><li><a href="http://man.linuxde.net/sh" title="sh">sh</a></li><li><a href="http://man.linuxde.net/seq" title="seq">seq</a></li><li><a href="http://man.linuxde.net/awk" title="awk">awk</a></li><li><a href="http://man.linuxde.net/syslog" title="syslog">syslog</a></li><li><a href="http://man.linuxde.net/inotifywait" title="inotifywait">inotifywait</a></li><li><a href="http://man.linuxde.net/dd" title="dd">dd</a></li><li><a href="http://man.linuxde.net/read" title="read">read</a></li><li><a href="http://man.linuxde.net/uname" title="uname">uname</a></li><li><a href="http://man.linuxde.net/pssh" title="pssh">pssh</a></li><li><a href="http://man.linuxde.net/tar" title="tar">tar</a></li><li><a href="http://man.linuxde.net/axel" title="axel">axel</a></li><li><a href="http://man.linuxde.net/losetup" title="losetup">losetup</a></li><li><a href="http://man.linuxde.net/lsb_release" title="lsb_release">lsb_release</a></li><li><a href="http://man.linuxde.net/tcpreplay" title="tcpreplay">tcpreplay</a></li><li><a href="http://man.linuxde.net/strings" title="strings">strings</a></li><li><a href="http://man.linuxde.net/screen" title="screen">screen</a></li><li><a href="http://man.linuxde.net/speedtest-cli" title="speedtest-cli">speedtest-cli</a></li><li><a href="http://man.linuxde.net/clockdiff" title="clockdiff">clockdiff</a></li><li><a href="http://man.linuxde.net/ntpdate" title="ntpdate">ntpdate</a></li><li><a href="http://man.linuxde.net/dnf" title="dnf">dnf</a></li><li><a href="http://man.linuxde.net/nethogs" title="nethogs">nethogs</a></li><li><a href="http://man.linuxde.net/hping3" title="hping3">hping3</a></li><li><a href="http://man.linuxde.net/trap" title="trap">trap</a></li><li><a href="http://man.linuxde.net/let" title="let">let</a></li><li><a href="http://man.linuxde.net/ifstat" title="ifstat">ifstat</a></li><li><a href="http://man.linuxde.net/blkid" title="blkid">blkid</a></li><li><a href="http://man.linuxde.net/ipcrm" title="ipcrm">ipcrm</a></li><li><a href="http://man.linuxde.net/openssl" title="openssl">openssl</a></li><li><a href="http://man.linuxde.net/chage" title="chage">chage</a></li>            </ul>
+        </div>
+        <div id="comments">
+            <!-- You can start editing here. -->
+        </div>
+    </div>
+    
+<div class="sidebar">
+    <div class="widget related">
+        <div class="hd">
+            <h3>相关命令</h3>
+        </div>
+        <div class="bd">
+            <ul>
+                            <li><a href="http://man.linuxde.net/ip6tables" title="ip6tables">ip6tables</a></li>
+                <li><a href="http://man.linuxde.net/ip6tables-save" title="ip6tables-save">ip6tables-save</a></li>
+                <li><a href="http://man.linuxde.net/arptables" title="arptables">arptables</a></li>
+                <li><a href="http://man.linuxde.net/ss" title="ss">ss</a></li>
+                <li><a href="http://man.linuxde.net/ip6tables-restore" title="ip6tables-restore">ip6tables-restore</a></li>
+                <li><a href="http://man.linuxde.net/pfctl" title="pfctl">pfctl</a></li>
+                <li><a href="http://man.linuxde.net/tcpdump" title="tcpdump">tcpdump</a></li>
+                <li><a href="http://man.linuxde.net/iptables-save" title="iptables-save">iptables-save</a></li>
+                <li><a href="http://man.linuxde.net/iptables-restore" title="iptables-restore">iptables-restore</a></li>
+                <li><a href="http://man.linuxde.net/ip" title="ip">ip</a></li>
+                <li><a href="http://man.linuxde.net/nstat_rtacct" title="nstat/rtacct">nstat/rtacct</a></li>
+                <li><a href="http://man.linuxde.net/iptraf" title="iptraf">iptraf</a></li>
+                <li><a href="http://man.linuxde.net/iptables" title="iptables">iptables</a></li>
+                <li><a href="http://man.linuxde.net/arpd" title="arpd">arpd</a></li>
+                <li><a href="http://man.linuxde.net/lnstat" title="lnstat">lnstat</a></li>
+                </ul>
+        </div>
+    </div>
+    <div id="fixedBox">
+        <div id="float" class="dbox">
+            <div class="sidebar_search_box">
+                <form action="http://man.linuxde.net/">
+                    <input type="text" name="s" id="sidebar_search" value="命令搜索" onFocus="if (value =='命令搜索'){value =''}" onBlur="if (value ==''){value='命令搜索'}" />
+                </form>
+                <form action="http://man.linuxde.net/" method="post">
+                    <input type="text" name="ss" id="sidebar_search" value="命令直达" onFocus="if (value =='命令直达'){value =''}" onBlur="if (value ==''){value='命令直达'}" />
+                </form>
+            </div>
+            <div class="widget ad"> 
+				<!--
+				<script type="text/javascript">
+					document.write('<a style="display:none!important" id="tanx-a-mm_22964816_6616438_33736229"></a>');
+					tanx_s = document.createElement("script");
+					tanx_s.type = "text/javascript";
+					tanx_s.charset = "gbk";
+					tanx_s.id = "tanx-s-mm_22964816_6616438_33736229";
+					tanx_s.async = true;
+					tanx_s.src = "http://p.tanx.com/ex?i=mm_22964816_6616438_33736229";
+					tanx_h = document.getElementsByTagName("head")[0];
+					if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+				</script>
+				-->
+				<a title="linux马克杯" href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DbWlkMAz37zAcQipKwQzePDAVflQIoZepLKpWJ%2Bin0XJRAdhuF14FMdl7wKby%2Bc%2FExq3IhSJN6GSAAkUL03DNGUpamuccnq1qrmvEga4qAXJgE5NxN1hjMoxodiO%2Bbyu%2BIYULNg46oBA%3D" target="_blank"><img src="http://112.124.15.130/res/linuxde_man/images/s-ad.jpg" alt="linux马克杯"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="layout layout_ft">
+    <div class="footer">
+        <div class="copyright">
+            <a href="http://man.linuxde.net/" title="Linux命令大全">Linux命令大全</a>
+            <em class="sx"></em>
+            <a href="http://man.linuxde.net/about_us" title="关于">关于</a>
+            <em class="sx"></em>
+			收藏本站请使用Ctrl+D
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/shell-script" target="_blank">Shell脚本攻略</a>
+			<em class="sx"></em>
+			<a href="http://man.linuxde.net/docs/shell_regex.html" target="_blank">Shell正则表达式</a>
+			<em class="sx"></em>
+			共收录528条Linux系统指令
+        </div>
+        <div class="des">在Linux命令大全（man.linuxde.net）可以查询您所需要的Linux命令教程和相关实例。如果您觉得本站内容对您有所帮助，请推荐给更多需要帮助的人。</div>
+        <div class="info">
+		赞助商链接：<a href="http://www.1987.name/" target="_blank">组装电脑配置清单2017</a>,　运行在<a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DvTDIoAjlYzMcQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAhYdwmcpX19FpcfgoZBkhQKMhxXrDnK9L8ge8W1gUmbKFOH2PYQYfJNjOghCi4TzwOdn1BbglxZYxUhy8exlzcq9AmARIwX9K2Zg%2BdzdQFOwfMRvoxSVDSdLyrb2g0H2G5JcxXijM%2BwneEHpPTskRHknGN7svee8j7S4un6ZpbmpIYULNg46oBA%3D" target="_blank">阿里云服务器</a>！
+		</div>
+    </div>
+</div>
+</div>
+<!--js-->
+<script type="text/javascript" src="http://112.124.15.130/res/linuxde_man/js/sitejs.js"></script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"3","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div style="display:none"><script src="http://s17.cnzz.com/stat.php?id=5762282&web_id=5762282" language="JavaScript"></script></div>
+
+<!--活动推广
+<script type="text/javascript" src="http://112.124.15.130/res/ad/ad.js"></script>
+<style type="text/css">
+.ad-box{width:240px;height:277px;background:#CCC;position:fixed;right:-240px;bottom:10px;}
+.ad-img{position:relative;overflow:hidden;}
+.ad-close{width:30px;height:22px;line-height:22px;display:block;top:10px;right:10px;position:absolute;}
+</style>
+<div class="ad-box">
+    <div class="ad-img">
+        <a href="http://man.linuxde.net/go.php?http://s.click.taobao.com/t?e=m%3D2%26s%3DuGXlvKu7Iv4cQipKwQzePCperVdZeJviK7Vc7tFgwiFRAdhuF14FMZQUNi%2Bb4SgsMMgx22UI05aAAkUL03DNGT6XZIOJR7dCTAHi9HSRVmdzguIHwwNmQ6UuZxIcp9pfUIgVEmFmgnbDX0%2BHH2IEVaX4VWt66S4EJPwiig1bxLP9BvYCQR6XAr%2BKQ71wHNCAqP8YyUoZZlq4cXg3ii9waXPs9Sj9Qli1np4c65at3FeX3cwyLTlAhj2l4PysJx%2FP" target="_blank"><img src="http://112.124.15.130/res/ad/1111.jpg"></a>
+        <a href="javascript:" class="ad-close">关闭</a>
+    </div>
+</div>
+<!--推广结束-->
+
+</body></html>
