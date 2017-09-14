@@ -9,7 +9,8 @@ import os   #用于进行目录操作
 import time #用于时间操作
 import multiprocessing  #用于多进程操作
 import urllib2 #用于HTML操作
-import re   #用于正则表达式，这里不好使用正则表达式呢
+import re
+from bs4 import BeautifulSoup   #配合正则表达式提取链接
 import chardet
 
 """
@@ -38,24 +39,23 @@ def Get_All_Url(Base_Url,Url_File,Max_Retry_Num=10):
     finally:
         pass
 
-#print Get_All_Url(Base_Url="http://www.dytt8.net/",Url_File=None)
+html=Get_All_Url(Base_Url="http://www.dytt8.net/",Url_File=None)
+soup=BeautifulSoup(html,'html.parser')
+print soup.prettify()
+
+print '#############################################################################'
+for i in soup.find_all('div',id="menu"):
+    print type(i)
+    print i.prettify()
+print '#############################################################################'
+for a in i.find_all('a'):
+    print a.string
 
 
 
-from lxml import etree
-text = '''
-<div>
-    <ul>
-         <li class="item-0"><a href="link1.html">first item</a></li>
-         <li class="item-1"><a href="link2.html">second item</a></li>
-         <li class="item-inactive"><a href="link3.html">third item</a></li>
-         <li class="item-1"><a href="link4.html">fourth item</a></li>
-         <li class="item-0"><a href="link5.html">fifth item</a>
-     </ul>
- </div>
-'''
-html = etree.HTML(text)
-result = etree.tostring(html)
-print(result)
+
+
+
+
 
 
