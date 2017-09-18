@@ -12,6 +12,9 @@ from bs4 import BeautifulSoup
 import chardet
 import sys
 import os
+import time
+
+begin_time=time.time()
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -39,7 +42,7 @@ for a_result in a_results:
     # print a_result.prettify()
     for a_link in a_result.find_all('a'):
         if a_link.has_attr('href') and not a_link.has_attr('calss'):
-            a_name=str(a_link.string).encode('gbk').replace('/','_')
+            a_name=str(a_link.string).decode('GB18030').encode('GB18030').replace('/','_')
             a_href=a_link['href']
             a_dict[a_name]=a_href
             a_path= Base_Dir + "\\" + a_name
@@ -47,7 +50,7 @@ for a_result in a_results:
             #     os.makedirs(a_path)
 
 def string_is_nextpage(tag):
-    if tag.string == "下一页":
+    if tag.string == "下一页" and not tag.has_attr('class'):
         return tag
 
 TV_dict = {}
@@ -60,7 +63,7 @@ def Get_Link(start_url,url_file):
     b_request = urllib2.Request(b_link)
     b_response = urllib2.urlopen(b_request)
     b_content = b_response.read()
-    print b_content.decode("GB2312",'ignore')
+    print b_content.decode("GB18030",'ignore')
     print '------------------------------------------------------------------------------------------------------------------------'
     b_soup = BeautifulSoup(b_content, 'html.parser')
     print b_soup.prettify()
@@ -76,17 +79,20 @@ def Get_Link(start_url,url_file):
             b_url=Base_Url+b_tv_link["href"]
             print b_name,b_url
             TV_dict[b_name]=b_url
-            print chardet.detect(b_name)
+            print chardet.detect(str(b_name))
             url_file.write(b_name+"|"+b_url+"\r")
         print '------------------------------------------------------------------------------------------------------------------------'
     print TV_dict
+    print len(TV_dict)
 
     b_result = b_soup.find(string_is_nextpage)#获取下一页的链接
     if b_result == None:
         pass
     else:
         print b_result
+        print 'aaaa'
         b_next_page_url=b_result['href']
+        print 'bbbb'
         print b_next_page_url
         Get_Link(b_next_page_url,url_file)
     print "----"
@@ -95,13 +101,17 @@ def Get_Link(start_url,url_file):
 
 
 for key,value in a_dict.items():
+    print "##############"
+    print key
+    print chardet.detect(key)
+    print "################"
     b_link=value
-    b_file_path=Base_Dir+"\\"+key
+    b_file_path=Base_Dir+"\\"+key.decode("GB18030").encode("GB18030")
     print b_file_path
     b_file=open(b_file_path,'ab')
     Get_Link(b_link,b_file)
     b_file.close()
-    break
+    # break
 #     #print b_link
 #     b_request=urllib2.Request(b_link)
 #     b_response=urllib2.urlopen(b_request)
@@ -115,7 +125,7 @@ for key,value in a_dict.items():
 #
 #     break
 
-
+print "总耗时%d秒" %(time.time() - begin_time)
 
 
 
