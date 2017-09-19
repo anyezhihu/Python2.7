@@ -13,6 +13,7 @@ import chardet
 import sys
 import os
 import time
+import multiprocessing
 
 begin_time=time.time()
 
@@ -46,8 +47,8 @@ for a_result in a_results:
             a_href=a_link['href']
             a_dict[a_name]=a_href
             a_path= Base_Dir + "\\" + a_name
-            # if not os.path.exists(a_path):
-            #     os.makedirs(a_path)
+            if not os.path.exists(a_path):
+                os.makedirs(a_path)
 
 def string_is_nextpage(tag):
     if tag.string == "下一页" and not tag.has_attr('class'):
@@ -55,7 +56,7 @@ def string_is_nextpage(tag):
 
 TV_dict = {}
 # 获取各版块的链接，写入到各自目录下，这里需要使用迭代，必须使用函数了
-def Get_Link(start_url,url_file):
+def Get_Link(start_url,url_file_path):
     print '------------------------------------------------------------------------------------------------------------------------'
     b_link = Base_Url + start_url#获取要爬去的页面的链接
     print b_link
@@ -80,7 +81,19 @@ def Get_Link(start_url,url_file):
             print b_name,b_url
             TV_dict[b_name]=b_url
             print chardet.detect(str(b_name))
-            url_file.write(b_name+"|"+b_url+"\r")
+            url_file=open((url_file_path+"\\"+b_name+".txt"),'ab')
+            # url_file.write(b_name + "|" + b_url + "\r")
+            c_request=urllib2.Request(b_url)
+            c_response=urllib2.urlopen(c_request)
+            c_content=c_response.read()
+            c_soup=BeautifulSoup(c_content,'html.parser')
+            c_results = c_soup.find_all('div', class_="down_list")  # 一共有两个，两个内容是一样的
+            for c_result in c_results:  # 将链接分别写入到各节目的文件内
+                for d_result in c_result.find_all('a', text="迅雷下载"):
+                    c_download_link = d_result['href']
+                    url_file.write(c_download_link)
+            url_file.close()
+
         print '------------------------------------------------------------------------------------------------------------------------'
     print TV_dict
     print len(TV_dict)
@@ -108,9 +121,9 @@ for key,value in a_dict.items():
     b_link=value
     b_file_path=Base_Dir+"\\"+key.decode("GB18030").encode("GB18030")
     print b_file_path
-    b_file=open(b_file_path,'ab')
-    Get_Link(b_link,b_file)
-    b_file.close()
+    # b_file=open(b_file_path,'ab')
+    Get_Link(b_link,b_file_path)
+    # b_file.close()
     # break
 #     #print b_link
 #     b_request=urllib2.Request(b_link)
@@ -124,6 +137,27 @@ for key,value in a_dict.items():
 #     print b_results.
 #
 #     break
+
+#采用多进程进行操作
+def Get_TV_link(c_link,c_file):
+    c_request=urllib2.Request(c_link)
+    c_response=urllib2.urlopen(c_request)
+    c_content=c_response.read()
+
+    c_soup=BeautifulSoup(c_content,'html.parser')
+    c_results=c_soup.find_all('div',class_="down_list")#一共有两个，两个内容是一样的
+    for c_result in c_results:#将链接分别写入到各节目的文件内
+        for d_result in c_result.find_all('a',text="迅雷下载"):
+            c_download_link=d_result['href']
+            c_file.write(c_download_link)
+
+def MultiProcess_download():
+    pool=multiprocessing.Pool()#采用进程池
+    for url in a_dict:
+        pool.apply_async(Get_TV_link,args=(url,))#启动多进程
+
+    pool.close()
+    pool.join()
 
 print "总耗时%d秒" %(time.time() - begin_time)
 
