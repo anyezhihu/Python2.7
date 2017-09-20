@@ -1,13 +1,17 @@
-import urllib2
-import re
-from bs4 import BeautifulSoup
-import chardet
+import multiprocessing
 
+def out(i):
+    print i
 
-url="http://m.meijutt.com/"
-Request=urllib2.Request(url)
-response=urllib2.urlopen(Request)
-content=response.read()
-print chardet.detect(content)
-content=content.decode('GB2312')
-print content
+def ou():
+    manager=multiprocessing.Manager()
+    a_dict={'a':'aaa','b':'bbb','c':'ccc','d':'ddd','e':'eee','f':'fff','g':'ggg','h':'hhh','i':'iii'}
+    b_dict=manager.dict(a_dict)
+    print a_dict
+    print b_dict
+    pool = multiprocessing.Pool(5)
+    for key,value in a_dict.items():
+        pool.apply_async(out, args=(value,))
+
+if __name__ == "__main__":
+    ou()
