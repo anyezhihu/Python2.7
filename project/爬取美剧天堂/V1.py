@@ -1,6 +1,7 @@
 #coding=utf-8
 
 """
+编码问题，一直没解决。在家里可以正常运行，在办公室就不行。
 No handlers could be found for logger "bs4.dammit"--无关紧要的报错不用管
 需要优化一下代码结构和变量命名
 需要添加缓存及缓存检测
